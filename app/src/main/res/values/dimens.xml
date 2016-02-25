@@ -1,0 +1,14 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <!-- 退出提示框按钮-->
+    <dimen name="dialog_btn_width">95dp</dimen>
+    <dimen name="dialog_btn_height">36dp</dimen>
+
+    <!-- 字体 -->
+    <dimen name="text_large_21">21sp</dimen>
+
+    <!-- -->
+    <dimen name="popup_capture_height">45dp</dimen>
+</resources>

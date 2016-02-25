@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:cardview="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    cardview:cardBackgroundColor="#bc1979ff"
+    cardview:cardCornerRadius="8dp">
+    <TextView
+        android:id="@+id/tv_item"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:gravity="center"
+        android:text="今天心情有点蛋疼"
+        android:textColor="#ffffff"
+        android:background="@android:color/transparent"/>
+
+</android.support.v7.widget.CardView>

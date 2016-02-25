@@ -1,0 +1,65 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:src="@mipmap/test3"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="跳转至下一个"
+        android:transitionName="jump"/>
+    <TextView
+        android:id="@+id/tv_test"
+        android:text="显眼"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"/>
+    <TextView
+        android:id="@+id/tv_test1"
+        android:text="显眼深色"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="5dp"
+        android:elevation="30dp"
+        android:gravity="center"/>
+    <TextView
+        android:id="@+id/tv_test2"
+        android:text="显眼浅色"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="5dp"
+        android:gravity="center"/>
+    <TextView
+        android:id="@+id/tv_test3"
+        android:text="柔和"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="5dp"
+        android:elevation="10dp"
+        android:gravity="center"/>
+    <TextView
+        android:id="@+id/tv_test4"
+        android:text="柔和深色"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="5dp"
+        android:elevation="2dp"
+        android:gravity="center"/>
+    <TextView
+        android:id="@+id/tv_test5"
+        android:text="柔和浅色"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="5dp"
+        android:gravity="center"/>
+
+
+</LinearLayout>

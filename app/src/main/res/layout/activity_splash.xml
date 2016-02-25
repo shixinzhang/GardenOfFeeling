@@ -1,0 +1,56 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/iv_splash"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@mipmap/xiazi"
+        android:visibility="invisible"/>
+
+    <LinearLayout
+        android:id="@+id/ll_guide"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".SplashActivity"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vpGuide"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingBottom="20dp">
+            <Button
+                android:id="@+id/btnRegist"
+                android:layout_width="100dp"
+                android:layout_height="35dp"
+                android:text="@string/guide_regist"
+                android:gravity="center"
+                android:textColor="#FFF"
+                android:background="@drawable/btn_guide_bg"
+                android:textSize="17sp" />
+            <Button
+                android:id="@+id/btnLogin"
+                android:layout_width="100dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="60dp"
+                android:text="@string/guide_login"
+                android:gravity="center"
+                android:textColor="#FFF"
+                android:background="@drawable/btn_guide_bg"
+                android:textSize="17sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</FrameLayout>
+
