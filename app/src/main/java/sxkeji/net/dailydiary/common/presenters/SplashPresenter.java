@@ -66,4 +66,8 @@ public class SplashPresenter {
             }
         }
     };
+
+    public Handler getHandler(){
+        return handler;
+    }
 }

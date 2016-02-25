@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.Window;
@@ -191,5 +192,9 @@ public class SplashActivity extends Activity implements ISplashView {
     protected void onDestroy() {
         super.onDestroy();
         hideProgressDialog();
+        Handler handler = mSplashPresenter.getHandler();
+        if(handler != null){
+            handler.removeMessages(0);
+        }
     }
 }

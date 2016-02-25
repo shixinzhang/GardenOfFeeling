@@ -8,6 +8,7 @@ package sxkeji.net.dailydiary.common.views;
 public interface ISplashView {
     boolean showGuideViewPager();
     void showSplashPic();
+
     void showProgressDialog();
     void hideProgressDialog();
     void showNoNetDialog();
