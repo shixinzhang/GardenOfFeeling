@@ -28,7 +28,6 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        //解析View后传递给ViewHolder
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(
                 mLayoutId, viewGroup, false);
         return new ViewHolder(view);
@@ -37,7 +36,6 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         if(mData != null && mData.size() > 0) {
-            //数据填充到ViewHolder的元素中
             viewHolder.mTextView.setText(mData.get(i) + i);
         }
     }
@@ -51,16 +49,12 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
         this.mOnItemClickListener = onItemClickListener;
     }
 
-    /**
-     * 用于实现RecyclerView子项的点击事件回调接口
-     */
+
     public interface OnItemClickListener{
         void onItemClick(View view,int position);
     }
 
-    /**
-     * 自定义ViewHolder，必须实现一个构造方法，参数自定义
-     */
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public TextView mTextView;
 
@@ -71,7 +65,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
         }
 
         @Override
-        public void onClick(View v) {       //通过接口回调来实现RecyclerView的点击事件
+        public void onClick(View v) {
             if(mOnItemClickListener != null){
                 mOnItemClickListener.onItemClick(v,getPosition());
             }

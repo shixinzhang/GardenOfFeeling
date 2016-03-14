@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- app基色-->
+    <color name="primary">#03A9F4</color>
+    <color name="primary_dark">#0288D1</color>
+    <color name="primary_light">#B3E5FC</color>
+    <color name="accent">#FF4081</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#727272</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="divider_line">#B6B6B6</color>
+    <color name="secondary_text_half_white">#89FFFFFF</color>
+
     <color name="line_light_grey">#dcdcdc</color>
 
     <color name="status_bar_bg">#00000000</color>

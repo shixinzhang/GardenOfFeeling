@@ -9,7 +9,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
-import android.support.v7.graphics.Palette;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -257,55 +256,8 @@ public class UIUtils {
 //
 //    }
 
-    public static void setBgFromPalette(Bitmap bitmap,View view){
-        setBgFromPalette(bitmap,view,0);
+
     }
 
-    /**
-     * 使用Palette颜色拾取器设置背景
-     * @param bitmap
-     * @param view
-     * @param type
-     */
-    public static void setBgFromPalette(Bitmap bitmap, final View view, final int type){
-        Palette.generateAsync(bitmap,
-                new Palette.PaletteAsyncListener() {
-                    @Override
-                    public void onGenerated(Palette palette) {
-                        Palette.Swatch swatch = null;
-                        switch (type){
-                            case 0:
-                                swatch = palette.getVibrantSwatch();       //显眼
-                                break;
-                            case 1:
-                                swatch = palette.getDarkVibrantSwatch();   //显眼深色
-                                break;
-                            case 2:
-                                swatch = palette.getLightVibrantSwatch();    //显眼浅色
-                                break;
-                            case 3:
-                                swatch = palette.getMutedSwatch();         //柔和
-                                break;
-                            case 4:
-                                swatch = palette.getDarkMutedSwatch();     //柔和深色
-                                break;
-                            case 5:
-                                swatch = palette.getLightMutedSwatch();    //柔和浅色
-                                break;
-                            default:
-                                swatch = palette.getVibrantSwatch();       //显眼
-                                break;
-                        }
-
-                        if(swatch != null)
-                            view.setBackgroundDrawable(new ColorDrawable(swatch.getRgb()));
-                        else {  //当所取颜色没有解析到时，返回显眼颜色
-                            swatch = palette.getVibrantSwatch();       //显眼
-                            view.setBackgroundDrawable(new ColorDrawable(swatch.getRgb()));
-                        }
-                    }
-                });
-    }
-}
 
 

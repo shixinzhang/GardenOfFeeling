@@ -18,7 +18,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import sxkeji.net.dailydiary.R;
+import sxkeji.net.dailydiary.common.activitys.MainActivity;
 import sxkeji.net.dailydiary.common.activitys.RecyclerTestActivity;
+import sxkeji.net.dailydiary.common.activitys.TestActivity;
 import sxkeji.net.dailydiary.common.presenters.SplashPresenter;
 import sxkeji.net.dailydiary.common.views.ISplashView;
 import sxkeji.net.dailydiary.common.views.adapters.GuideViewPaperAdapter;
@@ -62,6 +64,13 @@ public class SplashActivity extends Activity implements ISplashView {
     private void initViews() {
         ll_guide = (LinearLayout) findViewById(R.id.ll_guide);
         iv_splash = (ImageView) findViewById(R.id.iv_splash);
+        btnLogin = (Button) findViewById(R.id.btnLogin);
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+            }
+        });
     }
 
     @Override
@@ -184,7 +193,7 @@ public class SplashActivity extends Activity implements ISplashView {
 
     @Override
     public void jumpToNextActivity() {
-        startActivity(new Intent(SplashActivity.this, RecyclerTestActivity.class));
+        startActivity(new Intent(SplashActivity.this, MainActivity.class));
         finish();
     }
 
