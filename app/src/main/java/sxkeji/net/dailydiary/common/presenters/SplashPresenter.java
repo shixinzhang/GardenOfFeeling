@@ -32,7 +32,7 @@ public class SplashPresenter {
         }
 
         mISplashView.showSplashPic();
-        handler.sendEmptyMessageDelayed(0, DELAY_TIME);
+//        handler.sendEmptyMessageDelayed(0, DELAY_TIME);
 //        try {
 //            Thread.sleep(2000);
 //        } catch (InterruptedException e) {

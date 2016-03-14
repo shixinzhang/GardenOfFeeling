@@ -49,7 +49,7 @@ public class RecyclerTestActivity extends Activity {
 
 //    @OnClick(R.id.btn_jump)
 //    void jumpToNext(){
-//        Intent intent = new Intent(RecyclerTestActivity.this, MainActivity.class);
+//        Intent intent = new Intent(RecyclerTestActivity.this, Test2Activity.class);
 ////        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this
 ////                , btnJump ,"jump").toBundle());
 //        startActivity(intent);

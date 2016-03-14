@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.Window;
@@ -18,7 +19,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import sxkeji.net.dailydiary.R;
+import sxkeji.net.dailydiary.common.activitys.MainActivity;
 import sxkeji.net.dailydiary.common.activitys.RecyclerTestActivity;
+import sxkeji.net.dailydiary.common.activitys.TestActivity;
 import sxkeji.net.dailydiary.common.presenters.SplashPresenter;
 import sxkeji.net.dailydiary.common.views.ISplashView;
 import sxkeji.net.dailydiary.common.views.adapters.GuideViewPaperAdapter;
@@ -30,18 +33,18 @@ import sxkeji.net.dailydiary.widgets.GuidePageTransformer;
 
 /**
  * What's MVP?
- *
+ * <p/>
  * Model(业务相关的操作、数据，2个部分：接口、实现)-----> Presenter(根据业务选择调用哪些操作) <-----View(布局里涉及的操作接口)
- *                                                       ↓
- *                                         Activity(布局里操作的具体实现，最终的调用者)
- *
+ * ↓
+ * Activity(布局里操作的具体实现，最终的调用者)
+ * <p/>
  * Created by zhangshixin on 2015/11/26.
  *
  * @description Codes there always can be better.
  */
 public class SplashActivity extends Activity implements ISplashView {
     private ViewPager vpGuide;
-    private Button btnRegist,btnLogin;
+    private Button btnRegist, btnLogin;
     private GuideViewPaperAdapter vpAdapter;
     private LinearLayout ll_guide;
     private ImageView iv_splash;
@@ -62,6 +65,13 @@ public class SplashActivity extends Activity implements ISplashView {
     private void initViews() {
         ll_guide = (LinearLayout) findViewById(R.id.ll_guide);
         iv_splash = (ImageView) findViewById(R.id.iv_splash);
+        btnLogin = (Button) findViewById(R.id.btnLogin);
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+            }
+        });
     }
 
     @Override
@@ -72,15 +82,15 @@ public class SplashActivity extends Activity implements ISplashView {
 
     @Override
     public boolean showGuideViewPager() {
-        notShowGuide = (boolean) SPUtil.getParam(SplashActivity.this, Constant.showGuide,false);
-        if(notShowGuide){
+        notShowGuide = (boolean) SPUtil.getParam(SplashActivity.this, Constant.showGuide, false);
+        if (notShowGuide) {
             return false;
-        }else{
+        } else {
             ll_guide.setVisibility(View.VISIBLE);
-            SPUtil.setParam(SplashActivity.this,Constant.showGuide,true);
-            vpGuide = (ViewPager)findViewById(R.id.vpGuide);
-            btnRegist = (Button)findViewById(R.id.btnRegist);
-            btnLogin = (Button)findViewById(R.id.btnLogin);
+            SPUtil.setParam(SplashActivity.this, Constant.showGuide, true);
+            vpGuide = (ViewPager) findViewById(R.id.vpGuide);
+            btnRegist = (Button) findViewById(R.id.btnRegist);
+            btnLogin = (Button) findViewById(R.id.btnLogin);
             btnRegist.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -98,9 +108,9 @@ public class SplashActivity extends Activity implements ISplashView {
             View view2 = View.inflate(this, R.layout.guide_view, null);
             View view3 = View.inflate(this, R.layout.guide_view, null);
 
-            ((ImageView)view1.findViewById(R.id.tv_pic)).setImageResource(R.mipmap.android_guide_step_1);
-            ((ImageView)view2.findViewById(R.id.tv_pic)).setImageResource(R.mipmap.android_guide_step_2);
-            ((ImageView)view3.findViewById(R.id.tv_pic)).setImageResource(R.mipmap.android_guide_step_3);
+            ((ImageView) view1.findViewById(R.id.tv_pic)).setImageResource(R.mipmap.android_guide_step_1);
+            ((ImageView) view2.findViewById(R.id.tv_pic)).setImageResource(R.mipmap.android_guide_step_2);
+            ((ImageView) view3.findViewById(R.id.tv_pic)).setImageResource(R.mipmap.android_guide_step_3);
 
             view1.findViewById(R.id.tv_pic).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -121,16 +131,16 @@ public class SplashActivity extends Activity implements ISplashView {
                 }
             });
 
-            ((TextView)view1.findViewById(R.id.tv_title)).setText("软件功能介绍");
-            ((TextView)view1.findViewById(R.id.tv_title)).setTextColor(Color.parseColor("#FF5000"));
-            ((TextView)view2.findViewById(R.id.tv_title)).setText("角色划分和定位");
-            ((TextView)view2.findViewById(R.id.tv_title)).setTextColor(Color.parseColor("#49ca65"));
-            ((TextView)view3.findViewById(R.id.tv_title)).setText("如何使用软件");
-            ((TextView)view3.findViewById(R.id.tv_title)).setTextColor(Color.parseColor("#16c5c6"));
+            ((TextView) view1.findViewById(R.id.tv_title)).setText("软件功能介绍");
+            ((TextView) view1.findViewById(R.id.tv_title)).setTextColor(Color.parseColor("#FF5000"));
+            ((TextView) view2.findViewById(R.id.tv_title)).setText("角色划分和定位");
+            ((TextView) view2.findViewById(R.id.tv_title)).setTextColor(Color.parseColor("#49ca65"));
+            ((TextView) view3.findViewById(R.id.tv_title)).setText("如何使用软件");
+            ((TextView) view3.findViewById(R.id.tv_title)).setTextColor(Color.parseColor("#16c5c6"));
 
-            ((TextView)view1.findViewById(R.id.tv_desc)).setText("Extalk 功能强大\n");
-            ((TextView)view2.findViewById(R.id.tv_desc)).setText("Extalk 角色分为2种\n");
-            ((TextView)view3.findViewById(R.id.tv_desc)).setText("Extalk 使用说明\n");
+            ((TextView) view1.findViewById(R.id.tv_desc)).setText("Extalk 功能强大\n");
+            ((TextView) view2.findViewById(R.id.tv_desc)).setText("Extalk 角色分为2种\n");
+            ((TextView) view3.findViewById(R.id.tv_desc)).setText("Extalk 使用说明\n");
 
             vpGuide = (ViewPager) findViewById(R.id.vpGuide);
 
@@ -154,12 +164,43 @@ public class SplashActivity extends Activity implements ISplashView {
     public void showSplashPic() {
         iv_splash.setVisibility(View.VISIBLE);
         //Todo: update the image from http here
-
+        getWindow().getDecorView().post(new Runnable() {
+            @Override
+            public void run() {
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //TODO: do the server request here
+                        mHandler.sendEmptyMessage(0);
+                    }
+                },2000);
+            }
+        });
     }
+
+
+    Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 0:
+                    jumpToNextActivity();
+                    break;
+                case 1:
+                    showNoNetDialog();
+                    break;
+                case 2:
+                    hideProgressDialog();
+                    break;
+            }
+        }
+    };
+
 
     @Override
     public void showProgressDialog() {
-        if(mProgressDialog == null){
+        if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
             mProgressDialog.setCancelable(true);
             mProgressDialog.setCanceledOnTouchOutside(false);
@@ -171,7 +212,7 @@ public class SplashActivity extends Activity implements ISplashView {
 
     @Override
     public void hideProgressDialog() {
-        if(mProgressDialog != null && mProgressDialog.isShowing()){
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
             //mProgressDialog.hide();
             mProgressDialog.dismiss();
         }
@@ -179,12 +220,12 @@ public class SplashActivity extends Activity implements ISplashView {
 
     @Override
     public void showNoNetDialog() {
-        Toast.makeText(SplashActivity.this,"请检查网络",Toast.LENGTH_SHORT).show();
+        Toast.makeText(SplashActivity.this, "请检查网络", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void jumpToNextActivity() {
-        startActivity(new Intent(SplashActivity.this, RecyclerTestActivity.class));
+        startActivity(new Intent(SplashActivity.this, MainActivity.class));
         finish();
     }
 
@@ -192,9 +233,6 @@ public class SplashActivity extends Activity implements ISplashView {
     protected void onDestroy() {
         super.onDestroy();
         hideProgressDialog();
-        Handler handler = mSplashPresenter.getHandler();
-        if(handler != null){
-            handler.removeMessages(0);
-        }
+        mHandler.removeCallbacksAndMessages(null);
     }
 }

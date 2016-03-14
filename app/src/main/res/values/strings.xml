@@ -9,6 +9,10 @@
     <string name="guide_regist">注册</string>
     <string name="guide_login">登录</string>
 
+    <!-- 首页 -->
+    <string name="drawer_open">菜单</string>
+    <string name="drawer_close">首页</string>
+
     <!-- 网络请求 -->
     <string name="network_no">请检查网络连接</string>
 </resources>

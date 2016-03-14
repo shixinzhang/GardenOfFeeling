@@ -8,7 +8,6 @@ import sxkeji.net.dailydiary.R;
 
 
 /**
- * 自定义导航页的转换动画
  * Created by sxzhang on 2016/2/24.
  * Codes can never be perfect!
  */

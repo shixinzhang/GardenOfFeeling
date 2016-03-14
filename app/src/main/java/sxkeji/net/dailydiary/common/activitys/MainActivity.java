@@ -1,102 +1,93 @@
 package sxkeji.net.dailydiary.common.activitys;
 
-import android.annotation.TargetApi;
-import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Outline;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.graphics.Palette;
-import android.transition.Fade;
-import android.view.View;
-import android.view.ViewOutlineProvider;
-import android.view.Window;
+import android.os.PersistableBundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import sxkeji.net.dailydiary.R;
+import sxkeji.net.dailydiary.common.views.adapters.MainTabsVPAdapter;
 
+/**
+ * Created by zhangshixin on 3/14/2016.
+ */
+public class MainActivity extends AppCompatActivity {
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.tab_layout)
+    TabLayout tabLayout;
+    @Bind(R.id.appbar)
+    AppBarLayout appbar;
+    @Bind(R.id.vp_tab_content)
+    ViewPager vpTabContent;
+    @Bind(R.id.main_content)
+    CoordinatorLayout mainContent;
+    @Bind(R.id.img_user)
+    ImageView imgUser;
+    @Bind(R.id.user_name)
+    TextView userName;
+    @Bind(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
 
-public class MainActivity extends Activity {
-
-    @Bind(R.id.tv_test)
-    TextView tvTest;
-    @Bind(R.id.tv_test1)
-    TextView tvTest1;
-    @Bind(R.id.tv_test2)
-    TextView tvTest2;
-    @Bind(R.id.tv_test3)
-    TextView tvTest3;
-    @Bind(R.id.tv_test4)
-    TextView tvTest4;
-    @Bind(R.id.tv_test5)
-    TextView tvTest5;
-
+    private ActionBarDrawerToggle mDrawerToggle;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTransitionAnimation();
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
-
-
-        ViewOutlineProvider viewOutlineProvider =
-                new ViewOutlineProvider() {
-                    @Override
-                    public void getOutline(View view, Outline outline) {
-                        outline.setOval(0, 0, view.getWidth(), view.getHeight());
-                    }
-                };
-        tvTest.setOutlineProvider(viewOutlineProvider);
-        testPalette();
+        initViews();
+        loadData();
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void setTransitionAnimation() {
-        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
-//        getWindow().setEnterTransition(new Explode());
-//        getWindow().setEnterTransition(new Fade());
-//        getWindow().setExitTransition(new Slide());
-        getWindow().setExitTransition(new Fade());
+    private void initViews() {
+        toolbar.setTitleTextColor(Color.WHITE);
+        setSupportActionBar(toolbar);
+
+        mDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
+                R.string.drawer_open, R.string.drawer_close);
+        mDrawerToggle.syncState();
+        drawerLayout.setDrawerListener(mDrawerToggle);
+
     }
 
-    private void testPalette() {
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.test3);
-        //¥¥Ω®Palette∂‘œÛ
-        Palette.generateAsync(bitmap,
-                new Palette.PaletteAsyncListener() {
-                    @Override
-                    public void onGenerated(Palette palette) {
-                        //Õ®π˝paletteªÒ»°∂‘”¶µƒ…´µ˜
-                        Palette.Swatch swatch = palette.getVibrantSwatch();       //œ‘—€
-                        Palette.Swatch swatch1 = palette.getDarkVibrantSwatch();   //œ‘—€…Ó…´
-                        Palette.Swatch swatch2 = palette.getLightVibrantSwatch();    //œ‘—€«≥…´
-                        Palette.Swatch swatch3 = palette.getMutedSwatch();         //»·∫Õ
-                        Palette.Swatch swatch4 = palette.getDarkMutedSwatch();     //»·∫Õ…Ó…´
-                        Palette.Swatch swatch5 = palette.getLightMutedSwatch();    //»·∫Õ«≥…´
+    /**
+     * Âä†ËΩΩÊï∞ÊçÆ
+     */
+    private void loadData() {
+        loadTabsViewPagerData();
+        loadTabsData();
+    }
 
-                        if(swatch != null)
-                            tvTest.setBackgroundDrawable(new ColorDrawable(swatch.getRgb()));
-                        if(swatch1 != null) {
-                            tvTest1.setBackgroundDrawable(new ColorDrawable(swatch1.getRgb()));
-//                            ObjectAnimator animator = ObjectAnimator.ofFloat(tvTest1,"translationZ",100);
-//                            animator.start();
-                        }
+    /**
+     * Âä†ËΩΩTabÂàóË°®ÁöÑviewPagerÁöÑÂÜÖÂÆπ
+     */
+    private void loadTabsViewPagerData() {
+        MainTabsVPAdapter  mTabsVPAdapter = new MainTabsVPAdapter(getSupportFragmentManager());
+        for (int i = 0; i < 3; i++) {
+            mTabsVPAdapter.addFragment(new HomeFragment(), "ÁõÆÂΩï" + i);
+        }
 
-                        if(swatch2 != null)
-                            tvTest2.setBackgroundDrawable(new ColorDrawable(swatch2.getRgb()));
-                        if(swatch3 != null)
-                            tvTest3.setBackgroundDrawable(new ColorDrawable(swatch3.getRgb()));
-                        if(swatch4 != null)
-                            tvTest4.setBackgroundDrawable(new ColorDrawable(swatch4.getRgb()));
-                        if(swatch5 != null)
-                            tvTest5.setBackgroundDrawable(new ColorDrawable(swatch5.getRgb()));
-                    }
-                });
+        vpTabContent.setAdapter(mTabsVPAdapter);
+    }
 
+    /**
+     * Âä†ËΩΩTabÂàóË°®
+     */
+    private void loadTabsData() {
+        for (int i = 0; i < 3; i++) {
+            tabLayout.addTab(tabLayout.newTab());
+        }
+        tabLayout.setupWithViewPager(vpTabContent);
     }
 }
