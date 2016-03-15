@@ -15,7 +15,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="168dp"
-            android:background="@color/primary">
+            android:background="@mipmap/background_menu_account_info">
 
             <ImageView
                 android:id="@+id/img_user"

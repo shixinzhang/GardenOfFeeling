@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/item_article"
+        android:icon="@mipmap/xiazi"
+        android:title="@string/add_article" />
+    <item
+        android:id="@+id/item_reminder"
+        android:icon="@mipmap/img_zakeboge"
+        android:title="@string/add_reminder" />
+    <item
+        android:id="@+id/item_cancel"
+        android:icon="@mipmap/img_zakeboge"
+        android:title="@string/add_cancel" />
+</menu>

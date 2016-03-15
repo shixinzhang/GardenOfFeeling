@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="设置" android:id="@+id/item_setting" android:icon="@mipmap/xiazi"/>
+    <item android:title="退出" android:id="@+id/item_exit"  android:icon="@mipmap/img_zakeboge"/>
+</menu>

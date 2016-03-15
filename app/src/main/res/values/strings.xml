@@ -12,6 +12,10 @@
     <!-- 首页 -->
     <string name="drawer_open">菜单</string>
     <string name="drawer_close">首页</string>
+    <string name="add_title">亲，您要写点什么 ?</string>
+    <string name="add_article">有感而发，来篇随笔</string>
+    <string name="add_reminder">繁事锁身，记个备忘</string>
+    <string name="add_cancel">算了，没什么要写的</string>
 
     <!-- 网络请求 -->
     <string name="network_no">请检查网络连接</string>
