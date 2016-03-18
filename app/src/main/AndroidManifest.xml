@@ -42,6 +42,12 @@
         <activity android:name=".common.activitys.TestActivity"
             android:label="@string/activity_test"
             android:launchMode="singleTop"/>
+
+        <activity android:name=".common.activitys.WriteArticleActivity"
+            android:label="@string/activity_write_article"
+            android:launchMode="singleTop"
+            />
+
     </application>
 
 </manifest>

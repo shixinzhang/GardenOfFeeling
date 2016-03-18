@@ -1,7 +1,9 @@
 package sxkeji.net.dailydiary.common.activitys;
 
 import android.animation.ObjectAnimator;
+import android.content.ComponentName;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -64,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ObjectAnimator.ofFloat(fabAdd,"rotation",0f,225f).setDuration(1000).start();
+                ObjectAnimator.ofFloat(fabAdd, "rotation", 0f, 225f).setDuration(1000).start();
                 showChooseBottomSheet();
             }
         });
@@ -82,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case R.id.item_article:
-                                showSnackToast("创建随笔");
+                                jumpToActivity(WriteArticleActivity.class);
                                 break;
                             case R.id.item_reminder:
                                 break;
@@ -99,6 +101,15 @@ public class MainActivity extends AppCompatActivity {
                         ObjectAnimator.ofFloat(fabAdd,"rotation",225f,360f).setDuration(1000).start();
                     }
                 }).show();
+    }
+
+    /**
+     * 跳转
+     * @param clazz
+     */
+    private void jumpToActivity(Class<?> clazz) {
+        Intent intent = new Intent(MainActivity.this,clazz);
+        startActivity(intent);
     }
 
     /**
@@ -120,6 +131,8 @@ public class MainActivity extends AppCompatActivity {
         mDrawerToggle.syncState();
         drawerLayout.setDrawerListener(mDrawerToggle);
 
+        Intent  intent = new Intent();
+        intent.resolveActivity(getPackageManager());
     }
 
     /**

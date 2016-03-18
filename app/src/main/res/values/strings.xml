@@ -5,6 +5,8 @@
     <string name="action_settings">Settings</string>
     <string name="activity_main">主页</string>
     <string name="activity_test">测试</string>
+    <string name="activity_write_article">写文字</string>
+
     <!-- 引导页 -->
     <string name="guide_regist">注册</string>
     <string name="guide_login">登录</string>
@@ -16,6 +18,13 @@
     <string name="add_article">有感而发，来篇随笔</string>
     <string name="add_reminder">繁事锁身，记个备忘</string>
     <string name="add_cancel">算了，没什么要写的</string>
+
+    <!-- 创建新文字 -->
+    <string name="cancel_or_not">是否取消编辑?</string>
+    <string name="redo">返回</string>
+    <string name="undo">撤销</string>
+    <string name="done">保存</string>
+    <string name="markdown">切换为MarkDown编辑</string>
 
     <!-- 网络请求 -->
     <string name="network_no">请检查网络连接</string>
