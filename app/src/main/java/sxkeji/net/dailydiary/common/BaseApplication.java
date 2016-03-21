@@ -4,6 +4,7 @@ import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.Application;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
@@ -19,7 +20,10 @@ import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.List;
 
+import sxkeji.net.dailydiary.ArticleDao;
 import sxkeji.net.dailydiary.BuildConfig;
+import sxkeji.net.dailydiary.DaoMaster;
+import sxkeji.net.dailydiary.DaoSession;
 import sxkeji.net.dailydiary.utils.AppUtils;
 import sxkeji.net.dailydiary.utils.LogUtils;
 
@@ -52,6 +56,9 @@ public class BaseApplication extends Application {
     public static Application getInstance() {
         return mInstance;
     }
+    private static SQLiteDatabase db;
+    private static DaoMaster daoMaster;
+    private static DaoSession daoSession;
 
     @Override
     public void onCreate() {
@@ -61,6 +68,8 @@ public class BaseApplication extends Application {
         mMainThread = Thread.currentThread();
         mMainThreadHandler = new Handler();
         mMainLooper = getMainLooper();
+
+        setUpDataBase();
 
         super.onCreate();
         if (!BuildConfig.DEBUG) {
@@ -74,15 +83,39 @@ public class BaseApplication extends Application {
 
     }
 
+    /**
+     * 初始化数据库
+     */
+    private void setUpDataBase() {
+        DaoMaster.DevOpenHelper openHelper = new DaoMaster.DevOpenHelper(this, "sxkeji-db", null);
+        db = openHelper.getWritableDatabase();
+        daoMaster = new DaoMaster(db);
+        daoSession = daoMaster.newSession();
+
+    }
+
+
+    public static SQLiteDatabase getDb(){
+        return db;
+    }
+
+    public static DaoMaster getDaoMaster(){
+        return  daoMaster;
+    }
+
+    public static DaoSession getDaoSession(){
+        return daoSession;
+    }
+
 
     private void initialize() {
         //TODO 设置Buggly 渠道 和 App的版本
-        CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(this);
+//        CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(this);
 //        strategy.setAppChannel(AppUtils.getAppChannel(this));
-        strategy.setAppVersion(AppUtils.getVersionName(this));
-        CrashReport.initCrashReport(this, "900010286", BuildConfig.DEBUG, strategy);
-
-        setUncaughtExcept();//全局捕获异常
+//        strategy.setAppVersion(AppUtils.getVersionName(this));
+//        CrashReport.initCrashReport(this, "900010286", BuildConfig.DEBUG, strategy);
+//
+//        setUncaughtExcept();//全局捕获异常
 
     }
 
