@@ -25,6 +25,8 @@
     <string name="undo">撤销</string>
     <string name="done">保存</string>
     <string name="markdown">切换为MarkDown编辑</string>
+    <string name="change_article_header_img">点击更换文章配图</string>
+    <string name="i_do_not_want_see_u">不再显示</string>
 
     <!-- 网络请求 -->
     <string name="network_no">请检查网络连接</string>

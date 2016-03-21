@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/article_img_height"
+    android:id="@+id/layout_select_img"
+    android:background="@mipmap/background_menu_account_info_colorful">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/change_article_header_img"
+        android:textColor="@color/primary"
+        android:textSize="18sp" />
+
+    <ImageView
+        android:id="@+id/btn_delete"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="16dp"
+        android:rotation="45"
+        android:src="@mipmap/action_icon_add" />
+
+    <TextView
+        android:id="@+id/tv_not_show_forever"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="6dp"
+        android:text="@string/i_do_not_want_see_u"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:layout_toLeftOf="@id/btn_delete"
+        android:layout_alignBottom="@id/btn_delete"
+        />
+</RelativeLayout>

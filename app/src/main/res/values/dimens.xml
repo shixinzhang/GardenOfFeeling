@@ -12,4 +12,6 @@
     <!-- -->
     <dimen name="popup_capture_height">45dp</dimen>
     <dimen name="bottom_bar_height">35dp</dimen>
+    <!-- 文章配图高度 -->
+    <dimen name="article_img_height">200dp</dimen>
 </resources>
