@@ -7,17 +7,19 @@
         android:orderInCategory="80"
         android:title="@string/undo"
         app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/item_menu_redo"
-        android:icon="@mipmap/icon_action_redo"
-        android:orderInCategory="80"
-        android:title="@string/redo"
-        app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/item_menu_done"
         android:icon="@mipmap/icon_action_done"
         android:orderInCategory="100"
         android:title="@string/done"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/item_menu_markdown"
+        android:icon="@mipmap/icon_fab_markdown"
+        android:orderInCategory="80"
+        android:title="@string/markdown"
+        app:showAsAction="never" />
 
 </menu>

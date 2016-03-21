@@ -113,7 +113,7 @@ public class WriteArticleActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.item_menu_undo:
                 break;
-            case R.id.item_menu_redo:
+            case R.id.item_menu_markdown:
                 break;
             case R.id.item_menu_done:
                 showSnackToast("done");
