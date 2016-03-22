@@ -34,7 +34,9 @@ import sxkeji.net.dailydiary.common.BaseApplication;
 import sxkeji.net.dailydiary.storage.Constant;
 import sxkeji.net.dailydiary.utils.LogUtils;
 import sxkeji.net.dailydiary.utils.MediaUtils;
+import sxkeji.net.dailydiary.utils.NetWorkUtils;
 import sxkeji.net.dailydiary.utils.StringUtils;
+import sxkeji.net.dailydiary.utils.SystemUtils;
 import sxkeji.net.dailydiary.widgets.ExtendMediaPicker;
 
 /**
@@ -78,6 +80,13 @@ public class WriteArticleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mediaPicker.showPickerView(true, layoutSelectImg);
+            }
+        });
+        layoutSelectImg.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                showSnackToast("保存图片到 我的收藏 ");
+                return true;
             }
         });
 
@@ -135,8 +144,14 @@ public class WriteArticleActivity extends AppCompatActivity {
     private void getImgFromNet() {
         if(layoutSelectImg.getVisibility() != View.VISIBLE){
             layoutSelectImg.setVisibility(View.VISIBLE);
-            LogUtils.e(TAG,"Visibility changed! : " + layoutSelectImg.getVisibility());
+            LogUtils.e(TAG, "Visibility changed! : " + layoutSelectImg.getVisibility());
         }
+
+        if(!NetWorkUtils.isNetworkAvailable(WriteArticleActivity.this)){
+            showSnackToast(getResources().getString(R.string.network_no_can_not_load_img));
+            return;
+        }
+
 
         Drawable drawable = imgSelect.getDrawable();
         Picasso.with(WriteArticleActivity.this).load(Constant.URL_IMG)

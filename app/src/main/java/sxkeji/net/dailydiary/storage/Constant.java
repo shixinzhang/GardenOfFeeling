@@ -12,8 +12,11 @@ public class Constant {
     public static String appName = "garden_of_feeling";
     public static String showGuide = "show_guide";
 
-    //目录地址
-    public static final String CATCH_FILE_PATH = "catch";
+    //缓存地址
+    public static final String BASE_CACHE_FILE_PATH = "sdcard/sxkeji/";
+    public static final String IMG_CACHE_PATH = BASE_CACHE_FILE_PATH + "images/";
+    public static final String ARTICLE_CACHE_PATH = BASE_CACHE_FILE_PATH + "articles/";
+    public static final String REMINDER_CACHE_PATH = BASE_CACHE_FILE_PATH + "reminds/";
 
     //接口地址
     //文字配图网络地址，返回的就是图片

@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.SyncStateContract;
 
 import com.tencent.bugly.crashreport.CrashReport;
 
@@ -24,6 +25,7 @@ import sxkeji.net.dailydiary.ArticleDao;
 import sxkeji.net.dailydiary.BuildConfig;
 import sxkeji.net.dailydiary.DaoMaster;
 import sxkeji.net.dailydiary.DaoSession;
+import sxkeji.net.dailydiary.storage.Constant;
 import sxkeji.net.dailydiary.utils.AppUtils;
 import sxkeji.net.dailydiary.utils.LogUtils;
 
@@ -56,6 +58,7 @@ public class BaseApplication extends Application {
     public static Application getInstance() {
         return mInstance;
     }
+
     private static SQLiteDatabase db;
     private static DaoMaster daoMaster;
     private static DaoSession daoSession;
@@ -70,6 +73,7 @@ public class BaseApplication extends Application {
         mMainLooper = getMainLooper();
 
         setUpDataBase();
+        createCacheDirectory();
 
         super.onCreate();
         if (!BuildConfig.DEBUG) {
@@ -84,6 +88,24 @@ public class BaseApplication extends Application {
     }
 
     /**
+     * 创建SD卡缓存目录
+     */
+    private void createCacheDirectory() {
+        File imgDirectory = new File(Constant.IMG_CACHE_PATH);
+        if(!imgDirectory.exists()){
+            imgDirectory.mkdir();
+        }
+        File articleDirectory = new File(Constant.ARTICLE_CACHE_PATH);
+        if(!articleDirectory.exists()){
+            articleDirectory.mkdir();
+        }
+        File reminderDirectory = new File(Constant.REMINDER_CACHE_PATH);
+        if(!reminderDirectory.exists()){
+            reminderDirectory.mkdir();
+        }
+    }
+
+    /**
      * 初始化数据库
      */
     private void setUpDataBase() {
@@ -95,15 +117,15 @@ public class BaseApplication extends Application {
     }
 
 
-    public static SQLiteDatabase getDb(){
+    public static SQLiteDatabase getDb() {
         return db;
     }
 
-    public static DaoMaster getDaoMaster(){
-        return  daoMaster;
+    public static DaoMaster getDaoMaster() {
+        return daoMaster;
     }
 
-    public static DaoSession getDaoSession(){
+    public static DaoSession getDaoSession() {
         return daoSession;
     }
 

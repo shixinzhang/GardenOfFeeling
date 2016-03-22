@@ -31,4 +31,5 @@
 
     <!-- 网络请求 -->
     <string name="network_no">请检查网络连接</string>
+    <string name="network_no_can_not_load_img">网络连接失败，无法加载网络配图</string>
 </resources>
