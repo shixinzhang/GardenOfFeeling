@@ -22,4 +22,11 @@
         android:title="@string/markdown"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/item_menu_refresh_img"
+        android:icon="@mipmap/icon_refresh"
+        android:orderInCategory="80"
+        android:title="@string/refresh_img"
+        app:showAsAction="never" />
+
 </menu>

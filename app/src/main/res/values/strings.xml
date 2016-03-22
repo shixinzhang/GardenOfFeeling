@@ -24,9 +24,10 @@
     <string name="redo">返回</string>
     <string name="undo">撤销</string>
     <string name="done">保存</string>
-    <string name="markdown">切换为MarkDown编辑</string>
+    <string name="markdown">切换MarkDown</string>
+    <string name="refresh_img">刷新文字配图</string>
     <string name="change_article_header_img">点击更换文章配图</string>
-    <string name="i_do_not_want_see_u">不再显示</string>
+    <string name="no_img_header">不要配图</string>
 
     <!-- 网络请求 -->
     <string name="network_no">请检查网络连接</string>

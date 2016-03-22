@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -16,6 +17,7 @@ import android.support.v4.app.Fragment;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 
 import java.io.File;
@@ -28,10 +30,10 @@ import sxkeji.net.dailydiary.utils.UIUtils;
 
 
 public class ExtendMediaPicker implements View.OnClickListener {
-
-    private static final int REQUEST_CODE_CROP_PHOTO = 2000;
-    private static final int REQUEST_CODE_PICK_IMAGE = 2001;
-    private static final int REQUEST_CODE_TAKE_PHOTO = 2002;
+    private static final String TAG = "ExtendMediaPicker";
+    public static final int REQUEST_CODE_CROP_PHOTO = 2000;
+    public static final int REQUEST_CODE_PICK_IMAGE = 2001;
+    public static final int REQUEST_CODE_TAKE_PHOTO = 2002;
 
     private Uri imageUri;
     private File tempFile;
@@ -39,9 +41,9 @@ public class ExtendMediaPicker implements View.OnClickListener {
     private Fragment mFragment;
     private Activity mActivity;
     private OnMediaPickerListener mMediaPickerListener;
-
+    private ImageView imgViewTarget;
     private boolean isActivity;
-    private View popViwe;
+    private View popView;
     private PopupWindow pop;
 
     public ExtendMediaPicker(Fragment fragment) {
@@ -56,17 +58,23 @@ public class ExtendMediaPicker implements View.OnClickListener {
         this.isActivity = true;
     }
 
+    public ExtendMediaPicker(Activity fragment, ImageView targetImgView) {
+        this.mActivity = fragment;
+        this.tempFile = createTempFile();
+        this.isActivity = true;
+        this.imgViewTarget = targetImgView;
+    }
 
     public void showPickerView(boolean isCropImage, View mIvUserImage) {
         this.mCropImage = isCropImage;
-        popViwe = View.inflate(UIUtils.getApplication(),
+        popView = View.inflate(UIUtils.getApplication(),
                 R.layout.pop_chose_photo, null);
-        popViwe.findViewById(R.id.tv_camer).setOnClickListener(this);
-        popViwe.findViewById(R.id.tv_gallery).setOnClickListener(this);
-        popViwe.findViewById(R.id.tv_cancle).setOnClickListener(this);
+        popView.findViewById(R.id.tv_camer).setOnClickListener(this);
+        popView.findViewById(R.id.tv_gallery).setOnClickListener(this);
+        popView.findViewById(R.id.tv_cancle).setOnClickListener(this);
 
 
-        pop = new PopupWindow(popViwe, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,
+        pop = new PopupWindow(popView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,
                 true);
 
 
@@ -90,11 +98,14 @@ public class ExtendMediaPicker implements View.OnClickListener {
             return;
         }
 
+        LogUtils.e(TAG,"onActivityResult");
         switch (requestCode) {
             case REQUEST_CODE_PICK_IMAGE:
                 String path = MediaUtils.getPath(isActivity == false ? mFragment.getContext() : mActivity, data.getData());
                 cropImageUri(Uri.fromFile(new File(path)), 300, 300,
                         REQUEST_CODE_CROP_PHOTO);
+                Bitmap bitmap = BitmapFactory.decodeFile(path);
+                this.imgViewTarget.setImageBitmap(bitmap);
                 break;
             case REQUEST_CODE_TAKE_PHOTO:
 
@@ -111,6 +122,8 @@ public class ExtendMediaPicker implements View.OnClickListener {
                 }
                 break;
         }
+
+
     }
 
     @SuppressLint("InlinedApi")

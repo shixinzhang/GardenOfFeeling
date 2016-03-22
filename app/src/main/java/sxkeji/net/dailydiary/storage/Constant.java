@@ -16,6 +16,8 @@ public class Constant {
     public static final String CATCH_FILE_PATH = "catch";
 
     //接口地址
+    //文字配图网络地址，返回的就是图片
+    public static final String URL_IMG = "http://tu.ihuan.me/tu/api/me_all_pic/";
     ////豆瓣电影top250 https://api.douban.com/v2/movie/top250?start=0&count=10
     public static final String URL_DOUBAN_MOVIE_TOP250 = "https://api.douban.com/v2/movie/";
 }

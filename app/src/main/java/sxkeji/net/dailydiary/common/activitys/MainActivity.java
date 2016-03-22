@@ -84,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case R.id.item_article:
+                                //TODO: startActivityForResult 当创建成功后再查询
+
                                 jumpToActivity(WriteArticleActivity.class);
                                 break;
                             case R.id.item_reminder:
