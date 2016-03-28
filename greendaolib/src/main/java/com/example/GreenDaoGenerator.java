@@ -6,11 +6,12 @@ import de.greenrobot.daogenerator.Schema;
 
 public class GreenDaoGenerator {
     public static void main(String[] args) throws Exception {
-        Schema schema = new Schema(1, "sxkeji.net.dailydiary");
+        int version = 2;
+        Schema schema = new Schema(version, "sxkeji.net.dailydiary");
         addArticle(schema);
 
         new DaoGenerator().generateAll(schema,
-                "C:\\zsx\\StudioProjects\\GardenOfFeeling\\app\\src\\main\\java-gen");
+                "C:\\zsx\\DD\\codes\\GardenOfFeeling\\app\\src\\main\\java-gen");
         }
 
     public static void addArticle(Schema schema){
@@ -22,6 +23,8 @@ public class GreenDaoGenerator {
         entity.addStringProperty("weather");
         entity.addStringProperty("title").notNull();
         entity.addStringProperty("content").notNull();
+        entity.addIntProperty("type");
+        entity.addStringProperty("img_path");
 
     }
 }

@@ -9,9 +9,11 @@
     <!-- 字体 -->
     <dimen name="text_large_21">21sp</dimen>
 
-    <!-- -->
+    <!-- 一些固定高度 -->
     <dimen name="popup_capture_height">45dp</dimen>
     <dimen name="bottom_bar_height">35dp</dimen>
+    <dimen name="write_markdown_height">300dp</dimen>
+
     <!-- 文章配图高度 -->
     <dimen name="article_img_height">256dp</dimen>
 </resources>

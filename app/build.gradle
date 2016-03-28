@@ -25,14 +25,13 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     //兼容包
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.android.support:cardview-v7:23.0.1'
     compile 'com.android.support:recyclerview-v7:23.0.1'
     compile 'com.android.support:design:23.0.1'
     compile 'com.android.support:support-annotations:23.1.0'
-
     //第三方
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.cocosw:bottomsheet:1.+@aar'
@@ -40,7 +39,7 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:2.5.0'
     compile 'com.google.code.gson:gson:2.3'
     compile 'de.greenrobot:eventbus:2.4.0'
-    compile 'de.greenrobot:greendao:1.3.7'
+    compile 'de.greenrobot:greendao:2.0.0'
     compile files('libs/bugly_1.2.6_release.jar')
-
+    compile project(':markdownlib')
 }

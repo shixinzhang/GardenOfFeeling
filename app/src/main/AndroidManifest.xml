@@ -9,7 +9,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/icon_logo_sxkeji"
         android:name=".common.BaseApplication"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >

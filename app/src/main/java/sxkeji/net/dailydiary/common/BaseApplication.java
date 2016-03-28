@@ -9,9 +9,6 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
-import android.provider.SyncStateContract;
-
-import com.tencent.bugly.crashreport.CrashReport;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,12 +18,10 @@ import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.List;
 
-import sxkeji.net.dailydiary.ArticleDao;
 import sxkeji.net.dailydiary.BuildConfig;
 import sxkeji.net.dailydiary.DaoMaster;
 import sxkeji.net.dailydiary.DaoSession;
 import sxkeji.net.dailydiary.storage.Constant;
-import sxkeji.net.dailydiary.utils.AppUtils;
 import sxkeji.net.dailydiary.utils.LogUtils;
 
 /**

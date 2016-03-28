@@ -29,6 +29,8 @@ public class ArticleDao extends AbstractDao<Article, Long> {
         public final static Property Weather = new Property(3, String.class, "weather", false, "WEATHER");
         public final static Property Title = new Property(4, String.class, "title", false, "TITLE");
         public final static Property Content = new Property(5, String.class, "content", false, "CONTENT");
+        public final static Property Type = new Property(6, Integer.class, "type", false, "TYPE");
+        public final static Property Img_path = new Property(7, String.class, "img_path", false, "IMG_PATH");
     };
 
 
@@ -49,7 +51,9 @@ public class ArticleDao extends AbstractDao<Article, Long> {
                 "'ADDRESS' TEXT," + // 2: address
                 "'WEATHER' TEXT," + // 3: weather
                 "'TITLE' TEXT NOT NULL ," + // 4: title
-                "'CONTENT' TEXT NOT NULL );"); // 5: content
+                "'CONTENT' TEXT NOT NULL ," + // 5: content
+                "'TYPE' INTEGER," + // 6: type
+                "'IMG_PATH' TEXT);"); // 7: img_path
     }
 
     /** Drops the underlying database table. */
@@ -80,6 +84,16 @@ public class ArticleDao extends AbstractDao<Article, Long> {
         }
         stmt.bindString(5, entity.getTitle());
         stmt.bindString(6, entity.getContent());
+ 
+        Integer type = entity.getType();
+        if (type != null) {
+            stmt.bindLong(7, type);
+        }
+ 
+        String img_path = entity.getImg_path();
+        if (img_path != null) {
+            stmt.bindString(8, img_path);
+        }
     }
 
     /** @inheritdoc */
@@ -97,7 +111,9 @@ public class ArticleDao extends AbstractDao<Article, Long> {
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // address
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // weather
             cursor.getString(offset + 4), // title
-            cursor.getString(offset + 5) // content
+            cursor.getString(offset + 5), // content
+            cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // type
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7) // img_path
         );
         return entity;
     }
@@ -111,6 +127,8 @@ public class ArticleDao extends AbstractDao<Article, Long> {
         entity.setWeather(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
         entity.setTitle(cursor.getString(offset + 4));
         entity.setContent(cursor.getString(offset + 5));
+        entity.setType(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
+        entity.setImg_path(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
      }
     
     /** @inheritdoc */

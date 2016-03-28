@@ -12,6 +12,11 @@ public class Constant {
     public static String appName = "garden_of_feeling";
     public static String showGuide = "show_guide";
 
+    //文档类型
+    public static final int TYPE_MARKDOWN = 0 ;
+    public static final int TYPE_NORMAL = 1 ;
+    public static final int TYPE_REMINDER = 2;
+
     //缓存地址
     public static final String BASE_CACHE_FILE_PATH = "sdcard/sxkeji/";
     public static final String IMG_CACHE_PATH = BASE_CACHE_FILE_PATH + "images/";

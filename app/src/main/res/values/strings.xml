@@ -29,6 +29,12 @@
     <string name="change_article_header_img">点击更换文章配图</string>
     <string name="no_img_header">不要配图</string>
 
+    <string name="preview">预览</string>
+    <string name="edit">编辑</string>
+    <string name="md_sample_english">### MarkdownView Live Preview \n * * * \n  Edit the text to see it updated instantly.</string>
+    <string name="md_sample_cn">### Markdown效果预览 \n * * * \n  编辑内容，上面可以预览效果</string>
+    <string name="md_guide_roles"># 一级标题 \n\n ##二级标题 \n\n ###三级标题 \n * * * \n *无序列表* \n\n - 我是无序列表1 \n - 我是无序列表2 \n\n 这是一个[百度链接](http://www.baidu.com) \n\n > 这是一段引用</string>
+
     <!-- 网络请求 -->
     <string name="network_no">请检查网络连接</string>
     <string name="network_no_can_not_load_img">网络连接失败，无法加载网络配图</string>

@@ -15,6 +15,8 @@ public class Article {
     private String title;
     /** Not-null value. */
     private String content;
+    private Integer type;
+    private String img_path;
 
     public Article() {
     }
@@ -23,13 +25,15 @@ public class Article {
         this.id = id;
     }
 
-    public Article(Long id, String date, String address, String weather, String title, String content) {
+    public Article(Long id, String date, String address, String weather, String title, String content, Integer type, String img_path) {
         this.id = id;
         this.date = date;
         this.address = address;
         this.weather = weather;
         this.title = title;
         this.content = content;
+        this.type = type;
+        this.img_path = img_path;
     }
 
     public Long getId() {
@@ -84,6 +88,22 @@ public class Article {
     /** Not-null value; ensure this value is available before it is saved to the database. */
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public String getImg_path() {
+        return img_path;
+    }
+
+    public void setImg_path(String img_path) {
+        this.img_path = img_path;
     }
 
 }

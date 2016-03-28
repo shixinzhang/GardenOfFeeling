@@ -3,8 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/GardenOfFeeling.iml" filepath="$PROJECT_DIR$/GardenOfFeeling.iml" />
+      <module fileurl="file://$PROJECT_DIR$/GardenOfFeeling.iml" filepath="$PROJECT_DIR$/GardenOfFeeling.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/greendaolib/greendaolib.iml" filepath="$PROJECT_DIR$/greendaolib/greendaolib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/markdownlib/markdownlib.iml" filepath="$PROJECT_DIR$/markdownlib/markdownlib.iml" />
     </modules>
   </component>
 </project>

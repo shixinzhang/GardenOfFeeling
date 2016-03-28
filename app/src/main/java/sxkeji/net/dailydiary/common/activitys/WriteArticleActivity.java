@@ -9,22 +9,28 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.Downloader;
 import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -36,7 +42,6 @@ import sxkeji.net.dailydiary.utils.LogUtils;
 import sxkeji.net.dailydiary.utils.MediaUtils;
 import sxkeji.net.dailydiary.utils.NetWorkUtils;
 import sxkeji.net.dailydiary.utils.StringUtils;
-import sxkeji.net.dailydiary.utils.SystemUtils;
 import sxkeji.net.dailydiary.widgets.ExtendMediaPicker;
 
 /**
@@ -58,8 +63,17 @@ public class WriteArticleActivity extends AppCompatActivity {
     private static final String TAG = "WriteArticleActivity";
     @Bind(R.id.collapsing_toolbar_layout)
     CollapsingToolbarLayout collapsingToolbarLayout;
+    @Bind(R.id.ll_write_normal)
+    LinearLayout llWriteNormal;
+    @Bind(R.id.view_markdown)
+    net.sxkeji.markdownlib.MarkdownView viewMarkdown;
+    @Bind(R.id.et_markdown)
+    EditText etMarkdown;
+    @Bind(R.id.ll_write_markdown)
+    LinearLayout llWriteMarkdown;
     private Cursor cursor;
     private ExtendMediaPicker mediaPicker;
+    private String editContent;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,6 +86,18 @@ public class WriteArticleActivity extends AppCompatActivity {
     }
 
     private void loadData() {
+        updateMarkdownPreview(editContent);
+
+    }
+
+    /**
+     * 显示markdown预览
+     * @param str
+     */
+    private void updateMarkdownPreview(String str) {
+        if(!TextUtils.isEmpty(str)){
+            viewMarkdown.loadMarkdown(str);
+        }
     }
 
 
@@ -120,6 +146,23 @@ public class WriteArticleActivity extends AppCompatActivity {
             }
         });
 
+
+        etMarkdown.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                updateMarkdownPreview(etMarkdown.getText().toString());
+            }
+        });
     }
 
 
@@ -139,15 +182,18 @@ public class WriteArticleActivity extends AppCompatActivity {
 
         mediaPicker = new ExtendMediaPicker(this, imgSelect);
         getImgFromNet();
+
+        editContent = getResources().getString(R.string.md_guide_roles);
+        etMarkdown.setText(editContent);
     }
 
     private void getImgFromNet() {
-        if(layoutSelectImg.getVisibility() != View.VISIBLE){
+        if (layoutSelectImg.getVisibility() != View.VISIBLE) {
             layoutSelectImg.setVisibility(View.VISIBLE);
             LogUtils.e(TAG, "Visibility changed! : " + layoutSelectImg.getVisibility());
         }
 
-        if(!NetWorkUtils.isNetworkAvailable(WriteArticleActivity.this)){
+        if (!NetWorkUtils.isNetworkAvailable(WriteArticleActivity.this)) {
             showSnackToast(getResources().getString(R.string.network_no_can_not_load_img));
             return;
         }
@@ -157,10 +203,23 @@ public class WriteArticleActivity extends AppCompatActivity {
         Picasso.with(WriteArticleActivity.this).load(Constant.URL_IMG)
                 .error(R.mipmap.background_menu_account_info_colorful)
                 .placeholder(drawable)
-                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                .resize(800, 450)
                 .config(Bitmap.Config.RGB_565)
                 .into(imgSelect);
 
+//        new Picasso.Builder(WriteArticleActivity.this).
+
+        Downloader downloader = new Downloader() {
+            @Override
+            public Response load(Uri uri, int networkPolicy) throws IOException {
+                return null;
+            }
+
+            @Override
+            public void shutdown() {
+
+            }
+        };
     }
 
     private void showSnackToast(String str) {
@@ -199,12 +258,16 @@ public class WriteArticleActivity extends AppCompatActivity {
      */
     private void addArticle() {
         String content = etContent.getText().toString();
+        if(TextUtils.isEmpty(content)){
+            content = etMarkdown.getText().toString();
+        }
         String date = StringUtils.getToday();
         String title = date;
-        Article article = new Article(null, date, null, null, title, content);
+        Article article = new Article(null, date, null, null, title, content,Constant.TYPE_MARKDOWN,null);
         BaseApplication.getDaoSession().getArticleDao().insert(article);
         LogUtils.e(TAG, "Insert new article, id : " + article.getId());
         showSnackToast("保存成功");
+        WriteArticleActivity.this.finish();
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -238,6 +301,15 @@ public class WriteArticleActivity extends AppCompatActivity {
                 break;
         }
 
+
+    }
+
+    @Override
+    protected void onStop() {
+        if(isFinishing()){
+            Picasso.with(this).cancelRequest(imgSelect);
+        }
+        super.onStop();
 
     }
 }
