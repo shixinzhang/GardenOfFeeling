@@ -1,7 +1,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".SplashActivity">
 
     <ImageView
         android:id="@+id/iv_splash"
@@ -14,7 +15,6 @@
         android:id="@+id/ll_guide"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".SplashActivity"
         android:orientation="vertical"
         android:visibility="gone">
 

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -20,13 +21,11 @@ import java.util.ArrayList;
 
 import sxkeji.net.dailydiary.R;
 import sxkeji.net.dailydiary.common.activitys.MainActivity;
-import sxkeji.net.dailydiary.common.activitys.RecyclerTestActivity;
-import sxkeji.net.dailydiary.common.activitys.TestActivity;
 import sxkeji.net.dailydiary.common.presenters.SplashPresenter;
 import sxkeji.net.dailydiary.common.views.ISplashView;
 import sxkeji.net.dailydiary.common.views.adapters.GuideViewPaperAdapter;
 import sxkeji.net.dailydiary.storage.Constant;
-import sxkeji.net.dailydiary.storage.SPUtil;
+import sxkeji.net.dailydiary.storage.SharedPreferencesUtils;
 import sxkeji.net.dailydiary.utils.UIUtils;
 import sxkeji.net.dailydiary.widgets.GuidePageTransformer;
 
@@ -59,7 +58,19 @@ public class SplashActivity extends Activity implements ISplashView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         initViews();
+        getDataFromNet();
         mSplashPresenter = new SplashPresenter(this);
+    }
+
+    private void getDataFromNet() {
+        AsyncTask asyncTask = new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object[] params) {
+                //TODO: do the server request here
+                return null;
+            }
+
+        }.execute("");
     }
 
     private void initViews() {
@@ -82,12 +93,12 @@ public class SplashActivity extends Activity implements ISplashView {
 
     @Override
     public boolean showGuideViewPager() {
-        notShowGuide = (boolean) SPUtil.getParam(SplashActivity.this, Constant.showGuide, false);
+        notShowGuide = (boolean) SharedPreferencesUtils.get(SplashActivity.this, Constant.showGuide, false);
         if (notShowGuide) {
             return false;
         } else {
             ll_guide.setVisibility(View.VISIBLE);
-            SPUtil.setParam(SplashActivity.this, Constant.showGuide, true);
+            SharedPreferencesUtils.put(SplashActivity.this, Constant.showGuide, true);
             vpGuide = (ViewPager) findViewById(R.id.vpGuide);
             btnRegist = (Button) findViewById(R.id.btnRegist);
             btnLogin = (Button) findViewById(R.id.btnLogin);
@@ -170,10 +181,9 @@ public class SplashActivity extends Activity implements ISplashView {
                 mHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        //TODO: do the server request here
                         mHandler.sendEmptyMessage(0);
                     }
-                },2000);
+                }, 2000);
             }
         });
     }

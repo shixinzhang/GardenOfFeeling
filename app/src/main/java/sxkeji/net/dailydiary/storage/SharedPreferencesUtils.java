@@ -1,4 +1,4 @@
-package sxkeji.net.dailydiary.utils;
+package sxkeji.net.dailydiary.storage;
 
 import android.content.Context;
 import android.content.SharedPreferences;
