@@ -175,17 +175,12 @@ public class SplashActivity extends Activity implements ISplashView {
     public void showSplashPic() {
         iv_splash.setVisibility(View.VISIBLE);
         //Todo: update the image from http here
-        getWindow().getDecorView().post(new Runnable() {
+        getWindow().getDecorView().postDelayed(new Runnable() {
             @Override
             public void run() {
-                mHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mHandler.sendEmptyMessage(0);
-                    }
-                }, 2000);
+                jumpToNextActivity();
             }
-        });
+        },2000);
     }
 
 

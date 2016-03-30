@@ -33,7 +33,7 @@ public class GuideViewPaperAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(View container, int position, Object object) {
-        ((ViewPager) container).removeView(views.get(position));
+        ((ViewPager) container).removeView((View) object);
     }
 
     @Override
