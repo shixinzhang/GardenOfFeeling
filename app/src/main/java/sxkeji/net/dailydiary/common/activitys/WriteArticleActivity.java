@@ -12,12 +12,14 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +31,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Downloader;
 import com.squareup.picasso.Picasso;
+
+import net.sxkeji.markdownlib.MarkdownView;
 
 import java.io.IOException;
 
@@ -42,6 +46,7 @@ import sxkeji.net.dailydiary.utils.LogUtils;
 import sxkeji.net.dailydiary.utils.MediaUtils;
 import sxkeji.net.dailydiary.utils.NetWorkUtils;
 import sxkeji.net.dailydiary.utils.StringUtils;
+import sxkeji.net.dailydiary.utils.ViewUtils;
 import sxkeji.net.dailydiary.widgets.ExtendMediaPicker;
 
 /**
@@ -49,28 +54,31 @@ import sxkeji.net.dailydiary.widgets.ExtendMediaPicker;
  * Created by zhangshixin on 3/17/2016.
  */
 public class WriteArticleActivity extends AppCompatActivity {
+    private static final String TAG = "WriteArticleActivity";
+
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.tv_no_img_header)
     TextView tvNoImgHeader;
     @Bind(R.id.layout_select_img)
     RelativeLayout layoutSelectImg;
-    @Bind(R.id.et_content)
-    EditText etContent;
+    //    @Bind(R.id.et_content)
+//    EditText etContent;
     @Bind(R.id.img_select)
     ImageView imgSelect;
 
-    private static final String TAG = "WriteArticleActivity";
     @Bind(R.id.collapsing_toolbar_layout)
     CollapsingToolbarLayout collapsingToolbarLayout;
-    @Bind(R.id.ll_write_normal)
-    LinearLayout llWriteNormal;
-    @Bind(R.id.view_markdown)
-    net.sxkeji.markdownlib.MarkdownView viewMarkdown;
+    //    @Bind(R.id.ll_write_normal)
+//    LinearLayout llWriteNormal;
+//    @Bind(R.id.view_markdown)
+//    net.sxkeji.markdownlib.MarkdownView viewMarkdown;
     @Bind(R.id.et_markdown)
     EditText etMarkdown;
     @Bind(R.id.ll_write_markdown)
     LinearLayout llWriteMarkdown;
+    @Bind(R.id.fab_preview_save)
+    FloatingActionButton fabPreviewSave;
     private Cursor cursor;
     private ExtendMediaPicker mediaPicker;
     private String editContent;
@@ -92,12 +100,13 @@ public class WriteArticleActivity extends AppCompatActivity {
 
     /**
      * 显示markdown预览
+     *
      * @param str
      */
     private void updateMarkdownPreview(String str) {
-        if(!TextUtils.isEmpty(str)){
-            viewMarkdown.loadMarkdown(str);
-        }
+//        if(!TextUtils.isEmpty(str)){
+//            viewMarkdown.loadMarkdown(str);
+//        }
     }
 
 
@@ -116,6 +125,16 @@ public class WriteArticleActivity extends AppCompatActivity {
             }
         });
 
+        fabPreviewSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View popupWindow = ViewUtils.showPopupWindow(WriteArticleActivity.this, R.layout.popup_markdown_preview, toolbar, 1);
+                MarkdownView view_markdown = (MarkdownView) popupWindow.findViewById(R.id.view_markdown);
+                String mkString = etMarkdown.getText().toString();
+                view_markdown.loadMarkdown(mkString);
+
+            }
+        });
 
         /**
          * 本文不要配图--配图消失
@@ -257,13 +276,14 @@ public class WriteArticleActivity extends AppCompatActivity {
      * 添加新文章
      */
     private void addArticle() {
-        String content = etContent.getText().toString();
-        if(TextUtils.isEmpty(content)){
+//        String content = etContent.getText().toString();
+        String content = null;
+        if (TextUtils.isEmpty(content)) {
             content = etMarkdown.getText().toString();
         }
         String date = StringUtils.getToday();
         String title = date;
-        Article article = new Article(null, date, null, null, title, content,Constant.TYPE_MARKDOWN,null);
+        Article article = new Article(null, date, null, null, title, content, Constant.TYPE_MARKDOWN, null);
         BaseApplication.getDaoSession().getArticleDao().insert(article);
         LogUtils.e(TAG, "Insert new article, id : " + article.getId());
         showSnackToast("保存成功");
@@ -306,7 +326,7 @@ public class WriteArticleActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        if(isFinishing()){
+        if (isFinishing()) {
             Picasso.with(this).cancelRequest(imgSelect);
         }
         super.onStop();

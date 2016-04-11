@@ -5,11 +5,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -198,5 +203,58 @@ public class ViewUtils {
     public static void tvUnderLine(TextView textView) {
         textView.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
         textView.getPaint().setAntiAlias(true);//抗锯齿
+    }
+
+
+    static PopupWindow popupWindow;
+
+    /**
+     * 弹出popupwindow
+     * @param context
+     * @param resId 布局layoutID
+     * @param root  显示到哪个View下
+     * @param paramsType    布局参数类型：1-都是match；2- ； 3-
+     * @return  布局解析得到的View，便于后续findViewById
+     */
+    public static View showPopupWindow(Context context, int resId, View root,int paramsType) {
+        // 一个自定义的布局，作为显示的内容
+        View popupView;
+        popupView = LayoutInflater.from(context).inflate(resId, null);
+
+        switch (paramsType){
+            case 1 :    //宽高全都是match_parent
+                popupWindow = new PopupWindow(popupView,
+                        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
+                break;
+            case 2 :    //宽是match，高是wrap
+                popupWindow = new PopupWindow(popupView,
+                        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+                break;
+            case 3  :   //宽是wrap，高是match
+                popupWindow = new PopupWindow(popupView,
+                        ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
+                break;
+            default:
+                popupWindow = new PopupWindow(popupView,
+                        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
+                break;
+        }
+        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setTouchable(true);
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+        popupWindow.showAsDropDown(root);
+
+        return popupView;
+    }
+
+    /**
+     * 关闭popup
+     */
+    public static void dismissPopup(){
+        if (popupWindow != null && popupWindow.isShowing()){
+            popupWindow.dismiss();
+            popupWindow = null;
+        }
     }
 }

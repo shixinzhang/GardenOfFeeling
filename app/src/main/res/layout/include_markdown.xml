@@ -4,54 +4,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    >
+    android:padding="5dp">
 
-    <RelativeLayout
+    <EditText
+        android:id="@+id/et_markdown"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/write_markdown_height"
-        android:padding="5dp">
-        <net.sxkeji.markdownlib.MarkdownView
-            android:id="@+id/view_markdown"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="@dimen/write_markdown_height"
-            />
-        <TextView
-            android:layout_width="60dp"
-            android:layout_height="30dp"
-            android:text="@string/preview"
-            android:textSize="16sp"
-            android:gravity="center"
-            android:background="@color/primary_dark"
-            android:textColor="@color/white"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"/>
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="@dimen/write_markdown_height"
-        android:padding="5dp"
-        android:background="#e2e2e2">
-        <EditText
-            android:id="@+id/et_markdown"
-            android:layout_width="fill_parent"
-            android:layout_height="@dimen/write_markdown_height"
-            android:gravity="left|top"
-            android:background="@null"
-            android:padding="5dp"
-            android:layout_marginTop="10dp"
-            android:inputType="textMultiLine" />
-        <TextView
-            android:layout_width="60dp"
-            android:layout_height="30dp"
-            android:text="@string/edit"
-            android:textSize="16sp"
-            android:gravity="center"
-            android:background="@color/primary_dark"
-            android:textColor="@color/white"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"/>
-    </RelativeLayout>
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:background="@null"
+        android:gravity="left|top"
+        android:inputType="textMultiLine"
+        android:padding="5dp" />
+    <!--<TextView-->
+    <!--android:layout_width="60dp"-->
+    <!--android:layout_height="30dp"-->
+    <!--android:text="@string/edit"-->
+    <!--android:textSize="16sp"-->
+    <!--android:gravity="center"-->
+    <!--android:background="@color/primary_dark"-->
+    <!--android:textColor="@color/white"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:layout_alignParentTop="true"/>-->
 
 </LinearLayout>

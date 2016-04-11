@@ -30,6 +30,7 @@
     <string name="no_img_header">不要配图</string>
 
     <string name="preview">预览</string>
+    <string name="cancel_preview">退出预览</string>
     <string name="edit">编辑</string>
     <string name="md_sample_english">### MarkdownView Live Preview \n * * * \n  Edit the text to see it updated instantly.</string>
     <string name="md_sample_cn">### Markdown效果预览 \n * * * \n  编辑内容，上面可以预览效果</string>
