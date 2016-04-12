@@ -11,6 +11,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,6 +19,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cocosw.bottomsheet.BottomSheet;
@@ -43,13 +45,13 @@ public class MainActivity extends AppCompatActivity {
     CoordinatorLayout mainContent;
     @Bind(R.id.img_user)
     ImageView imgUser;
-    @Bind(R.id.user_name)
+    @Bind(R.id.tv_name)
     TextView userName;
     @Bind(R.id.drawer_layout)
     DrawerLayout drawerLayout;
     @Bind(R.id.fab_add)
     FloatingActionButton fabAdd;
-
+    private RelativeLayout rlSelectView;
     private ActionBarDrawerToggle mDrawerToggle;
 
     @Override
@@ -164,5 +166,20 @@ public class MainActivity extends AppCompatActivity {
             tabLayout.addTab(tabLayout.newTab());
         }
         tabLayout.setupWithViewPager(vpTabContent);
+    }
+
+    /**
+     * 设置选中背景色，关闭抽屉
+     * @param rlSelect
+     */
+    private void changeBgAndCloseDrawer(RelativeLayout rlSelect) {
+        if(rlSelectView != null){
+            rlSelectView.setBackgroundColor(Color.WHITE);
+        }
+        rlSelectView = rlSelect;
+        rlSelectView.setBackgroundColor(Color.parseColor("#eeeeee"));
+        if(drawerLayout != null && drawerLayout.isDrawerOpen(GravityCompat.START)){
+            drawerLayout.closeDrawers();
+        }
     }
 }

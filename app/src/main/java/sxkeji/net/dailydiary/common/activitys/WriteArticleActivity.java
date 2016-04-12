@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Downloader;
 import com.squareup.picasso.Picasso;
@@ -125,17 +126,32 @@ public class WriteArticleActivity extends AppCompatActivity {
             }
         });
 
+        //短按预览
         fabPreviewSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 View popupWindow = ViewUtils.showPopupWindow(WriteArticleActivity.this, R.layout.popup_markdown_preview, toolbar, 1);
                 MarkdownView view_markdown = (MarkdownView) popupWindow.findViewById(R.id.view_markdown);
+                ImageView ivClose = (ImageView) popupWindow.findViewById(R.id.iv_close);
+                ivClose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ViewUtils.dismissPopup();
+                    }
+                });
                 String mkString = etMarkdown.getText().toString();
                 view_markdown.loadMarkdown(mkString);
 
             }
         });
-
+        //长按保存
+        fabPreviewSave.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                showSaveIconWithAnim(fabPreviewSave);
+                return true;
+            }
+        });
         /**
          * 本文不要配图--配图消失
          */
@@ -165,23 +181,36 @@ public class WriteArticleActivity extends AppCompatActivity {
             }
         });
 
+    }
 
-        etMarkdown.addTextChangedListener(new TextWatcher() {
+    /**
+     * 渐变动画修改按钮样式
+     * @param actionButton
+     */
+    private void showSaveIconWithAnim(final FloatingActionButton actionButton) {
+        ObjectAnimator rotation = ObjectAnimator.ofFloat(actionButton, "rotation", 0f, 360f).setDuration(1000);
+        rotation.addListener(new Animator.AnimatorListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+            public void onAnimationStart(Animator animation) {
+//                ObjectAnimator.ofFloat(actionButton, "alpha", 1f, 0.5f).setDuration(1000).start();
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+            public void onAnimationEnd(Animator animation) {
+                actionButton.setImageResource(R.mipmap.icon_action_done);
+//                ObjectAnimator.ofFloat(actionButton, "rotation", 340f, 360f).setDuration(1000).start();
+                addArticle();
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
-                updateMarkdownPreview(etMarkdown.getText().toString());
+            public void onAnimationCancel(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
             }
         });
+        rotation.start();
     }
 
 
@@ -192,6 +221,7 @@ public class WriteArticleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 showSnackToast("自动保存");
+                onBackPressed();
             }
         });
 
@@ -225,20 +255,6 @@ public class WriteArticleActivity extends AppCompatActivity {
                 .resize(800, 450)
                 .config(Bitmap.Config.RGB_565)
                 .into(imgSelect);
-
-//        new Picasso.Builder(WriteArticleActivity.this).
-
-        Downloader downloader = new Downloader() {
-            @Override
-            public Response load(Uri uri, int networkPolicy) throws IOException {
-                return null;
-            }
-
-            @Override
-            public void shutdown() {
-
-            }
-        };
     }
 
     private void showSnackToast(String str) {
@@ -286,8 +302,12 @@ public class WriteArticleActivity extends AppCompatActivity {
         Article article = new Article(null, date, null, null, title, content, Constant.TYPE_MARKDOWN, null);
         BaseApplication.getDaoSession().getArticleDao().insert(article);
         LogUtils.e(TAG, "Insert new article, id : " + article.getId());
-        showSnackToast("保存成功");
+        showToast("保存成功");
         WriteArticleActivity.this.finish();
+    }
+
+    private void showToast(String s) {
+        Toast.makeText(WriteArticleActivity.this,s,Toast.LENGTH_SHORT).show();
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

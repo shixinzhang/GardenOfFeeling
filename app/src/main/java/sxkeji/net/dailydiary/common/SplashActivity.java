@@ -3,6 +3,7 @@ package sxkeji.net.dailydiary.common;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,8 +18,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import sxkeji.net.dailydiary.R;
 import sxkeji.net.dailydiary.common.activitys.MainActivity;
 import sxkeji.net.dailydiary.common.presenters.SplashPresenter;
@@ -32,16 +37,18 @@ import sxkeji.net.dailydiary.widgets.GuidePageTransformer;
 
 /**
  * What's MVP?
- * <p/>
+ * <p>
  * Model(业务相关的操作、数据，2个部分：接口、实现)-----> Presenter(根据业务选择调用哪些操作) <-----View(布局里涉及的操作接口)
  * ↓
  * Activity(布局里操作的具体实现，最终的调用者)
- * <p/>
+ * <p>
  * Created by zhangshixin on 2015/11/26.
  *
  * @description Codes there always can be better.
  */
 public class SplashActivity extends Activity implements ISplashView {
+    @Bind(R.id.ll_splash)
+    LinearLayout llSplash;
     private ViewPager vpGuide;
     private Button btnRegist, btnLogin;
     private GuideViewPaperAdapter vpAdapter;
@@ -57,6 +64,7 @@ public class SplashActivity extends Activity implements ISplashView {
         getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        ButterKnife.bind(this);
         initViews();
         getDataFromNet();
         mSplashPresenter = new SplashPresenter(this);
@@ -83,6 +91,10 @@ public class SplashActivity extends Activity implements ISplashView {
                 startActivity(new Intent(SplashActivity.this, MainActivity.class));
             }
         });
+
+        Picasso.with(this).load(Constant.URL_IMG)
+                .config(Bitmap.Config.RGB_565)
+                .into(iv_splash);
     }
 
     @Override
@@ -180,7 +192,7 @@ public class SplashActivity extends Activity implements ISplashView {
             public void run() {
                 jumpToNextActivity();
             }
-        },2000);
+        }, 2000);
     }
 
 

@@ -11,6 +11,7 @@
     <color name="divider_line">#B6B6B6</color>
     <color name="secondary_text_half_white">#89FFFFFF</color>
 
+    <color name="name_half_black">#88000000</color>
     <color name="line_light_grey">#dcdcdc</color>
     <color name="markdown_bg_transparent">#55000000</color>
 
