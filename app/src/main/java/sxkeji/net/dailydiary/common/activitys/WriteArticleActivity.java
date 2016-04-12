@@ -274,7 +274,7 @@ public class WriteArticleActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.item_menu_undo:
                 break;
-            case R.id.item_menu_markdown:
+            case R.id.markdown_help:
                 break;
             case R.id.item_menu_done:
                 addArticle();

@@ -25,6 +25,7 @@ import sxkeji.net.dailydiary.common.views.adapters.AllArticlesRecyclerAdapter;
 import sxkeji.net.dailydiary.utils.LogUtils;
 
 /**
+ * 首页 - 全部文字
  * Created by zhangshixin on 2015/12/10.
  * Blog : http://blog.csdn.net/u011240877
  *
@@ -38,7 +39,6 @@ public class HomeFragment extends Fragment {
     private SQLiteDatabase db;
     private ArticleDao articleDao;
     private AllArticlesRecyclerAdapter adapter;
-    private Cursor cursor;
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -65,10 +65,6 @@ public class HomeFragment extends Fragment {
         LogUtils.e(TAG,"setArticlesRecyclerData");
         List<Article> tempData = new ArrayList<>();
 
-        String columnName = ArticleDao.Properties.Date.columnName;
-        String orderBy = columnName + " COLLATE LOCALIZED ASC";
-        cursor = db.query(articleDao.getTablename(), articleDao.getAllColumns(), null, null, null, null, orderBy);
-
         Query<Article> query = articleDao.queryBuilder().orderDesc(ArticleDao.Properties.Date).build();
         tempData = query.list();
         adapter = new AllArticlesRecyclerAdapter(tempData);
@@ -80,7 +76,6 @@ public class HomeFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
-        cursor.close();
     }
 
     @Override

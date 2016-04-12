@@ -16,10 +16,10 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/item_menu_markdown"
+        android:id="@+id/markdown_help"
         android:icon="@mipmap/icon_fab_markdown"
         android:orderInCategory="80"
-        android:title="@string/markdown"
+        android:title="@string/markdown_help"
         app:showAsAction="never" />
 
     <item

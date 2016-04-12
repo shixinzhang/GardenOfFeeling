@@ -25,6 +25,7 @@
     <string name="undo">撤销</string>
     <string name="done">保存</string>
     <string name="markdown">切换MarkDown</string>
+    <string name="markdown_help">MarkDown语法帮助</string>
     <string name="refresh_img">刷新文字配图</string>
     <string name="change_article_header_img">点击更换文章配图</string>
     <string name="no_img_header">不要配图</string>
