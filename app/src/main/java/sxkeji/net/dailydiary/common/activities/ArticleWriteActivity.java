@@ -9,12 +9,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.media.ThumbnailUtils;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,9 +29,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import net.sxkeji.markdownlib.MarkdownView;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -35,10 +47,12 @@ import sxkeji.net.dailydiary.Article;
 import sxkeji.net.dailydiary.R;
 import sxkeji.net.dailydiary.common.BaseApplication;
 import sxkeji.net.dailydiary.storage.Constant;
+import sxkeji.net.dailydiary.utils.FileUtils;
 import sxkeji.net.dailydiary.utils.LogUtils;
 import sxkeji.net.dailydiary.utils.MediaUtils;
 import sxkeji.net.dailydiary.utils.NetWorkUtils;
 import sxkeji.net.dailydiary.utils.StringUtils;
+import sxkeji.net.dailydiary.utils.SystemUtils;
 import sxkeji.net.dailydiary.utils.ViewUtils;
 import sxkeji.net.dailydiary.widgets.ExtendMediaPicker;
 
@@ -75,6 +89,10 @@ public class ArticleWriteActivity extends AppCompatActivity {
     private Cursor cursor;
     private ExtendMediaPicker mediaPicker;
     private String editContent;
+    private String articleDate;
+    private String articleContent;
+    private String articleImgPath;
+    private int articleType;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,7 +105,7 @@ public class ArticleWriteActivity extends AppCompatActivity {
     }
 
     private void loadData() {
-        updateMarkdownPreview(editContent);
+//        updateMarkdownPreview(editContent);
 
     }
 
@@ -192,7 +210,7 @@ public class ArticleWriteActivity extends AppCompatActivity {
             public void onAnimationEnd(Animator animation) {
                 actionButton.setImageResource(R.mipmap.icon_action_done);
 //                ObjectAnimator.ofFloat(actionButton, "rotation", 340f, 360f).setDuration(1000).start();
-                addArticle();
+                addArticle(false);
             }
 
             @Override
@@ -213,7 +231,7 @@ public class ArticleWriteActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showSnackToast("自动保存");
+                addArticle(true);
                 onBackPressed();
             }
         });
@@ -224,7 +242,7 @@ public class ArticleWriteActivity extends AppCompatActivity {
 
         mediaPicker = new ExtendMediaPicker(this, imgSelect);
         getImgFromNet();
-
+        articleDate = StringUtils.getToday();
         editContent = getResources().getString(R.string.md_guide_roles);
         etMarkdown.setText(editContent);
     }
@@ -232,7 +250,6 @@ public class ArticleWriteActivity extends AppCompatActivity {
     private void getImgFromNet() {
         if (layoutSelectImg.getVisibility() != View.VISIBLE) {
             layoutSelectImg.setVisibility(View.VISIBLE);
-            LogUtils.e(TAG, "Visibility changed! : " + layoutSelectImg.getVisibility());
         }
 
         if (!NetWorkUtils.isNetworkAvailable(ArticleWriteActivity.this)) {
@@ -240,14 +257,18 @@ public class ArticleWriteActivity extends AppCompatActivity {
             return;
         }
 
+//        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "sxkeji"+File.separator + "picasso.png");
+//        Picasso picasso = new Picasso.Builder(ArticleWriteActivity.this)
+//                .downloader(new OkHttpDownloader(file))
+//                .build();
+//        Drawable drawable = imgSelect.getDrawable();
+//        picasso.load(Constant.URL_IMG)
+//                .error(R.mipmap.background_menu_account_info_colorful)
+//                .placeholder(drawable)
+//                .resize(800, 450)
+//                .config(Bitmap.Config.RGB_565)
+//                .into(imgSelect);
 
-        Drawable drawable = imgSelect.getDrawable();
-        Picasso.with(ArticleWriteActivity.this).load(Constant.URL_IMG)
-                .error(R.mipmap.background_menu_account_info_colorful)
-                .placeholder(drawable)
-                .resize(800, 450)
-                .config(Bitmap.Config.RGB_565)
-                .into(imgSelect);
     }
 
     private void showSnackToast(String str) {
@@ -270,7 +291,7 @@ public class ArticleWriteActivity extends AppCompatActivity {
             case R.id.markdown_help:
                 break;
             case R.id.item_menu_done:
-                addArticle();
+                addArticle(false);
                 break;
             case R.id.item_menu_refresh_img:
                 getImgFromNet();
@@ -283,16 +304,26 @@ public class ArticleWriteActivity extends AppCompatActivity {
 
     /**
      * 添加新文章
+     *
+     * @param isDraft 是否为自动保存为草稿
      */
-    private void addArticle() {
+    private void addArticle(boolean isDraft) {
         String content = null;
         content = etMarkdown.getText().toString();
-        String date = StringUtils.getToday();
-        String title = date;
-        Article article = new Article(null, date, null, null, title, content, Constant.TYPE_MARKDOWN, null);
+        String title = articleDate;
+        if (TextUtils.isEmpty(content)) {
+            return;
+        }
+        if (isDraft) {
+            articleType = Constant.TYPE_DRAFT;
+            showToast("自动保存到草稿箱");
+        } else {
+            articleType = Constant.TYPE_MARKDOWN;
+            showToast("文章保存成功");
+        }
+        Article article = new Article(null, articleDate, null, null, title, content, articleType, null);
         BaseApplication.getDaoSession().getArticleDao().insert(article);
         LogUtils.e(TAG, "Insert new article, id : " + article.getId());
-        showToast("保存成功");
         ArticleWriteActivity.this.finish();
     }
 

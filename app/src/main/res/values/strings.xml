@@ -48,6 +48,6 @@
     <string name="network_no_can_not_load_img">网络连接失败，无法加载网络配图</string>
 
     <!-- 模板文字-->
-    <string name="default_name">一只不愿透露姓名的张小欣</string>
+    <string name="default_name">不愿透露姓名的张小帅</string>
     <string name="default_motto">生命只是一连串孤立的片刻，靠着回忆和幻想维持着它的意义</string>
 </resources>

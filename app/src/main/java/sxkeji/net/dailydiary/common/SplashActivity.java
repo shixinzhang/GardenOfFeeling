@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -18,8 +19,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -31,7 +36,10 @@ import sxkeji.net.dailydiary.common.views.ISplashView;
 import sxkeji.net.dailydiary.common.views.adapters.GuideViewPaperAdapter;
 import sxkeji.net.dailydiary.storage.Constant;
 import sxkeji.net.dailydiary.storage.SharedPreferencesUtils;
+import sxkeji.net.dailydiary.utils.FileUtils;
+import sxkeji.net.dailydiary.utils.SystemUtils;
 import sxkeji.net.dailydiary.utils.UIUtils;
+import sxkeji.net.dailydiary.utils.ViewUtils;
 import sxkeji.net.dailydiary.widgets.GuidePageTransformer;
 
 
@@ -47,6 +55,7 @@ import sxkeji.net.dailydiary.widgets.GuidePageTransformer;
  * @description Codes there always can be better.
  */
 public class SplashActivity extends Activity implements ISplashView {
+    private final String TAG = "SplashActivity";
     @Bind(R.id.ll_splash)
     LinearLayout llSplash;
     private ViewPager vpGuide;
@@ -58,6 +67,9 @@ public class SplashActivity extends Activity implements ISplashView {
     private SplashPresenter mSplashPresenter;
     private ProgressDialog mProgressDialog;
     private boolean notShowGuide = false;
+    private Target mDownloadTarget;
+    private Picasso mPicasso;
+    private File mLatestImge;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,14 +83,30 @@ public class SplashActivity extends Activity implements ISplashView {
     }
 
     private void getDataFromNet() {
-        AsyncTask asyncTask = new AsyncTask() {
-            @Override
-            protected Object doInBackground(Object[] params) {
-                //TODO: do the server request here
-                return null;
-            }
 
-        }.execute("");
+        saveImgFromNet();
+
+        File ImgPath = new File(FileUtils.getImgDir(SplashActivity.this));
+        if (ImgPath.isDirectory()) {
+            File[] files = ImgPath.listFiles();
+            mLatestImge = files[files.length - 2];//加载倒数第二张
+            Log.e(TAG, mLatestImge.getName());
+        } else {
+            Log.e(TAG, ImgPath.getName());
+        }
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Log.e(TAG, "this is from thread");
+
+            }
+        }).start();
+    }
+
+    private void saveImgFromNet() {
+        mDownloadTarget = FileUtils.getDownloadTarget(this);
+        mPicasso.load(Constant.URL_IMG).skipMemoryCache().into(mDownloadTarget);
     }
 
     private void initViews() {
@@ -92,9 +120,7 @@ public class SplashActivity extends Activity implements ISplashView {
             }
         });
 
-        Picasso.with(this).load(Constant.URL_IMG)
-                .config(Bitmap.Config.RGB_565)
-                .into(iv_splash);
+        mPicasso = BaseApplication.getPicassoSingleton();
     }
 
     @Override
@@ -186,7 +212,19 @@ public class SplashActivity extends Activity implements ISplashView {
     @Override
     public void showSplashPic() {
         iv_splash.setVisibility(View.VISIBLE);
-        //Todo: update the image from http here
+
+
+        //Todo: 设置图片缓存的过期：1天、或者半天
+        //显示上次缓存的图片
+        if (mLatestImge != null) {
+            Log.e("showSplashPic", mLatestImge.getName());
+            mPicasso.load(mLatestImge)
+                    .config(Bitmap.Config.RGB_565)
+                    .skipMemoryCache()
+                    .priority(Picasso.Priority.LOW)
+                    .into(iv_splash);
+        }
+
         getWindow().getDecorView().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -251,5 +289,6 @@ public class SplashActivity extends Activity implements ISplashView {
         super.onDestroy();
         hideProgressDialog();
         mHandler.removeCallbacksAndMessages(null);
+//        mPicasso.cancelRequest(mDownloadTarget);
     }
 }

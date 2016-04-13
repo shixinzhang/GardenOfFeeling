@@ -1,10 +1,18 @@
 package sxkeji.net.dailydiary.utils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.media.ThumbnailUtils;
 import android.os.Environment;
+import android.util.Log;
+
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,6 +21,8 @@ import java.io.RandomAccessFile;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+
+import sxkeji.net.dailydiary.storage.Constant;
 
 
 /**
@@ -24,10 +34,11 @@ import java.util.Properties;
  */
 public class FileUtils {
 
-	public static final String ROOT_DIR = "root";
+	public static final String ROOT_DIR = Constant.appName;
 	public static final String DOWNLOAD_DIR = "download";
 	public static final String CACHE_DIR = "cache";
 	public static final String ICON_DIR = "icon";
+	public static final String IMG_DIR = "image";
 
 	/** 判断SD卡是否挂载 */
 	public static boolean isSDCardAvailable() {
@@ -52,6 +63,57 @@ public class FileUtils {
 	public static String getIconDir(Context context) {
 		return getDir(context,ICON_DIR);
 	}
+
+	/** 获取img目录 */
+	public static String getImgDir(Context context) {
+		return getDir(context,IMG_DIR);
+	}
+
+	/**
+	 * 使用Picasso缓存图片到指定地点
+	 * @param context
+	 */
+	public static Target getDownloadTarget(final Context context){
+		Target saveTarget;
+		saveTarget= new Target() {
+			@Override
+			public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+				String imgName = System.currentTimeMillis() + ".png";
+				File downloadFile = new File(getImgDir(context), imgName);
+//                File downloadFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+//                        + File.separator, "sxkeji/");
+				FileOutputStream fos = null;
+				try {
+					fos = new FileOutputStream(downloadFile);
+					bitmap = ThumbnailUtils.extractThumbnail(bitmap, 820, 480);
+					bitmap.compress(Bitmap.CompressFormat.PNG, 90, fos);
+					fos.flush();
+					fos.close();
+//					showToast("图片下载至 " + downloadFile.getPath());
+					Log.e("downloadImg", "图片下载至 " + downloadFile.getPath());
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+					Log.e("saveTarget",e.toString());
+				} catch (IOException e) {
+					e.printStackTrace();
+					Log.e("saveTarget", e.toString());
+				}
+
+			}
+
+			@Override
+			public void onBitmapFailed(Drawable errorDrawable) {
+
+			}
+
+			@Override
+			public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+			}
+		};
+		return saveTarget;
+	}
+
 
 	/** 获取应用目录，当SD卡存在时，获取SD卡上的目录，当SD卡不存在时，获取应用的cache目录 */
 	public static String getDir(Context context,String name) {

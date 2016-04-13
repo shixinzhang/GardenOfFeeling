@@ -21,7 +21,7 @@
             android:layout_height="80dp"
             android:src="@mipmap/img_splash_bottom"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="16dp"
             />
     </LinearLayout>
 

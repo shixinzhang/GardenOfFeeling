@@ -10,6 +10,8 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.squareup.picasso.Picasso;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
@@ -57,7 +59,7 @@ public class BaseApplication extends Application {
     private static SQLiteDatabase db;
     private static DaoMaster daoMaster;
     private static DaoSession daoSession;
-
+    private static Picasso picassoSingleton;
     @Override
     public void onCreate() {
         mInstance = this;
@@ -79,6 +81,7 @@ public class BaseApplication extends Application {
             initialize();
         }
 
+        picassoSingleton = Picasso.with(this);
 
     }
 
@@ -111,6 +114,10 @@ public class BaseApplication extends Application {
 
     }
 
+
+    public static Picasso getPicassoSingleton() {
+        return picassoSingleton;
+    }
 
     public static SQLiteDatabase getDb() {
         return db;

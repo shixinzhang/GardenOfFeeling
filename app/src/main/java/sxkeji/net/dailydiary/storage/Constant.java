@@ -9,7 +9,7 @@ package sxkeji.net.dailydiary.storage;
  */
 public class Constant {
     //常量
-    public static String appName = "garden_of_feeling";
+    public static String appName = "365_diary";
     public static String showGuide = "show_guide";
     public static int SPLASH_DELAYED_TIME = 3000;
     public static String ARTICLE_BEAN = "article_bean";
@@ -19,6 +19,7 @@ public class Constant {
     public static final int TYPE_MARKDOWN = 0 ;
     public static final int TYPE_NORMAL = 1 ;
     public static final int TYPE_REMINDER = 2;
+    public static final int TYPE_DRAFT = 3 ; //草稿
 
     //缓存地址
     public static final String BASE_CACHE_FILE_PATH = "sdcard/sxkeji/";

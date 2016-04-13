@@ -66,7 +66,7 @@ public class HomeFragment extends Fragment {
         LogUtils.e(TAG,"setArticlesRecyclerData");
         List<Article> tempData = new ArrayList<>();
 
-        Query<Article> query = articleDao.queryBuilder().orderDesc(ArticleDao.Properties.Date).build();
+        Query<Article> query = articleDao.queryBuilder().where(ArticleDao.Properties.Type.notEq(Constant.TYPE_DRAFT) ).orderDesc(ArticleDao.Properties.Date).build();
         tempData = query.list();
         adapter = new AllArticlesRecyclerAdapter(tempData);
         adapter.setmOnItemClickListener(new AllArticlesRecyclerAdapter.OnItemClickListener() {
