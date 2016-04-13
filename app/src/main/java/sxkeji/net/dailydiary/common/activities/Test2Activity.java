@@ -1,11 +1,8 @@
-package sxkeji.net.dailydiary.common.activitys;
+package sxkeji.net.dailydiary.common.activities;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Outline;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.transition.Fade;

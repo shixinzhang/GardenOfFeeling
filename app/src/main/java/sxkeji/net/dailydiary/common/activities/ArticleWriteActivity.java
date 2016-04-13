@@ -1,4 +1,4 @@
-package sxkeji.net.dailydiary.common.activitys;
+package sxkeji.net.dailydiary.common.activities;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
@@ -9,17 +9,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,12 +25,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.squareup.picasso.Downloader;
 import com.squareup.picasso.Picasso;
 
 import net.sxkeji.markdownlib.MarkdownView;
-
-import java.io.IOException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -54,8 +46,8 @@ import sxkeji.net.dailydiary.widgets.ExtendMediaPicker;
  * 写文字页面
  * Created by zhangshixin on 3/17/2016.
  */
-public class WriteArticleActivity extends AppCompatActivity {
-    private static final String TAG = "WriteArticleActivity";
+public class ArticleWriteActivity extends AppCompatActivity {
+    private static final String TAG = "ArticleWriteActivity";
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -130,7 +122,7 @@ public class WriteArticleActivity extends AppCompatActivity {
         fabPreviewSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                View popupWindow = ViewUtils.showPopupWindow(WriteArticleActivity.this, R.layout.popup_markdown_preview, toolbar, 1);
+                View popupWindow = ViewUtils.showPopupWindow(ArticleWriteActivity.this, R.layout.popup_markdown_preview, toolbar, 1);
                 MarkdownView view_markdown = (MarkdownView) popupWindow.findViewById(R.id.view_markdown);
                 ImageView ivClose = (ImageView) popupWindow.findViewById(R.id.iv_close);
                 ivClose.setOnClickListener(new View.OnClickListener() {
@@ -185,6 +177,7 @@ public class WriteArticleActivity extends AppCompatActivity {
 
     /**
      * 渐变动画修改按钮样式
+     *
      * @param actionButton
      */
     private void showSaveIconWithAnim(final FloatingActionButton actionButton) {
@@ -242,14 +235,14 @@ public class WriteArticleActivity extends AppCompatActivity {
             LogUtils.e(TAG, "Visibility changed! : " + layoutSelectImg.getVisibility());
         }
 
-        if (!NetWorkUtils.isNetworkAvailable(WriteArticleActivity.this)) {
+        if (!NetWorkUtils.isNetworkAvailable(ArticleWriteActivity.this)) {
             showSnackToast(getResources().getString(R.string.network_no_can_not_load_img));
             return;
         }
 
 
         Drawable drawable = imgSelect.getDrawable();
-        Picasso.with(WriteArticleActivity.this).load(Constant.URL_IMG)
+        Picasso.with(ArticleWriteActivity.this).load(Constant.URL_IMG)
                 .error(R.mipmap.background_menu_account_info_colorful)
                 .placeholder(drawable)
                 .resize(800, 450)
@@ -265,7 +258,7 @@ public class WriteArticleActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_write_article, menu);
+        getMenuInflater().inflate(R.menu.menu_article_write, menu);
         return true;
     }
 
@@ -292,22 +285,19 @@ public class WriteArticleActivity extends AppCompatActivity {
      * 添加新文章
      */
     private void addArticle() {
-//        String content = etContent.getText().toString();
         String content = null;
-        if (TextUtils.isEmpty(content)) {
-            content = etMarkdown.getText().toString();
-        }
+        content = etMarkdown.getText().toString();
         String date = StringUtils.getToday();
         String title = date;
         Article article = new Article(null, date, null, null, title, content, Constant.TYPE_MARKDOWN, null);
         BaseApplication.getDaoSession().getArticleDao().insert(article);
         LogUtils.e(TAG, "Insert new article, id : " + article.getId());
         showToast("保存成功");
-        WriteArticleActivity.this.finish();
+        ArticleWriteActivity.this.finish();
     }
 
     private void showToast(String s) {
-        Toast.makeText(WriteArticleActivity.this,s,Toast.LENGTH_SHORT).show();
+        Toast.makeText(ArticleWriteActivity.this, s, Toast.LENGTH_SHORT).show();
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -319,7 +309,7 @@ public class WriteArticleActivity extends AppCompatActivity {
         LogUtils.e(TAG, "Img select : onActivityResult");
         switch (requestCode) {
             case ExtendMediaPicker.REQUEST_CODE_PICK_IMAGE:
-                String path = MediaUtils.getPath(WriteArticleActivity.this, data.getData());
+                String path = MediaUtils.getPath(ArticleWriteActivity.this, data.getData());
 //                cropImageUri(Uri.fromFile(new File(path)), 300, 300,
 //                        REQUEST_CODE_CROP_PHOTO);
                 Bitmap bitmap = BitmapFactory.decodeFile(path);

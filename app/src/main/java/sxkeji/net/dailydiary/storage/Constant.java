@@ -11,6 +11,9 @@ public class Constant {
     //常量
     public static String appName = "garden_of_feeling";
     public static String showGuide = "show_guide";
+    public static int SPLASH_DELAYED_TIME = 3000;
+    public static String ARTICLE_BEAN = "article_bean";
+    public static String ARTICLE_TYPE = "article_type";
 
     //文档类型
     public static final int TYPE_MARKDOWN = 0 ;

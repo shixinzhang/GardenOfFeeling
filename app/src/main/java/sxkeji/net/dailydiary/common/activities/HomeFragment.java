@@ -1,6 +1,6 @@
-package sxkeji.net.dailydiary.common.activitys;
+package sxkeji.net.dailydiary.common.activities;
 
-import android.database.Cursor;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,6 +22,7 @@ import sxkeji.net.dailydiary.ArticleDao;
 import sxkeji.net.dailydiary.R;
 import sxkeji.net.dailydiary.common.BaseApplication;
 import sxkeji.net.dailydiary.common.views.adapters.AllArticlesRecyclerAdapter;
+import sxkeji.net.dailydiary.storage.Constant;
 import sxkeji.net.dailydiary.utils.LogUtils;
 
 /**
@@ -68,8 +69,26 @@ public class HomeFragment extends Fragment {
         Query<Article> query = articleDao.queryBuilder().orderDesc(ArticleDao.Properties.Date).build();
         tempData = query.list();
         adapter = new AllArticlesRecyclerAdapter(tempData);
+        adapter.setmOnItemClickListener(new AllArticlesRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Article article, int position) {
+                jumpToDetailActivity(article);
+            }
+        });
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
+    }
+
+    /**
+     * 跳转到详情页面，传入文章详情
+     * @param article
+     */
+    private void jumpToDetailActivity(Article article) {
+        Intent detailIntent = new Intent(getActivity(),ArticleDetailActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constant.ARTICLE_BEAN, article);
+        detailIntent.putExtras(bundle);
+        startActivity(detailIntent);
     }
 
     @Override

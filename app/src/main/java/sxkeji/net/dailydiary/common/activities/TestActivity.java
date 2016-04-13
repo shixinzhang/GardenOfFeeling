@@ -1,4 +1,4 @@
-package sxkeji.net.dailydiary.common.activitys;
+package sxkeji.net.dailydiary.common.activities;
 
 import android.app.Activity;
 import android.graphics.Typeface;

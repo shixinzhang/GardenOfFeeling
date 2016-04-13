@@ -48,4 +48,9 @@
         <item name="android:layout_height">0.5dp</item>
         <item name="android:background">#55000000</item>
     </style>
+
+    <style name="CollapsingToolbarTitle">
+        <item name="android:textColor">#eeeeee</item>
+        <item name="android:textSize">18sp</item>
+    </style>
 </resources>

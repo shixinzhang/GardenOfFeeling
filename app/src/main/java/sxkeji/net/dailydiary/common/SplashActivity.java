@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import sxkeji.net.dailydiary.R;
-import sxkeji.net.dailydiary.common.activitys.MainActivity;
+import sxkeji.net.dailydiary.common.activities.MainActivity;
 import sxkeji.net.dailydiary.common.presenters.SplashPresenter;
 import sxkeji.net.dailydiary.common.views.ISplashView;
 import sxkeji.net.dailydiary.common.views.adapters.GuideViewPaperAdapter;
@@ -192,7 +192,7 @@ public class SplashActivity extends Activity implements ISplashView {
             public void run() {
                 jumpToNextActivity();
             }
-        }, 2000);
+        }, Constant.SPLASH_DELAYED_TIME);
     }
 
 

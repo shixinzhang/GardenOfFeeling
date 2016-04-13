@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -17,11 +18,11 @@ import sxkeji.net.dailydiary.R;
  *
  * @description Codes there always can be better.
  */
-public class AllArticlesRecyclerAdapter extends RecyclerView.Adapter<AllArticlesRecyclerAdapter.ViewHolder>{
+public class AllArticlesRecyclerAdapter extends RecyclerView.Adapter<AllArticlesRecyclerAdapter.ViewHolder> {
     private List<Article> mData;
     private OnItemClickListener mOnItemClickListener;
 
-    public AllArticlesRecyclerAdapter(List<Article> mData){
+    public AllArticlesRecyclerAdapter(List<Article> mData) {
         this.mData = mData;
     }
 
@@ -33,10 +34,19 @@ public class AllArticlesRecyclerAdapter extends RecyclerView.Adapter<AllArticles
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        if(mData != null && mData.size() > 0) {
-            viewHolder.tvTitle.setText(mData.get(i).getTitle());
-            viewHolder.tvContent.setText(mData.get(i).getContent());
+    public void onBindViewHolder(ViewHolder viewHolder, final int i) {
+        if (mData != null && mData.size() > 0) {
+            final Article article = mData.get(i);
+            viewHolder.tvDate.setText(article.getDate());
+            viewHolder.tvContent.setText(article.getContent());
+            if (mOnItemClickListener != null) {
+                viewHolder.rlRoot.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mOnItemClickListener.onItemClick(article, i);
+                    }
+                });
+            }
         }
     }
 
@@ -45,31 +55,26 @@ public class AllArticlesRecyclerAdapter extends RecyclerView.Adapter<AllArticles
         return mData.size();
     }
 
-    public void setmOnItemClickListener(OnItemClickListener onItemClickListener){
+    public void setmOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
     }
 
 
-    public interface OnItemClickListener{
-        void onItemClick(View view, int position);
+    public interface OnItemClickListener {
+        void onItemClick(Article article, int position);
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        public TextView tvTitle,tvContent;
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        private RelativeLayout rlRoot;
+        public TextView tvDate, tvContent;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            tvTitle = (TextView) itemView.findViewById(R.id.tv_title);
+            tvDate = (TextView) itemView.findViewById(R.id.tv_date);
             tvContent = (TextView) itemView.findViewById(R.id.tv_content);
-//            mTextView.setOnClickListener(this);
+            rlRoot = (RelativeLayout) itemView.findViewById(R.id.rl_root);
         }
 
-        @Override
-        public void onClick(View v) {
-            if(mOnItemClickListener != null){
-                mOnItemClickListener.onItemClick(v,getPosition());
-            }
-        }
     }
 }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/item_menu_share"
+        android:icon="@mipmap/iocn_share"
+        android:orderInCategory="80"
+        android:title="@string/menu_share"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/item_menu_star"
+        android:icon="@mipmap/icon_star_default"
+        android:orderInCategory="100"
+        android:title="@string/menu_star"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/item_menu_delete"
+        android:icon="@mipmap/icon_delete"
+        android:orderInCategory="80"
+        android:title="@string/menu_delete"
+        app:showAsAction="never" />
+
+    <!--<item-->
+        <!--android:id="@+id/item_menu_refresh_img"-->
+        <!--android:icon="@mipmap/icon_refresh"-->
+        <!--android:orderInCategory="80"-->
+        <!--android:title="@string/refresh_img"-->
+        <!--app:showAsAction="never" />-->
+
+</menu>

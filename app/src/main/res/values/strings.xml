@@ -6,6 +6,7 @@
     <string name="activity_main">主页</string>
     <string name="activity_test">测试</string>
     <string name="activity_write_article">写文字</string>
+    <string name="activity_article_detail">文章详情</string>
 
     <!-- 引导页 -->
     <string name="guide_regist">注册</string>
@@ -36,6 +37,11 @@
     <string name="md_sample_english">### MarkdownView Live Preview \n * * * \n  Edit the text to see it updated instantly.</string>
     <string name="md_sample_cn">### Markdown效果预览 \n * * * \n  编辑内容，上面可以预览效果</string>
     <string name="md_guide_roles"># 一级标题 \n\n ##二级标题 \n\n ###三级标题 \n * * * \n *无序列表* \n\n - 我是无序列表1 \n - 我是无序列表2 \n\n 这是一个[百度链接](http://www.baidu.com) \n\n > 这是一段引用</string>
+
+    <!-- 查看文字 -->
+    <string name="menu_share">分享</string>
+    <string name="menu_star">收藏</string>
+    <string name="menu_delete">删除</string>
 
     <!-- 网络请求 -->
     <string name="network_no">请检查网络连接</string>

@@ -25,28 +25,32 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".common.activitys.MainActivity"
+        <activity android:name=".common.activities.MainActivity"
+            android:label="@string/activity_main"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"/>
+
+        <activity android:name=".common.activities.ArticleDetailActivity"
+            android:label="@string/activity_article_detail"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"/>
+        <activity
+            android:name=".common.activities.Test2Activity"
             android:label="@string/activity_main"
             android:screenOrientation="portrait"
             android:launchMode="singleTop"/>
 
         <activity
-            android:name=".common.activitys.Test2Activity"
-            android:label="@string/activity_main"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTop"/>
-
-        <activity
-            android:name=".common.activitys.RecyclerTestActivity"
+            android:name=".common.activities.RecyclerTestActivity"
             android:label="@string/activity_test"
             android:screenOrientation="portrait"
             android:launchMode="singleTop"/>
 
-        <activity android:name=".common.activitys.TestActivity"
+        <activity android:name=".common.activities.TestActivity"
             android:label="@string/activity_test"
             android:launchMode="singleTop"/>
 
-        <activity android:name=".common.activitys.WriteArticleActivity"
+        <activity android:name=".common.activities.ArticleWriteActivity"
             android:label="@string/activity_write_article"
             android:launchMode="singleTop"
             />
