@@ -91,22 +91,25 @@ public class ArticleWriteActivity extends AppCompatActivity {
     private String editContent;
     private String articleDate;
     private String articleContent;
+    private File articleImgFile;
     private String articleImgPath;
     private int articleType;
+    private Picasso mPicasso;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_article);
         ButterKnife.bind(this);
+        loadData();
         initViews();
         setListeners();
-        loadData();
     }
 
     private void loadData() {
 //        updateMarkdownPreview(editContent);
-
+        articleImgFile = FileUtils.getLatestSaveImgFilr(this);
+        articleImgPath = articleImgFile.getPath();
     }
 
     /**
@@ -239,7 +242,7 @@ public class ArticleWriteActivity extends AppCompatActivity {
         collapsingToolbarLayout.setTitle("写文字");
         collapsingToolbarLayout.setExpandedTitleColor(Color.TRANSPARENT);
         collapsingToolbarLayout.setCollapsedTitleTextColor(Color.WHITE);
-
+        mPicasso = BaseApplication.getPicassoSingleton();
         mediaPicker = new ExtendMediaPicker(this, imgSelect);
         getImgFromNet();
         articleDate = StringUtils.getToday();
@@ -257,17 +260,19 @@ public class ArticleWriteActivity extends AppCompatActivity {
             return;
         }
 
+        Drawable drawable = imgSelect.getDrawable();
+        mPicasso.load(articleImgFile)
+                .error(R.mipmap.background_menu_account_info_colorful)
+                .placeholder(drawable)
+                .resize(800, 450)
+                .config(Bitmap.Config.RGB_565)
+                .into(imgSelect);
 //        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "sxkeji"+File.separator + "picasso.png");
 //        Picasso picasso = new Picasso.Builder(ArticleWriteActivity.this)
 //                .downloader(new OkHttpDownloader(file))
 //                .build();
-//        Drawable drawable = imgSelect.getDrawable();
 //        picasso.load(Constant.URL_IMG)
-//                .error(R.mipmap.background_menu_account_info_colorful)
-//                .placeholder(drawable)
-//                .resize(800, 450)
-//                .config(Bitmap.Config.RGB_565)
-//                .into(imgSelect);
+//
 
     }
 
@@ -321,7 +326,7 @@ public class ArticleWriteActivity extends AppCompatActivity {
             articleType = Constant.TYPE_MARKDOWN;
             showToast("文章保存成功");
         }
-        Article article = new Article(null, articleDate, null, null, title, content, articleType, null);
+        Article article = new Article(null, articleDate, null, null, title, content, articleType, articleImgPath);
         BaseApplication.getDaoSession().getArticleDao().insert(article);
         LogUtils.e(TAG, "Insert new article, id : " + article.getId());
         ArticleWriteActivity.this.finish();
@@ -343,6 +348,7 @@ public class ArticleWriteActivity extends AppCompatActivity {
                 String path = MediaUtils.getPath(ArticleWriteActivity.this, data.getData());
 //                cropImageUri(Uri.fromFile(new File(path)), 300, 300,
 //                        REQUEST_CODE_CROP_PHOTO);
+                articleImgPath = path;
                 Bitmap bitmap = BitmapFactory.decodeFile(path);
                 imgSelect.setImageBitmap(bitmap);
                 break;
@@ -367,9 +373,6 @@ public class ArticleWriteActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        if (isFinishing()) {
-            Picasso.with(this).cancelRequest(imgSelect);
-        }
         super.onStop();
 
     }

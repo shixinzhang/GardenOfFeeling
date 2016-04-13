@@ -4,7 +4,8 @@ import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
+import android.os.*;
+import android.os.Process;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -16,19 +17,35 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cocosw.bottomsheet.BottomSheet;
+import com.squareup.okhttp.Request;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import sxkeji.net.dailydiary.R;
+import sxkeji.net.dailydiary.beans.OpenEyeDailyBean;
 import sxkeji.net.dailydiary.common.views.adapters.MainTabsVPAdapter;
+import sxkeji.net.dailydiary.http.HttpClient;
+import sxkeji.net.dailydiary.http.HttpResponseHandler;
+import sxkeji.net.dailydiary.storage.ACache;
+import sxkeji.net.dailydiary.storage.Constant;
+import sxkeji.net.dailydiary.utils.GsonUtils;
+import sxkeji.net.dailydiary.utils.UIUtils;
 
 /**
+ * 主页
  * Created by zhangshixin on 3/14/2016.
  */
 public class MainActivity extends AppCompatActivity {
@@ -52,6 +69,9 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionButton fabAdd;
     private RelativeLayout rlSelectView;
     private ActionBarDrawerToggle mDrawerToggle;
+    private OpenEyeDailyBean mDailyBean;
+    long[] mHits = new long[2];
+    ACache aCache;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -126,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        aCache = ACache.get(this);
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
 
@@ -142,8 +163,31 @@ public class MainActivity extends AppCompatActivity {
      * 加载数据
      */
     private void loadData() {
+        loadRecommandData();
         loadTabsViewPagerData();
         loadTabsData();
+    }
+
+    private void loadRecommandData() {
+        Map<String,String> map = new HashMap<>();
+        map.put("num", "2");
+        HttpClient.builder(MainActivity.this).get(Constant.URL_OPEN_EYE_DIALY, map, new HttpResponseHandler() {
+            @Override
+            public void onSuccess(String content) {
+                super.onSuccess(content);
+                if (!TextUtils.isEmpty(content)) {
+                    aCache.put(Constant.OPEN_EYE_DATA, content);
+                }
+//                mDailyBean = GsonUtils.fromJson(content, OpenEyeDailyBean.class);
+
+                Log.e("loadRecommandData", content.toString());
+            }
+
+            @Override
+            public void onFailure(Request request, IOException e) {
+                super.onFailure(request, e);
+            }
+        });
     }
 
     /**
@@ -153,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
         MainTabsVPAdapter mTabsVPAdapter = new MainTabsVPAdapter(getSupportFragmentManager());
         mTabsVPAdapter.addFragment(new HomeFragment(), "全部");
         mTabsVPAdapter.addFragment(new HomeFragment(), "文件夹");
-        mTabsVPAdapter.addFragment(new HomeFragment(), "推荐");
+        mTabsVPAdapter.addFragment(new RecommandFragment(), "推荐");
         vpTabContent.setAdapter(mTabsVPAdapter);
     }
 
@@ -179,6 +223,27 @@ public class MainActivity extends AppCompatActivity {
         rlSelectView.setBackgroundColor(Color.parseColor("#eeeeee"));
         if(drawerLayout != null && drawerLayout.isDrawerOpen(GravityCompat.START)){
             drawerLayout.closeDrawers();
+        }
+    }
+
+    @Override
+    public void
+    onBackPressed() {
+        if (drawerLayout != null && drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawers();
+            return;
+        }
+
+        UIUtils.showToastSafe(MainActivity.this, "再次点击退出365记");
+
+        System.arraycopy(mHits, 1, mHits, 0, mHits.length - 1);
+        mHits[mHits.length - 1] = SystemClock.uptimeMillis();
+
+        if (mHits[0] >= (SystemClock.uptimeMillis() - 2000)) {
+
+            System.exit(0);
+            android.os.Process.killProcess(Process.myPid());
+
         }
     }
 }

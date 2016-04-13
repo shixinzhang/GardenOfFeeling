@@ -85,16 +85,9 @@ public class SplashActivity extends Activity implements ISplashView {
     private void getDataFromNet() {
 
         saveImgFromNet();
+        mLatestImge = FileUtils.getLatestSaveImgFilr(this);
 
-        File ImgPath = new File(FileUtils.getImgDir(SplashActivity.this));
-        if (ImgPath.isDirectory()) {
-            File[] files = ImgPath.listFiles();
-            mLatestImge = files[files.length - 2];//加载倒数第二张
-            Log.e(TAG, mLatestImge.getName());
-        } else {
-            Log.e(TAG, ImgPath.getName());
-        }
-
+        getRecommandData();
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -214,7 +207,7 @@ public class SplashActivity extends Activity implements ISplashView {
         iv_splash.setVisibility(View.VISIBLE);
 
 
-        //Todo: 设置图片缓存的过期：1天、或者半天
+        //Todo: 设置splash图片缓存的过期：1天、或者半天
         //显示上次缓存的图片
         if (mLatestImge != null) {
             Log.e("showSplashPic", mLatestImge.getName());
@@ -290,5 +283,9 @@ public class SplashActivity extends Activity implements ISplashView {
         hideProgressDialog();
         mHandler.removeCallbacksAndMessages(null);
 //        mPicasso.cancelRequest(mDownloadTarget);
+    }
+
+    public void getRecommandData() {
+
     }
 }

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="250dp">
+
+    <ImageView
+        android:id="@+id/iv_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/background_menu_account_info" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/name_half_black"/>
+    <View
+        android:id="@+id/v_center"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:layout_centerInParent="true" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/v_center"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="9dp"
+        android:singleLine="true"
+        android:text="[ 由于特殊原因此视频无法显示 ]"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/tv_separator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/v_center"
+        android:layout_centerInParent="true"
+        android:layout_margin="8dp"
+        android:singleLine="true"
+        android:text=" / "
+        android:textColor="@color/white"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/tv_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/v_center"
+        android:layout_margin="8dp"
+        android:layout_toLeftOf="@id/tv_separator"
+        android:singleLine="true"
+        android:textColor="@color/white"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/v_center"
+        android:layout_margin="8dp"
+        android:layout_toRightOf="@id/tv_separator"
+        android:singleLine="true"
+        android:textColor="@color/white"
+        android:textSize="12sp" />
+</RelativeLayout>

@@ -33,7 +33,6 @@ import sxkeji.net.dailydiary.storage.Constant;
  * @description Codes there always can be better.
  */
 public class FileUtils {
-
 	public static final String ROOT_DIR = Constant.appName;
 	public static final String DOWNLOAD_DIR = "download";
 	public static final String CACHE_DIR = "cache";
@@ -67,6 +66,24 @@ public class FileUtils {
 	/** 获取img目录 */
 	public static String getImgDir(Context context) {
 		return getDir(context,IMG_DIR);
+	}
+
+	/**
+	 * 获取最新缓存的图片
+	 * @param context
+	 * @return
+	 */
+	public static File getLatestSaveImgFilr(Context context){
+		File mLatestImge = null;
+		File ImgPath = new File(getImgDir(context));
+		if (ImgPath.isDirectory()) {
+			File[] files = ImgPath.listFiles();
+			mLatestImge = files[files.length - 2];//加载倒数第二张
+			Log.e("FileUtils","getLatestSaveImgFilr" + mLatestImge.getName());
+		} else {
+			Log.e("FileUtils","getLatestSaveImgFilr" +  ImgPath.getName());
+		}
+		return mLatestImge;
 	}
 
 	/**

@@ -1,11 +1,14 @@
 package sxkeji.net.dailydiary.common.activities;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,10 +18,13 @@ import android.widget.RelativeLayout;
 
 import net.sxkeji.markdownlib.MarkdownView;
 
+import java.io.File;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import sxkeji.net.dailydiary.Article;
 import sxkeji.net.dailydiary.R;
+import sxkeji.net.dailydiary.common.BaseApplication;
 import sxkeji.net.dailydiary.storage.Constant;
 
 /**
@@ -43,6 +49,8 @@ public class ArticleDetailActivity extends AppCompatActivity {
     private int mArticleType;
     private String mArticleDate;
     private String mArticleContent;
+    private String mArticleImg;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +74,18 @@ public class ArticleDetailActivity extends AppCompatActivity {
         collapsingToolbarLayout.setCollapsedTitleTextColor(Color.WHITE);
 
         viewMarkdown.loadMarkdown(mArticleContent);
+        if (!TextUtils.isEmpty(mArticleImg)) {
+            BaseApplication.getPicassoSingleton().load(new File(mArticleImg))
+                    .error(R.mipmap.background_menu_account_info_colorful)
+                    .skipMemoryCache()
+                    .placeholder(R.mipmap.background_menu_account_info_colorful)
+                    .resize(800, 450)
+                    .centerInside()
+                    .config(Bitmap.Config.RGB_565).into(imgSelect);
+        } else {
+            int color = Color.parseColor("#03A9F4");
+            imgSelect.setImageDrawable(new ColorDrawable(color));
+        }
     }
 
     private void initData() {
@@ -77,6 +97,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
         mArticleType = mArticle.getType();
         mArticleDate = mArticle.getDate();
         mArticleContent = mArticle.getContent();
+        mArticleImg = mArticle.getImg_path();
     }
 
     @Override

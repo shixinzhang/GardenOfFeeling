@@ -1,16 +1,25 @@
 package sxkeji.net.dailydiary.common.views.adapters;
 
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
 import java.util.List;
 
 import sxkeji.net.dailydiary.Article;
 import sxkeji.net.dailydiary.R;
+import sxkeji.net.dailydiary.common.BaseApplication;
 
 /**
  * Created by zhangshixin on 2015/12/2.
@@ -37,6 +46,21 @@ public class AllArticlesRecyclerAdapter extends RecyclerView.Adapter<AllArticles
     public void onBindViewHolder(ViewHolder viewHolder, final int i) {
         if (mData != null && mData.size() > 0) {
             final Article article = mData.get(i);
+            String imgPath = article.getImg_path();
+            if (!TextUtils.isEmpty(imgPath)) {
+                BaseApplication.getPicassoSingleton().load(new File(imgPath))
+                        .error(R.mipmap.background_menu_account_info_colorful)
+                        .skipMemoryCache()
+                        .placeholder(R.mipmap.background_menu_account_info_colorful)
+                        .resize(400, 400)
+                        .centerInside()
+                        .priority(Picasso.Priority.LOW)
+                        .config(Bitmap.Config.RGB_565).into(viewHolder.ivImg);
+            }else {
+                int color = Color.parseColor("#03A9F4");
+                viewHolder.ivImg.setImageDrawable(new ColorDrawable(color));
+            }
+
             viewHolder.tvDate.setText(article.getDate());
             viewHolder.tvContent.setText(article.getContent());
             if (mOnItemClickListener != null) {
@@ -67,13 +91,15 @@ public class AllArticlesRecyclerAdapter extends RecyclerView.Adapter<AllArticles
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private RelativeLayout rlRoot;
-        public TextView tvDate, tvContent;
+        private TextView tvDate, tvContent;
+        private ImageView ivImg;
 
         public ViewHolder(View itemView) {
             super(itemView);
             tvDate = (TextView) itemView.findViewById(R.id.tv_date);
             tvContent = (TextView) itemView.findViewById(R.id.tv_content);
             rlRoot = (RelativeLayout) itemView.findViewById(R.id.rl_root);
+            ivImg = (ImageView) itemView.findViewById(R.id.iv_img);
         }
 
     }

@@ -14,6 +14,15 @@ public class Constant {
     public static int SPLASH_DELAYED_TIME = 3000;
     public static String ARTICLE_BEAN = "article_bean";
     public static String ARTICLE_TYPE = "article_type";
+    public static String OPEN_EYE_DATA = "open_eye_dialy";
+
+    public static final String OPEN_EYE_UID = "57e17df8bc634de8b5d427bd27a126b9f1ba1a56";
+    //    vc=74&vn=1.10.1&deviceModel=m1%20note&first_channel=eyepetizer_meizu_market&last_channel=eyepetizer_meizu_market%20ZHOU
+    public static final String OPEN_EYE_VC = "74";
+    public static final String OPEN_EYE_VN = "1.10.1";
+    public static final String OPEN_EYE_DEVICEMODEL = "m1%20note";
+    public static final String OPEN_EYE_FIRST_CHANNEL = "eyepetizer_meizu_market";
+    public static final String OPEN_EYE_LAST_CHANNEL = "eyepetizer_meizu_market%20ZHOU";
 
     //文档类型
     public static final int TYPE_MARKDOWN = 0 ;
@@ -30,6 +39,10 @@ public class Constant {
     //接口地址
     //文字配图网络地址，返回的就是图片
     public static final String URL_IMG = "http://tu.ihuan.me/tu/api/me_all_pic/";
-    ////豆瓣电影top250 https://api.douban.com/v2/movie/top250?start=0&count=10
+    //豆瓣电影top250 https://api.douban.com/v2/movie/top250?start=0&count=10
     public static final String URL_DOUBAN_MOVIE_TOP250 = "https://api.douban.com/v2/movie/";
+    //开眼每周API http://baobab.wandoujia.com/api/v3/ranklist?num=100&strategy=weekly&udid=57e17df8bc634de8b5d427bd27a126b9f1ba1a56&vc=74&vn=1.10.1&deviceModel=m1%20note&first_channel=eyepetizer_meizu_market&last_channel=eyepetizer_meizu_market%20ZONG
+    public static final String URL_OPEN_EYE_WEEKLY = "http://baobab.wandoujia.com/api/v3/ranklist";
+     //开眼每日API  http://baobab.wandoujia.com/api/v2/feed?num=2&udid=57e17df8bc634de8b5d427bd27a126b9f1ba1a56&vc=74&vn=1.10.1&deviceModel=m1%20note&first_channel=eyepetizer_meizu_market&last_channel=eyepetizer_meizu_market%20ZHOU
+    public static final String URL_OPEN_EYE_DIALY = " http://baobab.wandoujia.com/api/v2/feed";
 }
