@@ -4,13 +4,21 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="activity_main">主页</string>
+    <string name="activity_login">登录</string>
     <string name="activity_test">测试</string>
     <string name="activity_write_article">写文字</string>
     <string name="activity_article_detail">文章详情</string>
+    <string name="activity_cloud_backup">云端同步</string>
 
     <!-- 引导页 -->
+
+    <!-- 登录 -->
     <string name="guide_regist">注册</string>
     <string name="guide_login">登录</string>
+    <string name="input_phone_num">请输入您的手机号码</string>
+    <string name="input_pwd">请输入您的密码(至少6位)</string>
+    <string name="input_verify_code">请输入验证码</string>
+    <string name="menu_forget_pwd">忘记密码</string>
 
     <!-- 首页 -->
     <string name="drawer_open">菜单</string>

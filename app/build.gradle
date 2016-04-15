@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "sxkeji.net.dailydiary"
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -40,6 +40,8 @@ dependencies {
     compile 'com.google.code.gson:gson:2.3'
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'de.greenrobot:greendao:2.0.0'
+    compile 'com.ramotion.foldingcell:folding-cell:1.0.0'
+
     compile files('libs/bugly_1.2.6_release.jar')
     compile project(':markdownlib')
 }

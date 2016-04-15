@@ -4,8 +4,9 @@ import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.*;
+import android.os.Bundle;
 import android.os.Process;
+import android.os.SystemClock;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -19,7 +20,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -41,7 +41,6 @@ import sxkeji.net.dailydiary.http.HttpClient;
 import sxkeji.net.dailydiary.http.HttpResponseHandler;
 import sxkeji.net.dailydiary.storage.ACache;
 import sxkeji.net.dailydiary.storage.Constant;
-import sxkeji.net.dailydiary.utils.GsonUtils;
 import sxkeji.net.dailydiary.utils.UIUtils;
 
 /**
@@ -67,6 +66,30 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     @Bind(R.id.fab_add)
     FloatingActionButton fabAdd;
+    @Bind(R.id.tv_motto)
+    TextView tvMotto;
+    @Bind(R.id.tv_diary_count)
+    TextView tvDiaryCount;
+    @Bind(R.id.rl_home)
+    RelativeLayout rlHome;
+    @Bind(R.id.tv_draft_count)
+    TextView tvDraftCount;
+    @Bind(R.id.rl_draft)
+    RelativeLayout rlDraft;
+    @Bind(R.id.tv_reminder_count)
+    TextView tvReminderCount;
+    @Bind(R.id.rl_reminder)
+    RelativeLayout rlReminder;
+    @Bind(R.id.rl_backup)
+    RelativeLayout rlBackup;
+    @Bind(R.id.rl_local_export)
+    RelativeLayout rlLocalExport;
+    @Bind(R.id.rl_change_theme)
+    RelativeLayout rlChangeTheme;
+    @Bind(R.id.rl_setting)
+    RelativeLayout rlSetting;
+    @Bind(R.id.rl_about)
+    RelativeLayout rlAbout;
     private RelativeLayout rlSelectView;
     private ActionBarDrawerToggle mDrawerToggle;
     private OpenEyeDailyBean mDailyBean;
@@ -89,6 +112,64 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 ObjectAnimator.ofFloat(fabAdd, "rotation", 0f, 225f).setDuration(1000).start();
                 showChooseBottomSheet();
+            }
+        });
+
+        rlHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeBgAndCloseDrawer(rlHome);
+            }
+        });
+
+        rlDraft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeBgAndCloseDrawer(rlDraft);
+            }
+        });
+
+        rlReminder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeBgAndCloseDrawer(rlReminder);
+            }
+        });
+
+        rlBackup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeBgAndCloseDrawer(rlBackup);
+                jumpToActivity(CloudBackupActivity.class);
+            }
+        });
+
+        rlLocalExport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeBgAndCloseDrawer(rlLocalExport);
+                jumpToActivity(LoginActivity.class);
+            }
+        });
+
+        rlChangeTheme.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeBgAndCloseDrawer(rlChangeTheme);
+            }
+        });
+
+        rlSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeBgAndCloseDrawer(rlSetting);
+            }
+        });
+
+        rlAbout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeBgAndCloseDrawer(rlAbout);
             }
         });
     }
@@ -121,22 +202,23 @@ public class MainActivity extends AppCompatActivity {
                 .setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
-                        ObjectAnimator.ofFloat(fabAdd,"rotation",225f,360f).setDuration(1000).start();
+                        ObjectAnimator.ofFloat(fabAdd, "rotation", 225f, 360f).setDuration(1000).start();
                     }
                 }).show();
     }
 
     /**
      * 跳转
+     *
      * @param clazz
      */
     private void jumpToActivity(Class<?> clazz) {
-        Intent intent = new Intent(MainActivity.this,clazz);
-        startActivity(intent);
+        startActivity(new Intent(MainActivity.this, clazz));
     }
 
     /**
      * 显示SnackBar
+     *
      * @param str
      */
     private void showSnackToast(String str) {
@@ -155,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
         mDrawerToggle.syncState();
         drawerLayout.setDrawerListener(mDrawerToggle);
 
-        Intent  intent = new Intent();
+        Intent intent = new Intent();
         intent.resolveActivity(getPackageManager());
     }
 
@@ -169,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadRecommandData() {
-        Map<String,String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>();
         map.put("num", "2");
         HttpClient.builder(MainActivity.this).get(Constant.URL_OPEN_EYE_DIALY, map, new HttpResponseHandler() {
             @Override
@@ -213,15 +295,16 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * 设置选中背景色，关闭抽屉
+     *
      * @param rlSelect
      */
     private void changeBgAndCloseDrawer(RelativeLayout rlSelect) {
-        if(rlSelectView != null){
+        if (rlSelectView != null) {
             rlSelectView.setBackgroundColor(Color.WHITE);
         }
         rlSelectView = rlSelect;
         rlSelectView.setBackgroundColor(Color.parseColor("#eeeeee"));
-        if(drawerLayout != null && drawerLayout.isDrawerOpen(GravityCompat.START)){
+        if (drawerLayout != null && drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawers();
         }
     }
@@ -242,7 +325,7 @@ public class MainActivity extends AppCompatActivity {
         if (mHits[0] >= (SystemClock.uptimeMillis() - 2000)) {
 
             System.exit(0);
-            android.os.Process.killProcess(Process.myPid());
+            Process.killProcess(Process.myPid());
 
         }
     }

@@ -35,6 +35,17 @@
             android:label="@string/activity_article_detail"
             android:screenOrientation="portrait"
             android:launchMode="singleTop"/>
+
+        <activity android:name=".common.activities.CloudBackupActivity"
+            android:label="@string/activity_cloud_backup"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"/>
+
+        <activity android:name=".common.activities.LoginActivity"
+            android:label="@string/activity_cloud_backup"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"/>
+
         <activity
             android:name=".common.activities.Test2Activity"
             android:label="@string/activity_main"

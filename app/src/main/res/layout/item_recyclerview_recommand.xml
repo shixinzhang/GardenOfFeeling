@@ -13,7 +13,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/name_half_black"/>
+        android:background="@color/shadow_half_black"/>
     <View
         android:id="@+id/v_center"
         android:layout_width="1dp"

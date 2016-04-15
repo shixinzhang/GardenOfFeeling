@@ -15,6 +15,7 @@
     <color name="line_light_grey">#dcdcdc</color>
     <color name="markdown_bg_transparent">#55000000</color>
 
+    <color name="shadow_half_black">#55000000</color>
     <color name="status_bar_bg">#00000000</color>
     <color name="main_header_bg">#EF3A19</color>
     <color name="main_footer_bg">#f5f5f5</color>
