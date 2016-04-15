@@ -71,7 +71,7 @@ public class RecommandFragment extends Fragment {
         adapter.setmOnItemClickListener(new AllRecommandAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(OpenEyeDailyBean.IssueListEntity.ItemListEntity.DataEntity eyeDailyBean, int position) {
-//                Toast.makeText(getContext(),"click",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"播放",Toast.LENGTH_SHORT).show();
             }
         });
         recyclerView.setLayoutManager(linearLayoutManager);

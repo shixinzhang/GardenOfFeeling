@@ -31,8 +31,10 @@
                     android:scaleType="centerCrop"
                     android:src="@mipmap/background_menu_account_info" />
                 <ImageView
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
+                    android:id="@+id/iv_content_play"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:padding="8dp"
                     android:src="@mipmap/icon_play_white"
                     android:layout_centerInParent="true"/>
             </RelativeLayout>
@@ -44,7 +46,6 @@
                 android:layout_centerHorizontal="true"
                 android:layout_margin="8dp"
                 android:singleLine="true"
-                android:text="[ 由于特殊原因此视频无法显示 ]"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
 
@@ -61,7 +62,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:singleLine="true"
-                    android:text="#广告"
                     android:textColor="@color/white"
                     android:textSize="12sp" />
 
@@ -80,7 +80,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:singleLine="true"
-                    android:text="01' 03 ''"
                     android:textColor="@color/white"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -93,7 +92,6 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="4dp"
-                android:text="01' 03 ''"
                 android:textColor="@color/white"
                 android:textSize="12sp" />
         </LinearLayout>

@@ -35,6 +35,7 @@ public class AllRecommandAdapter extends RecyclerView.Adapter<AllRecommandAdapte
     private Picasso mPicasso;
     private List<OpenEyeDailyBean.IssueListEntity.ItemListEntity> mData;
     private OnItemClickListener mOnItemClickListener;
+    private FoldingCell mLastFoldCell = null;
 
     public AllRecommandAdapter(List<OpenEyeDailyBean.IssueListEntity.ItemListEntity> mData) {
         this.mData = mData;
@@ -59,8 +60,9 @@ public class AllRecommandAdapter extends RecyclerView.Adapter<AllRecommandAdapte
                 viewHolder.tvTitle.setText("[ 由于特殊原因此视频无法显示 ]");
                 viewHolder.tvCategory.setText("");
                 viewHolder.tvTime.setText("");
-//                viewHolder.flCellContent.setVisibility(View.GONE);
-//                viewHolder.foldingCell.unfold(true);
+                //默认折叠
+                viewHolder.foldingCell.fold(true);
+                //覆盖之前的点击事件
                 if (mOnItemClickListener != null) {
                     viewHolder.foldingCell.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -104,17 +106,29 @@ public class AllRecommandAdapter extends RecyclerView.Adapter<AllRecommandAdapte
                 String time = duration / 60 + "' " + duration % 60 + "''";
                 viewHolder.tvTime.setText(time);
                 viewHolder.tvContentTime.setText(time);
-
                 viewHolder.tvContentDesc.setText(description);
 
                 if (mOnItemClickListener != null) {
-                    viewHolder.foldingCell.setOnClickListener(new View.OnClickListener() {
+                    viewHolder.ivContentPlay.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            viewHolder.foldingCell.toggle(false);
                             mOnItemClickListener.onItemClick(data, i);
                         }
                     });
+
+                    viewHolder.foldingCell.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //折叠之前打开的
+                            if (mLastFoldCell != null && mLastFoldCell != viewHolder.foldingCell) {
+                                mLastFoldCell.fold(true);
+                            }
+                            viewHolder.foldingCell.toggle(false);
+                            mLastFoldCell = viewHolder.foldingCell;
+                        }
+                    });
+
+
                 }
             }
 
@@ -153,7 +167,7 @@ public class AllRecommandAdapter extends RecyclerView.Adapter<AllRecommandAdapte
         private FrameLayout flCellContent;
         private View rootView;
         private TextView tvCategory, tvTime, tvTitle, tvContentCategory, tvContentTime, tvContentTitle, tvContentDesc;
-        private ImageView ivImg, ivContentBg;
+        private ImageView ivImg, ivContentBg, ivContentPlay;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -165,6 +179,7 @@ public class AllRecommandAdapter extends RecyclerView.Adapter<AllRecommandAdapte
             tvTime = (TextView) itemView.findViewById(R.id.tv_time);
             ivImg = (ImageView) itemView.findViewById(R.id.iv_title_bg);
 
+            ivContentPlay = (ImageView) itemView.findViewById(R.id.iv_content_play);
             tvContentCategory = (TextView) itemView.findViewById(R.id.tv_content_category);
             tvContentTime = (TextView) itemView.findViewById(R.id.tv_content_time);
             tvContentTitle = (TextView) itemView.findViewById(R.id.tv_content_title);
