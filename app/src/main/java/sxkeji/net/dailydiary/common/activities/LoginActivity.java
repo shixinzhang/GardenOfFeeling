@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -48,6 +49,8 @@ public class LoginActivity extends AppCompatActivity {
     LinearLayout llIndicator;
     private LoginViewPaperAdapter mAdapter;
     private ArrayList<LoginGuideBean> mLoginData;
+    private int lastIndicatorPos ;  //前一个指示点的位置
+    private boolean isAnimating = false;    //是否正在动画，判断状态
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
         tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (llVerify.getVisibility() == View.GONE) {
+                if (llVerify.getVisibility() == View.GONE && !isAnimating) {
                     visibleWithAlphaAnim(true);
                 }
             }
@@ -70,14 +73,35 @@ public class LoginActivity extends AppCompatActivity {
         tvLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (llVerify.getVisibility() == View.VISIBLE) {
+                if (llVerify.getVisibility() == View.VISIBLE && !isAnimating) {
                     visibleWithAlphaAnim(false);
                 }
             }
         });
+        viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                llIndicator.getChildAt(position).setEnabled(true);
+                llIndicator.getChildAt(lastIndicatorPos).setEnabled(false);
+                lastIndicatorPos = position;
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
     }
 
+    /**
+     * 伴随着动画显示或者隐藏
+     * @param show
+     */
     private void visibleWithAlphaAnim(final boolean show) {
+        isAnimating = true;
         float starAlpha, endAlpha;
         if (show) {
             starAlpha = 0f;
@@ -86,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
             starAlpha = 1f;
             endAlpha = 0f;
         }
-        ObjectAnimator animator = ObjectAnimator.ofFloat(llVerify, "alpha", starAlpha, endAlpha).setDuration(1000);
+        ObjectAnimator animator = ObjectAnimator.ofFloat(llVerify, "alpha", starAlpha, endAlpha).setDuration(500);
         animator.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -102,6 +126,7 @@ public class LoginActivity extends AppCompatActivity {
                     llVerify.setVisibility(View.GONE);
                     tvSendVerifyCode.setVisibility(View.GONE);
                 }
+                isAnimating = false;
             }
 
             @Override
@@ -151,8 +176,26 @@ public class LoginActivity extends AppCompatActivity {
         initLoginViewIndicator();
     }
 
+    /**
+     * 添加指示点
+     */
     private void initLoginViewIndicator() {
-
+        for (int i = 0 ; i < mLoginData.size() ; i ++) {
+            //添加指示点
+            ImageView ivIndicator = new ImageView(this);    //灰、白指示点
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.rightMargin = 20;
+            ivIndicator.setLayoutParams(params);
+            ivIndicator.setBackgroundResource(R.drawable.guide_indicator_bg);
+            //初始时第一个为白色，其余灰色
+            if (i == 0) {
+                ivIndicator.setEnabled(true);
+            } else {
+                ivIndicator.setEnabled(false);
+            }
+            llIndicator.addView(ivIndicator);
+        }
     }
 
     @Override
