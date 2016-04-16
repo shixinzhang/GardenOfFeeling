@@ -17,6 +17,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -156,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 changeBgAndCloseDrawer(rlChangeTheme);
+                changeTheme();
             }
         });
 
@@ -163,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 changeBgAndCloseDrawer(rlSetting);
+                jumpToActivity(SettingActivity.class);
             }
         });
 
@@ -170,8 +173,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 changeBgAndCloseDrawer(rlAbout);
+                jumpToActivity(AboutActivity.class);
             }
         });
+    }
+
+    /**
+     * 更换主题
+     */
+    private void changeTheme() {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
     }
 
     /**

@@ -70,6 +70,7 @@ public class SplashActivity extends Activity implements ISplashView {
     private Target mDownloadTarget;
     private Picasso mPicasso;
     private File mLatestImge;
+    private int screenWidth, screenHeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +114,8 @@ public class SplashActivity extends Activity implements ISplashView {
             }
         });
 
+        screenWidth = getWindowManager().getDefaultDisplay().getWidth();
+        screenHeight = getWindowManager().getDefaultDisplay().getHeight();
         mPicasso = BaseApplication.getPicassoSingleton();
     }
 
@@ -213,6 +216,8 @@ public class SplashActivity extends Activity implements ISplashView {
             Log.e("showSplashPic", mLatestImge.getName());
             mPicasso.load(mLatestImge)
                     .config(Bitmap.Config.RGB_565)
+                    .resize(screenWidth,screenHeight)
+                    .centerInside()
                     .skipMemoryCache()
                     .priority(Picasso.Priority.LOW)
                     .into(iv_splash);

@@ -1,1 +1,1 @@
-include ':app', ':greendaolib', ':markdownlib'
+include ':app', ':greendaolib', ':markdownlib', ':locklib'

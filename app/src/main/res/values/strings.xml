@@ -9,6 +9,9 @@
     <string name="activity_write_article">写文字</string>
     <string name="activity_article_detail">文章详情</string>
     <string name="activity_cloud_backup">云端同步</string>
+    <string name="activity_setting">设置</string>
+    <string name="activity_local_export">本地导入导出</string>
+    <string name="activity_about">关于</string>
 
     <!-- 引导页 -->
 

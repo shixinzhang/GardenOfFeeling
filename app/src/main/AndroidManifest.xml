@@ -46,6 +46,21 @@
             android:screenOrientation="portrait"
             android:launchMode="singleTop"/>
 
+        <activity android:name=".common.activities.SettingActivity"
+            android:label="@string/activity_setting"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"/>
+
+        <activity android:name=".common.activities.LocalExportActivity"
+            android:label="@string/activity_local_export"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"/>
+
+        <activity android:name=".common.activities.AboutActivity"
+            android:label="@string/activity_about"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"/>
+
         <activity
             android:name=".common.activities.Test2Activity"
             android:label="@string/activity_main"

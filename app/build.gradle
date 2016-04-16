@@ -27,11 +27,11 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     //兼容包
-    compile 'com.android.support:appcompat-v7:23.0.1'
-    compile 'com.android.support:cardview-v7:23.0.1'
-    compile 'com.android.support:recyclerview-v7:23.0.1'
-    compile 'com.android.support:design:23.0.1'
-    compile 'com.android.support:support-annotations:23.1.0'
+    compile 'com.android.support:appcompat-v7:23.3.0'
+    compile 'com.android.support:cardview-v7:23.3.0'
+    compile 'com.android.support:recyclerview-v7:23.3.0'
+    compile 'com.android.support:design:23.3.0'
+    compile 'com.android.support:support-annotations:23.3.0'
     //第三方
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.cocosw:bottomsheet:1.+@aar'
@@ -44,4 +44,5 @@ dependencies {
 
     compile files('libs/bugly_1.2.6_release.jar')
     compile project(':markdownlib')
+    compile project(':locklib')
 }
