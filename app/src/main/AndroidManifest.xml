@@ -26,6 +26,12 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".common.activities.CreateGestureActivity"
+            android:label="@string/activity_create_gesture"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"
+            />
+
         <activity android:name=".common.activities.MainActivity"
             android:label="@string/activity_main"
             android:screenOrientation="portrait"

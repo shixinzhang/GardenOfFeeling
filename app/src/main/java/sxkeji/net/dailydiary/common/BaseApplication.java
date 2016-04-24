@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.avos.avoscloud.AVOSCloud;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -27,10 +28,11 @@ import sxkeji.net.dailydiary.storage.Constant;
 import sxkeji.net.dailydiary.utils.LogUtils;
 
 /**
- * Created by qiujie on 2014/7/11.
+ * BaseApplication
+ * Created by zhangshixin on 2015/7/11.
  */
 public class BaseApplication extends Application {
-    public static final String TAG = "VolleyPatterns";
+    public static final String TAG = "BaseApplication";
     /**
      * 全局Context，原理是因为Application类是应用最先运行的，所以在我们的代码调用时，该值已经被赋值过了
      */
@@ -78,11 +80,21 @@ public class BaseApplication extends Application {
         }
 
         if (checkIfIsAppRunning(getPackageName())) {
-            initialize();
+            initBuggly();
+            initLeanCloud();
         }
 
         picassoSingleton = Picasso.with(this);
 
+    }
+
+    /**
+     * 初始化LeanCloud
+     */
+    private void initLeanCloud() {
+        //如果使用美国节点，请加上这行代码 AVOSCloud.useAVCloudUS();
+        AVOSCloud.initialize(this, Constant.LEANCLOUD_APPID, Constant.LEANCLOUD_KEY);
+//        AVAnalytics.trackAppOpened(getIntent());
     }
 
     /**
@@ -132,7 +144,10 @@ public class BaseApplication extends Application {
     }
 
 
-    private void initialize() {
+    /**
+     * 初始化buggly
+     */
+    private void initBuggly() {
         //TODO 设置Buggly 渠道 和 App的版本
 //        CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(this);
 //        strategy.setAppChannel(AppUtils.getAppChannel(this));

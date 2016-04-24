@@ -145,6 +145,7 @@ public class SplashActivity extends Activity implements ISplashView {
             btnLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    startActivity(new Intent(SplashActivity.this,MainActivity.class));
                     Toast.makeText(SplashActivity.this, "进入登录页面", Toast.LENGTH_SHORT).show();
                 }
             });
@@ -207,6 +208,7 @@ public class SplashActivity extends Activity implements ISplashView {
 
     @Override
     public void showSplashPic() {
+        llSplash.setVisibility(View.VISIBLE);
         iv_splash.setVisibility(View.VISIBLE);
 
 

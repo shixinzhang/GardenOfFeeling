@@ -165,7 +165,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 changeBgAndCloseDrawer(rlSetting);
-                jumpToActivity(SettingActivity.class);
+//                jumpToActivity(SettingActivity.class);
+                jumpToActivity(CreateGestureActivity.class);
             }
         });
 
@@ -290,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
         MainTabsVPAdapter mTabsVPAdapter = new MainTabsVPAdapter(getSupportFragmentManager());
         mTabsVPAdapter.addFragment(new HomeFragment(), "全部");
         mTabsVPAdapter.addFragment(new HomeFragment(), "文件夹");
-        mTabsVPAdapter.addFragment(new RecommandFragment(), "推荐");
+        mTabsVPAdapter.addFragment(new RecommandFragment(), "发现");
         vpTabContent.setAdapter(mTabsVPAdapter);
     }
 

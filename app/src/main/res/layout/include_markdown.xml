@@ -14,7 +14,10 @@
         android:background="@null"
         android:gravity="left|top"
         android:inputType="textMultiLine"
-        android:padding="5dp" />
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="10dp"/>
     <!--<TextView-->
     <!--android:layout_width="60dp"-->
     <!--android:layout_height="30dp"-->

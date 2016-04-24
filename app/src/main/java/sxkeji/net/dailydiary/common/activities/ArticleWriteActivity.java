@@ -29,6 +29,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.SaveCallback;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
@@ -46,6 +49,7 @@ import butterknife.ButterKnife;
 import sxkeji.net.dailydiary.Article;
 import sxkeji.net.dailydiary.R;
 import sxkeji.net.dailydiary.common.BaseApplication;
+import sxkeji.net.dailydiary.http.HttpClient;
 import sxkeji.net.dailydiary.storage.Constant;
 import sxkeji.net.dailydiary.utils.FileUtils;
 import sxkeji.net.dailydiary.utils.LogUtils;
@@ -53,6 +57,7 @@ import sxkeji.net.dailydiary.utils.MediaUtils;
 import sxkeji.net.dailydiary.utils.NetWorkUtils;
 import sxkeji.net.dailydiary.utils.StringUtils;
 import sxkeji.net.dailydiary.utils.SystemUtils;
+import sxkeji.net.dailydiary.utils.UIUtils;
 import sxkeji.net.dailydiary.utils.ViewUtils;
 import sxkeji.net.dailydiary.widgets.ExtendMediaPicker;
 
@@ -328,9 +333,13 @@ public class ArticleWriteActivity extends AppCompatActivity {
         }
         Article article = new Article(null, articleDate, null, null, title, content, articleType, articleImgPath);
         BaseApplication.getDaoSession().getArticleDao().insert(article);
+
+        HttpClient.upload2LeanCloud(ArticleWriteActivity.this,article);
+
         LogUtils.e(TAG, "Insert new article, id : " + article.getId());
         ArticleWriteActivity.this.finish();
     }
+
 
     private void showToast(String s) {
         Toast.makeText(ArticleWriteActivity.this, s, Toast.LENGTH_SHORT).show();

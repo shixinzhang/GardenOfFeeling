@@ -3,13 +3,119 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/primary"
+    android:fitsSystemWindows="true"
+    android:gravity="center_horizontal"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
-        style="@style/mToolBar"
         android:id="@+id/toolbar"
-        app:title="@string/activity_cloud_backup"
+        style="@style/mToolBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:title="@string/activity_cloud_backup" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="24dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:src="@drawable/bg_cloud_back" />
+
+            <View
+                android:id="@+id/view_center_left"
+                android:layout_width="1dp"
+                android:layout_height="1dp"
+                android:layout_centerInParent="true" />
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_above="@id/view_center_left"
+                android:layout_centerHorizontal="true"
+                android:src="@mipmap/img_cloud_back" />
+
+            <TextView
+                android:id="@+id/tv_cloud_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/view_center_left"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8dp"
+                android:text="16篇"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="24dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:src="@drawable/bg_cloud_back" />
+
+            <View
+                android:id="@+id/view_center_right"
+                android:layout_width="1dp"
+                android:layout_height="1dp"
+                android:layout_centerInParent="true" />
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_above="@id/view_center_right"
+                android:layout_centerHorizontal="true"
+                android:src="@mipmap/img_phone" />
+
+            <TextView
+                android:id="@+id/tv_local_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/view_center_right"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8dp"
+                android:text="13篇"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/tv_upload"
+        android:layout_width="160dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/bg_btn_blue"
+        android:gravity="center"
+        android:text="上传"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/tv_download"
+        android:layout_width="160dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_btn_blue"
+        android:gravity="center"
+        android:text="下载"
+        android:textColor="@color/secondary_text_half_white"
+        android:textSize="16sp" />
 </LinearLayout>

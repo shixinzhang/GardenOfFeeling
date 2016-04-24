@@ -15,6 +15,13 @@ public class Constant {
     public static String ARTICLE_BEAN = "article_bean";
     public static String ARTICLE_TYPE = "article_type";
     public static String OPEN_EYE_DATA = "open_eye_dialy";
+    public static final String GESTURE_PASSWORD = "GesturePassword";
+
+    //LeanCloud ID 和 Key
+    public static String LEANCLOUD_APPID = "p5u1dmlmaznldib4hu0goexf4cg5kwwed7to6pdhsm9x8dpd";
+    public static String LEANCLOUD_KEY = "3qd9nuefo4fyzknx3cwk15mvgwoctym1l3ohb1ndhk5xfl3y";
+    //LeanCloud 日记表名
+    public static String LEANCLOUD_TABLE_DIARY = "articles_365";
 
     public static final String OPEN_EYE_UID = "57e17df8bc634de8b5d427bd27a126b9f1ba1a56";
     //    vc=74&vn=1.10.1&deviceModel=m1%20note&first_channel=eyepetizer_meizu_market&last_channel=eyepetizer_meizu_market%20ZHOU

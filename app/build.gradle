@@ -22,6 +22,13 @@ android {
             java.srcDirs = ['src/main/java', 'src/main/java-gen ']
         }
     }
+
+    packagingOptions{
+        //构建时移除这个文件
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/MANIFEST.MF'
+    }
 }
 
 dependencies {
@@ -43,6 +50,11 @@ dependencies {
     compile 'com.ramotion.foldingcell:folding-cell:1.0.0'
 
     compile files('libs/bugly_1.2.6_release.jar')
+    compile files('libs/avoscloud-sdk-v3.13.7.jar')
+    compile files('libs/fastjson.jar')
+    compile files('libs/httpmime-4.2.4.jar')
+    compile files('libs/okhttp-2.6.0-leancloud.jar')
+    compile files('libs/okio-1.6.0-leancloud.jar')
     compile project(':markdownlib')
     compile project(':locklib')
 }

@@ -16,4 +16,7 @@
 
     <!-- 文章配图高度 -->
     <dimen name="article_img_height">256dp</dimen>
+
+    <!-- 登录按钮边距 -->
+    <dimen name="login_edit_margin">32dp</dimen>
 </resources>

@@ -4,6 +4,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="activity_main">主页</string>
+    <string name="activity_create_gesture">创建手势密码</string>
     <string name="activity_login">登录</string>
     <string name="activity_test">测试</string>
     <string name="activity_write_article">写文字</string>
@@ -20,8 +21,9 @@
     <string name="guide_login">登录</string>
     <string name="input_phone_num">请输入您的手机号码</string>
     <string name="input_pwd">请输入您的密码(至少6位)</string>
-    <string name="input_verify_code">请输入验证码</string>
+    <string name="input_verify_code">请输入6位验证码</string>
     <string name="menu_forget_pwd">忘记密码</string>
+    <string name="menu_cloud_back_help">帮助</string>
 
     <!-- 首页 -->
     <string name="drawer_open">菜单</string>
@@ -30,6 +32,21 @@
     <string name="add_article">有感而发，来篇随笔</string>
     <string name="add_reminder">繁事锁身，记个备忘</string>
     <string name="add_cancel">算了，没什么要写的</string>
+
+    <!-- 手势密码登录 -->
+    <string name="gesture_forget_gesture">忘记手势密码</string>
+    <string name="gesture_default">请输入手势密码</string>
+    <string name="gesture_error">手势密码输入错误</string>
+    <string name="gesture_correct">输入正确</string>
+
+    <!-- 创建手势密码 -->
+    <string name="create_gesture_activity">CreateGestureActivity</string>
+    <string name="create_gesture_default">绘制解锁图案</string>
+    <string name="create_gesture_correct">再次绘制解锁图案</string>
+    <string name="create_gesture_less_error">至少连接4个点，请重新输入</string>
+    <string name="create_gesture_confirm_error">与上一次绘制不一致，请重新绘制</string>
+    <string name="create_gesture_confirm_correct">设置成功</string>
+    <string name="create_gesture_reset">重新设置</string>
 
     <!-- 创建新文字 -->
     <string name="cancel_or_not">是否取消编辑?</string>

@@ -13,9 +13,10 @@ import android.widget.TextView;
 public class TimeCount extends CountDownTimer {
     private TextView checking;
 
+    // 参数依次为总时长,和计时的时间间隔
     public TimeCount(long millisInFuture, long countDownInterval,
                      TextView checking) {
-        super(millisInFuture, countDownInterval);// 参数依次为总时长,和计时的时间间隔
+        super(millisInFuture, countDownInterval);
         this.checking = checking;
     }
 
@@ -28,6 +29,6 @@ public class TimeCount extends CountDownTimer {
     @Override
     public void onTick(long millisUntilFinished) {// 计时过程显示
         checking.setClickable(false);
-        checking.setText("剩余" + millisUntilFinished / 1000 + "秒");
+        checking.setText( millisUntilFinished / 1000 + "秒后重新发送");
     }
 }

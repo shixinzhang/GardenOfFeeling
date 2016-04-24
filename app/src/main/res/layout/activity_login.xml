@@ -17,12 +17,12 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_height="270dp"/>
+        android:layout_height="230dp"/>
 
     <LinearLayout
         android:id="@+id/ll_indicator"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
+        android:layout_height="10dp"
         android:orientation="horizontal"
         android:gravity="center"/>
 
@@ -30,8 +30,8 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginTop="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginLeft="@dimen/login_edit_margin"
+        android:layout_marginRight="@dimen/login_edit_margin"
         android:background="@drawable/bg_ll_login_phone"
         android:orientation="horizontal">
 
@@ -77,8 +77,8 @@
         android:id="@+id/ll_verify"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginLeft="@dimen/login_edit_margin"
+        android:layout_marginRight="@dimen/login_edit_margin"
         android:layout_marginTop="1dp"
         android:background="@color/white"
         android:orientation="horizontal"
@@ -89,7 +89,7 @@
             android:layout_height="24dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="16dp"
-            android:src="@mipmap/icon_vertify_code"
+            android:src="@mipmap/icon_verify_code"
             android:textColor="@color/white" />
 
         <EditText
@@ -110,8 +110,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginLeft="@dimen/login_edit_margin"
+        android:layout_marginRight="@dimen/login_edit_margin"
         android:layout_marginTop="1dp"
         android:background="@drawable/bg_ll_login_pwd"
         android:orientation="horizontal">
@@ -143,31 +143,31 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
         android:layout_marginTop="16dp"
         android:gravity="center"
         android:orientation="horizontal">
 
-        <TextView
+        <Button
             android:id="@+id/tv_register"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:background="@drawable/btn_bg_login"
+            android:background="@drawable/bg_btn_blue"
             android:gravity="center"
             android:text="@string/guide_regist"
             android:textColor="@color/secondary_text_half_white"
             android:textSize="16sp"
             android:layout_marginLeft="8dp"/>
 
-        <TextView
+        <Button
             android:id="@+id/tv_login"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_marginLeft="16dp"
             android:layout_weight="1"
-            android:background="@drawable/btn_bg_login"
+            android:background="@drawable/bg_btn_blue"
             android:gravity="center"
             android:text="@string/guide_login"
             android:textColor="@color/white"

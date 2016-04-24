@@ -1,5 +1,6 @@
 package sxkeji.net.dailydiary.http;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -8,6 +9,11 @@ import android.net.NetworkInfo;
 import android.util.Log;
 import android.view.View;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVOSCloud;
+import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.RequestMobileCodeCallback;
+import com.avos.avoscloud.SaveCallback;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.MediaType;
@@ -22,14 +28,17 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import sxkeji.net.dailydiary.Article;
 import sxkeji.net.dailydiary.R;
 import sxkeji.net.dailydiary.http.coreprogress.helper.ProgressHelper;
 import sxkeji.net.dailydiary.http.coreprogress.listener.impl.UIProgressListener;
+import sxkeji.net.dailydiary.storage.Constant;
 import sxkeji.net.dailydiary.utils.LogUtils;
 import sxkeji.net.dailydiary.utils.NetWorkUtils;
 import sxkeji.net.dailydiary.utils.UIUtils;
 
 /**
+ * 网络请求
  * Created by tiansj on 15/2/27.
  */
 public class HttpClient {
@@ -271,6 +280,32 @@ public class HttpClient {
         }
         buffer.setLength(buffer.length() - 1);
         return buffer.toString();
+    }
+
+    /**
+     * 上传到LeanCloud
+     * @param article
+     */
+    public static void upload2LeanCloud(final Context context, Article article) {
+        AVObject uploadArticle = new AVObject(Constant.LEANCLOUD_TABLE_DIARY);
+        uploadArticle.put("address",article.getAddress());
+        uploadArticle.put("weather",article.getWeather());
+        uploadArticle.put("title",article.getTitle());
+        uploadArticle.put("content",article.getContent());
+        uploadArticle.put("type",article.getType());
+        uploadArticle.put("img_path",article.getImg_path());
+
+        uploadArticle.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(AVException e) {
+                if (e == null) {
+                    UIUtils.showToastSafe(context, "上传服务器成功");
+                } else {
+                    UIUtils.showToastSafe(context, "上传服务器失败" + e.getMessage());
+//                    LogUtils.e("upload2LeanCloud", "LeanCloud save result : " + e.getMessage());
+                }
+            }
+        });
     }
 
 

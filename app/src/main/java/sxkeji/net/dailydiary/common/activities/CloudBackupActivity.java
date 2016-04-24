@@ -3,6 +3,8 @@ package sxkeji.net.dailydiary.common.activities;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 
 import butterknife.Bind;
@@ -34,5 +36,11 @@ public class CloudBackupActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_cloud_back_help, menu);
+        return true;
     }
 }
