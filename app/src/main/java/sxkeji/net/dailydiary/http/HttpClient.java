@@ -294,6 +294,7 @@ public class HttpClient {
         uploadArticle.put("content",article.getContent());
         uploadArticle.put("type",article.getType());
         uploadArticle.put("img_path",article.getImg_path());
+        uploadArticle.put(Constant.LEANCLOUD_TABLE_USERNUMBER,"18789440700");
 
         uploadArticle.saveInBackground(new SaveCallback() {
             @Override

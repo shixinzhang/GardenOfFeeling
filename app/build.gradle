@@ -57,4 +57,5 @@ dependencies {
     compile files('libs/okio-1.6.0-leancloud.jar')
     compile project(':markdownlib')
     compile project(':locklib')
+    compile project(':loadanimlib')
 }

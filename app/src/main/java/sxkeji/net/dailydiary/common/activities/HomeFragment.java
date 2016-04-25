@@ -37,7 +37,6 @@ public class HomeFragment extends Fragment {
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
 
-    private SQLiteDatabase db;
     private ArticleDao articleDao;
     private AllArticlesRecyclerAdapter adapter;
     @Override
@@ -56,7 +55,6 @@ public class HomeFragment extends Fragment {
     }
 
     private void initViews() {
-        db = BaseApplication.getDb();
         articleDao = BaseApplication.getDaoSession().getArticleDao();
 
         setArticlesRecyclerData();

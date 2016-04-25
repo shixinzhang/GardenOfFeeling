@@ -31,6 +31,8 @@ import butterknife.ButterKnife;
 import sxkeji.net.dailydiary.R;
 import sxkeji.net.dailydiary.beans.LoginGuideBean;
 import sxkeji.net.dailydiary.common.views.adapters.LoginViewPaperAdapter;
+import sxkeji.net.dailydiary.storage.Constant;
+import sxkeji.net.dailydiary.storage.SharedPreferencesUtils;
 import sxkeji.net.dailydiary.utils.LogUtils;
 import sxkeji.net.dailydiary.utils.StringUtils;
 import sxkeji.net.dailydiary.utils.TimeCount;
@@ -165,26 +167,28 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * 登录
+     *
      * @param number
      * @param password
      */
-    private void login2Server(String number, String password) {
-        if (TextUtils.isEmpty(number) || TextUtils.isEmpty(password)){
+    private void login2Server(final String number, String password) {
+        if (TextUtils.isEmpty(number) || TextUtils.isEmpty(password)) {
             return;
         }
         AVUser.loginByMobilePhoneNumberInBackground(number, password, new LogInCallback<AVUser>() {
             @Override
             public void done(AVUser avUser, AVException e) {
-                if (e == null){
+                if (e == null) {
                     showToast("登录成功");
+                    SharedPreferencesUtils.put(LoginActivity.this, Constant.ACCOUNT_USER_NUMBER, number);
                     jump2NextActivity();
-                }else {
+                } else {
                     int errorCode = e.getCode();
-                    if (errorCode == 210){
-                        showToast("登录失败: 手机号与密码不匹配" );
-                    }else if (errorCode == 211) {
+                    if (errorCode == 210) {
+                        showToast("登录失败: 手机号与密码不匹配");
+                    } else if (errorCode == 211) {
                         showToast("登录失败: 手机号尚未注册");
-                    }else {
+                    } else {
                         showToast("登录失败: " + e.getMessage());
                     }
                 }
@@ -192,14 +196,15 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void showToast(String str){
+    private void showToast(String str) {
         UIUtils.showToastSafe(LoginActivity.this, str);
     }
+
     /**
      * 注册
      */
     private void register2Server(final String phoneNumber, final String password, String verifyCod) {
-        if (TextUtils.isEmpty(phoneNumber) || TextUtils.isEmpty(password) || TextUtils.isEmpty(verifyCod)){
+        if (TextUtils.isEmpty(phoneNumber) || TextUtils.isEmpty(password) || TextUtils.isEmpty(verifyCod)) {
             return;
         }
         AVUser.signUpOrLoginByMobilePhoneInBackground(phoneNumber, verifyCod, new LogInCallback<AVUser>() {
@@ -215,8 +220,9 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void done(AVException e) {
                             if (e == null) {
-                                // 注册成功
+                                // 注册成功,直接进入下一界面，省去再让用户登录
                                 showToast("注册成功");
+                                SharedPreferencesUtils.put(LoginActivity.this, Constant.ACCOUNT_USER_NUMBER, phoneNumber);
                                 jump2NextActivity();
                             } else {
                                 showToast("注册失败 " + e.getMessage());
@@ -240,11 +246,12 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * 请求发送验证码
+     *
      * @param phoneNumber
      */
     private void requestVerifyCode(String phoneNumber) {
-        if (TextUtils.isEmpty(phoneNumber) || !StringUtils.isMobileNO(phoneNumber)){
-            return ;
+        if (TextUtils.isEmpty(phoneNumber) || !StringUtils.isMobileNO(phoneNumber)) {
+            return;
         }
 
         AVOSCloud.requestSMSCodeInBackground(phoneNumber, new RequestMobileCodeCallback() {
@@ -253,7 +260,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (e == null) {
                     handler.sendEmptyMessage(MSG_WHAT_REQUEST_VERIFYCODE_SUCCESS);
                 } else {
-                    LogUtils.e(TAG,"requestVerifyCode failed :" + e.getMessage());
+                    LogUtils.e(TAG, "requestVerifyCode failed :" + e.getMessage());
                     handler.sendEmptyMessage(MSG_WHAT_RESUEST_VERIFYCODE_FAILED);
                 }
             }
@@ -364,10 +371,10 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    Handler handler = new Handler(){
+    Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what){
+            switch (msg.what) {
                 case MSG_WHAT_REQUEST_VERIFYCODE_SUCCESS:
                     showToast("验证码已发送");
                     TimeCount timeCount = new TimeCount(60 * 1000, 1000, tvSendVerifyCode);

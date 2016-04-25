@@ -54,7 +54,6 @@
                 android:layout_below="@id/view_center_left"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="8dp"
-                android:text="16篇"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
         </RelativeLayout>
@@ -91,17 +90,24 @@
                 android:layout_below="@id/view_center_right"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="8dp"
-                android:text="13篇"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
         </RelativeLayout>
     </LinearLayout>
-
+    <TextView
+        android:id="@+id/tv_last_sync"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:text="上次同步时间: 2015-3-23 11:46"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
     <Button
         android:id="@+id/tv_upload"
         android:layout_width="160dp"
         android:layout_height="40dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="40dp"
         android:background="@drawable/bg_btn_blue"
         android:gravity="center"
         android:text="上传"
