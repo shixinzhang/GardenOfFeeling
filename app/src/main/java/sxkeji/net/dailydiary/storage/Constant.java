@@ -17,8 +17,15 @@ public class Constant {
     public static String OPEN_EYE_DATA = "open_eye_dialy";
     public static final String GESTURE_PASSWORD = "GesturePassword";
 
-    //账户户状态相关
+    //账户状态相关
+    public static final String ACCOUNT_IS_LOGIN = "account_login";
     public static final String ACCOUNT_USER_NUMBER = "account_number";
+
+    //Activity间跳转传递的数据
+    public static final String EXTRA_FROM = "start_from";
+    public static final String EXTRA_TO = "jump_to";
+    public static final String ACTIVITY_CLOUD_BACK = "activity_cloud_back";
+    public static final String ACTIVITY_LOCAL_EXPROT = "activity_local_export";
 
     //LeanCloud ID 和 Key
     public static String LEANCLOUD_APPID = "p5u1dmlmaznldib4hu0goexf4cg5kwwed7to6pdhsm9x8dpd";

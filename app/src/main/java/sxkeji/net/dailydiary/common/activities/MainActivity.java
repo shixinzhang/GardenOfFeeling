@@ -42,6 +42,7 @@ import sxkeji.net.dailydiary.http.HttpClient;
 import sxkeji.net.dailydiary.http.HttpResponseHandler;
 import sxkeji.net.dailydiary.storage.ACache;
 import sxkeji.net.dailydiary.storage.Constant;
+import sxkeji.net.dailydiary.storage.SharedPreferencesUtils;
 import sxkeji.net.dailydiary.utils.UIUtils;
 
 /**
@@ -141,7 +142,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 changeBgAndCloseDrawer(rlBackup);
-                jumpToActivity(CloudBackupActivity.class);
+                if (!checkLoginState()) {   //未登录
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    intent.putExtra(Constant.EXTRA_TO, Constant.ACTIVITY_CLOUD_BACK);
+                    startActivity(intent);
+                }else {
+                    jumpToActivity(CloudBackupActivity.class);
+                }
             }
         });
 
@@ -149,7 +156,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 changeBgAndCloseDrawer(rlLocalExport);
-                jumpToActivity(LoginActivity.class);
+                if (!checkLoginState()) {   //未登录
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    intent.putExtra(Constant.EXTRA_TO, Constant.ACTIVITY_LOCAL_EXPROT);
+                    startActivity(intent);
+                }else {
+                    jumpToActivity(LocalExportActivity.class);
+                }
             }
         });
 
@@ -177,6 +190,15 @@ public class MainActivity extends AppCompatActivity {
                 jumpToActivity(AboutActivity.class);
             }
         });
+    }
+
+    /**
+     * 检查是否登录，有些操作需要登录后才可以进行
+     *  @return true if logined ; false not
+     */
+    private boolean checkLoginState() {
+        boolean isLogin = (boolean) SharedPreferencesUtils.get(this, Constant.ACCOUNT_IS_LOGIN, false);
+        return isLogin;
     }
 
     /**

@@ -75,14 +75,20 @@ public class LoginActivity extends AppCompatActivity {
     private String userNumber;
     private String userPassword;
     private String verifyCode;
+    private String jump2WhichActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        getData();
         initViews();
         setListeners();
+    }
+
+    private void getData() {
+        jump2WhichActivity = getIntent().getStringExtra(Constant.EXTRA_TO);
     }
 
     private void setListeners() {
@@ -180,7 +186,7 @@ public class LoginActivity extends AppCompatActivity {
             public void done(AVUser avUser, AVException e) {
                 if (e == null) {
                     showToast("登录成功");
-                    SharedPreferencesUtils.put(LoginActivity.this, Constant.ACCOUNT_USER_NUMBER, number);
+                    writeState2Local(number);
                     jump2NextActivity();
                 } else {
                     int errorCode = e.getCode();
@@ -222,7 +228,7 @@ public class LoginActivity extends AppCompatActivity {
                             if (e == null) {
                                 // 注册成功,直接进入下一界面，省去再让用户登录
                                 showToast("注册成功");
-                                SharedPreferencesUtils.put(LoginActivity.this, Constant.ACCOUNT_USER_NUMBER, phoneNumber);
+                                writeState2Local(phoneNumber);
                                 jump2NextActivity();
                             } else {
                                 showToast("注册失败 " + e.getMessage());
@@ -238,10 +244,34 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void jump2NextActivity() {
+    /**
+     * 保存登录状态到本地
+     *
+     * @param number
+     */
+    private void writeState2Local(String number) {
+        SharedPreferencesUtils.put(LoginActivity.this, Constant.ACCOUNT_USER_NUMBER, number);
+        SharedPreferencesUtils.put(LoginActivity.this, Constant.ACCOUNT_IS_LOGIN, true);
+    }
 
-        Intent intent = new Intent(LoginActivity.this, CloudBackupActivity.class);
+    /**
+     * 根据进入时传入的参数跳转到不同的 Activity
+     */
+    private void jump2NextActivity() {
+        Intent intent;
+        switch (jump2WhichActivity) {
+            case Constant.ACTIVITY_CLOUD_BACK:
+                intent = new Intent(LoginActivity.this, CloudBackupActivity.class);
+                break;
+            case Constant.ACTIVITY_LOCAL_EXPROT:
+                intent = new Intent(LoginActivity.this, LocalExportActivity.class);
+                break;
+            default:
+                intent = new Intent(LoginActivity.this, MainActivity.class);
+                break;
+        }
         startActivity(intent);
+        finish();
     }
 
     /**
