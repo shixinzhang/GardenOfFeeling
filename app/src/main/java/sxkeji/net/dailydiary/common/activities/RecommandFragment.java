@@ -1,6 +1,7 @@
 package sxkeji.net.dailydiary.common.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.List;
@@ -71,9 +71,14 @@ public class RecommandFragment extends Fragment {
         adapter.setmOnItemClickListener(new AllRecommandAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(OpenEyeDailyBean.IssueListEntity.ItemListEntity.DataEntity eyeDailyBean, int position) {
-                Toast.makeText(getContext(),"播放",Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "播放" + eyeDailyBean.getTitle() +"/url " + eyeDailyBean.getPlayUrl(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), VideoPlayerActivity.class);
+                intent.putExtra(Constant.PLAY_TITLE, eyeDailyBean.getTitle());
+                intent.putExtra(Constant.PLAY_URL, eyeDailyBean.getPlayUrl());
+                startActivity(intent);
             }
         });
+
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
     }

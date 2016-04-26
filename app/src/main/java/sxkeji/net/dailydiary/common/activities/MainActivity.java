@@ -178,8 +178,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 changeBgAndCloseDrawer(rlSetting);
-//                jumpToActivity(SettingActivity.class);
-                jumpToActivity(CreateGestureActivity.class);
+                jumpToActivity(SettingActivity.class);
+//                jumpToActivity(CreateGestureActivity.class);
             }
         });
 

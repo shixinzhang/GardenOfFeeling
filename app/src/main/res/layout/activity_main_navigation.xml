@@ -110,13 +110,14 @@
             android:text="草稿箱"
             android:textColor="@color/name_half_black"
             android:textSize="14sp" />
+
         <TextView
             android:id="@+id/tv_draft_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="16dp"
             android:layout_centerVertical="true"
+            android:layout_marginRight="16dp"
             android:ellipsize="end"
             android:maxLength="12"
             android:singleLine="true"
@@ -151,8 +152,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="16dp"
             android:layout_centerVertical="true"
+            android:layout_marginRight="16dp"
             android:ellipsize="end"
             android:maxLength="12"
             android:singleLine="true"
@@ -161,7 +162,8 @@
             android:textSize="12sp" />
     </RelativeLayout>
 
-    <View style="@style/Line_horizon_grey" />
+    <View
+        style="@style/Line_horizon_grey" />
 
     <RelativeLayout
         android:id="@+id/rl_backup"
@@ -187,8 +189,8 @@
         <ImageView
             android:layout_width="5dp"
             android:layout_height="5dp"
-            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="24dp"
             android:src="@drawable/red_circle" />
     </RelativeLayout>
@@ -216,7 +218,8 @@
             android:textSize="14sp" />
     </RelativeLayout>
 
-    <View style="@style/Line_horizon_grey" />
+    <View
+        style="@style/Line_horizon_light_grey" />
 
     <RelativeLayout
         android:id="@+id/rl_change_theme"

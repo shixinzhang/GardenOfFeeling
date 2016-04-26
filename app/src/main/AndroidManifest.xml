@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="sxkeji.net.dailydiary" >
+    package="sxkeji.net.dailydiary">
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".common.BaseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/icon_logo_sxkeji"
-        android:name=".common.BaseApplication"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".common.SplashActivity"
-            android:screenOrientation="portrait"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:theme="@style/NoSplashBackground">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,68 +26,78 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".common.activities.CreateGestureActivity"
+        <activity
+            android:name=".common.activities.CreateGestureActivity"
             android:label="@string/activity_create_gesture"
-            android:screenOrientation="portrait"
             android:launchMode="singleTop"
-            />
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".common.activities.MainActivity"
+        <activity
+            android:name=".common.activities.MainActivity"
             android:label="@string/activity_main"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".common.activities.ArticleDetailActivity"
+        <activity
+            android:name=".common.activities.ArticleDetailActivity"
             android:label="@string/activity_article_detail"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".common.activities.CloudBackupActivity"
+        <activity
+            android:name=".common.activities.CloudBackupActivity"
             android:label="@string/activity_cloud_backup"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".common.activities.LoginActivity"
+        <activity
+            android:name=".common.activities.LoginActivity"
             android:label="@string/activity_cloud_backup"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".common.activities.SettingActivity"
+        <activity
+            android:name=".common.activities.SettingActivity"
             android:label="@string/activity_setting"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".common.activities.LocalExportActivity"
+        <activity
+            android:name=".common.activities.LocalExportActivity"
             android:label="@string/activity_local_export"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".common.activities.AboutActivity"
+        <activity
+            android:name=".common.activities.AboutActivity"
             android:label="@string/activity_about"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".common.activities.Test2Activity"
             android:label="@string/activity_main"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".common.activities.RecyclerTestActivity"
             android:label="@string/activity_test"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTop"/>
-
-        <activity android:name=".common.activities.TestActivity"
-            android:label="@string/activity_test"
-            android:launchMode="singleTop"/>
-
-        <activity android:name=".common.activities.ArticleWriteActivity"
-            android:label="@string/activity_write_article"
             android:launchMode="singleTop"
-            />
+            android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".common.activities.TestActivity"
+            android:label="@string/activity_test"
+            android:launchMode="singleTop" />
+
+        <activity
+            android:name=".common.activities.ArticleWriteActivity"
+            android:label="@string/activity_write_article"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".common.activities.VideoPlayerActivity"
+            android:launchMode="singleTop" />
     </application>
 
 </manifest>

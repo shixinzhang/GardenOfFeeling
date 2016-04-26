@@ -19,4 +19,8 @@
 
     <!-- 登录按钮边距 -->
     <dimen name="login_edit_margin">32dp</dimen>
+
+    <!-- 设置 -->
+    <dimen name="group_margin_top">4dp</dimen>
+    <dimen name="group_title_text_size">16dp</dimen>
 </resources>

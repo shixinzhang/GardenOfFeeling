@@ -48,7 +48,7 @@ dependencies {
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'de.greenrobot:greendao:2.0.0'
     compile 'com.ramotion.foldingcell:folding-cell:1.0.0'
-
+    compile 'fm.jiecao:jiecaovideoplayer:3.0_preview'
     compile files('libs/bugly_1.2.6_release.jar')
     compile files('libs/avoscloud-sdk-v3.13.7.jar')
     compile files('libs/fastjson.jar')

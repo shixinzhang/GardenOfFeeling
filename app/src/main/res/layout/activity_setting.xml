@@ -3,13 +3,277 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bg_white_light"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
-        style="@style/mToolBar"
         android:id="@+id/toolbar"
-        app:title="@string/activity_setting"
+        style="@style/mToolBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:title="@string/activity_setting" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_title_sync"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:paddingTop="16dp"
+                android:text="同步"
+                android:textColor="@color/primary"
+                android:textSize="@dimen/group_title_text_size" />
+
+            <RelativeLayout
+                android:id="@+id/rl_sync_auto"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <TextView
+                    android:id="@+id/tv_sync_auto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="创建新文章后自动上传"
+                    android:textColor="@color/primary_text"
+                    android:textSize="16sp" />
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/switch_sync_auto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_sync_platform"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <TextView
+                    android:id="@+id/tv_sync_platform"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="数据保存平台"
+                    android:textColor="@color/primary_text"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="8dp"
+                    android:text="百度云"
+                    android:textColor="@color/primary_text"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_title_security"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/group_margin_top"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:paddingTop="16dp"
+                android:text="安全"
+                android:textColor="@color/primary"
+                android:textSize="@dimen/group_title_text_size" />
+
+            <RelativeLayout
+                android:id="@+id/rl_security_app_lock"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <TextView
+                    android:id="@+id/tv_security_app_lock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="开启软件密码锁"
+                    android:textColor="@color/primary_text"
+                    android:textSize="16sp" />
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/switch_security_app_lock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_title_reminder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/group_margin_top"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:paddingTop="16dp"
+                android:text="提醒"
+                android:textColor="@color/primary"
+                android:textSize="@dimen/group_title_text_size" />
+
+            <RelativeLayout
+                android:id="@+id/rl_reminder_every_day"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <TextView
+                    android:id="@+id/tv_reminder_every_day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="开启每日提醒"
+                    android:textColor="@color/primary_text"
+                    android:textSize="16sp" />
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/switch_reminder_every_day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_reminder_way"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <TextView
+                    android:id="@+id/tv_reminder_way"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="提醒方式"
+                    android:textColor="@color/primary_text"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="8dp"
+                    android:text="振动"
+                    android:textColor="@color/primary_text"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_title_about"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/group_margin_top"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:paddingTop="16dp"
+                android:text="关于"
+                android:textColor="@color/primary"
+                android:textSize="@dimen/group_title_text_size" />
+
+            <TextView
+                android:id="@+id/tv_about_app"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:text="关于本软件"
+                android:textColor="@color/primary_text"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_about_pay"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:text="打赏作者"
+                android:textColor="@color/primary_text"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_title_feedback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/group_margin_top"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:paddingTop="16dp"
+                android:text="反馈"
+                android:textColor="@color/primary"
+                android:textSize="@dimen/group_title_text_size" />
+
+            <TextView
+                android:id="@+id/tv_feedback_evaluate"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:text="应用市场评价"
+                android:textColor="@color/primary_text"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_feedback_directly"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:text="直接反馈"
+                android:textColor="@color/primary_text"
+                android:textSize="16sp" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="64dp"
+                android:layout_marginRight="64dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_btn_blue"
+                android:text="退出当前账号"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>
