@@ -9,12 +9,34 @@ public class GreenDaoGenerator {
         int version = 2;
         Schema schema = new Schema(version, "sxkeji.net.dailydiary");
         addArticle(schema);
+        addToDo(schema);
 
         new DaoGenerator().generateAll(schema,
                 "C:\\zsx\\DD\\codes\\GardenOfFeeling\\app\\src\\main\\java-gen");
-        }
+    }
 
-    public static void addArticle(Schema schema){
+    /**
+     * 创建ToDo表
+     *
+     * @param schema
+     */
+    private static void addToDo(Schema schema) {
+        Entity toDo = schema.addEntity("Todo");
+
+        toDo.addIdProperty();
+        toDo.addDateProperty("date");
+        toDo.addStringProperty("content").notNull();
+        toDo.addIntProperty("color").notNull();
+        toDo.addBooleanProperty("hasReminder").notNull();
+        toDo.addBooleanProperty("showOnLockScreen");
+    }
+
+    /**
+     * 创建文章表
+     *
+     * @param schema
+     */
+    public static void addArticle(Schema schema) {
         Entity entity = schema.addEntity("Article");
 
         entity.addIdProperty();
@@ -25,6 +47,7 @@ public class GreenDaoGenerator {
         entity.addStringProperty("content").notNull();
         entity.addIntProperty("type");
         entity.addStringProperty("img_path");
+        entity.setHasKeepSections(true);
 
     }
 }

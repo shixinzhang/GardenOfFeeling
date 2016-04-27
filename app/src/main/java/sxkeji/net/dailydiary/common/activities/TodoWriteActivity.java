@@ -3,17 +3,21 @@ package sxkeji.net.dailydiary.common.activities;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
@@ -24,7 +28,10 @@ import java.util.Date;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import sxkeji.net.dailydiary.R;
+import sxkeji.net.dailydiary.Todo;
 import sxkeji.net.dailydiary.common.BaseActivity;
+import sxkeji.net.dailydiary.common.BaseApplication;
+import sxkeji.net.dailydiary.utils.ColorGeneratorUtils;
 import sxkeji.net.dailydiary.utils.LogUtils;
 import sxkeji.net.dailydiary.utils.UIUtils;
 
@@ -57,9 +64,12 @@ public class TodoWriteActivity extends BaseActivity implements TimePickerDialog.
     @Bind(R.id.fab_done)
     FloatingActionButton fabDone;
 
+    private final String TAG = "TodoWriteActivity";
     private Date currentDate, selectDate;
     private int currentYear, currentMonth, currentDay, currentHour, currentMinute;
     private int selectYear, selectMonth, selectDay, selectHour, selectMinute;
+    private boolean hasReminder;    //是否要提醒
+    private boolean showOnLockScreen;   //是否显示到锁屏
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,12 +106,16 @@ public class TodoWriteActivity extends BaseActivity implements TimePickerDialog.
 
     private void initViews() {
         setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(R.mipmap.ic_clear_white);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setElevation(0);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeAsUpIndicator(R.mipmap.icon_clear_white);
+        }
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                finish();
             }
         });
 
@@ -114,6 +128,7 @@ public class TodoWriteActivity extends BaseActivity implements TimePickerDialog.
         switchSetReminder.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                hasReminder = isChecked;
                 visibleOrInvisible(isChecked);
             }
         });
@@ -133,6 +148,30 @@ public class TodoWriteActivity extends BaseActivity implements TimePickerDialog.
                 showMaterialTimePicker();
             }
         });
+
+        fabDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveToDo2DB();
+            }
+        });
+    }
+
+    /**
+     * 保存ToDo
+     */
+    private void saveToDo2DB() {
+        String todoContent = etContent.getText().toString();
+        int todoColor = ColorGeneratorUtils.MATERIAL.getRandomColor();
+        if (TextUtils.isEmpty(todoContent)) {
+            UIUtils.showToastSafe(TodoWriteActivity.this, "你忘了输入哦");
+            return;
+        }
+        Todo newToDo = new Todo(null, selectDate, todoContent, todoColor, hasReminder, showOnLockScreen);
+        BaseApplication.getDaoSession().getTodoDao().insert(newToDo);
+        UIUtils.showToastSafe(TodoWriteActivity.this, "ToDo保存成功");
+        LogUtils.e(TAG, "new ToDo :" + newToDo.getDate() + "/" + newToDo.getContent() + "/ "
+                + newToDo.getColor() + "/" + newToDo.getHasReminder());
     }
 
 
@@ -144,7 +183,7 @@ public class TodoWriteActivity extends BaseActivity implements TimePickerDialog.
     private void visibleOrInvisible(final boolean show) {
         float start, end;
         if (show) {
-            start = 0f;
+            start = 0.5f;
             end = 1f;
         } else {
             start = 1f;
@@ -215,7 +254,9 @@ public class TodoWriteActivity extends BaseActivity implements TimePickerDialog.
         if (selectDate.before(currentDate)) {
             tvSelectDateResult.setText("您选择的日期已经过去，无法提醒");
             tvSelectDateResult.setTextColor(getResources().getColor(R.color.accent));
+            hasReminder = false;
         } else {
+            hasReminder = true;
             tvSelectDateResult.setText("");
 //            tvSelectDateResult.setTextColor(getResources().getColor(R.color.secondary_text));
         }
@@ -234,9 +275,11 @@ public class TodoWriteActivity extends BaseActivity implements TimePickerDialog.
 
         if (selectDate.before(currentDate)) {
             tvSelectDateResult.setText("您选择的时间已经过去，无法提醒");
+            hasReminder = false;
             tvSelectDateResult.setTextColor(getResources().getColor(R.color.accent));
         } else {
             tvSelectDateResult.setText("");
+            hasReminder = true;
 //            tvSelectDateResult.setTextColor(getResources().getColor(R.color.secondary_text));
         }
     }
@@ -253,19 +296,25 @@ public class TodoWriteActivity extends BaseActivity implements TimePickerDialog.
      * 设置选择时间
      */
     private void setText2TimeEditText() {
-        String selectTimeStr = getFormatStr(selectHour) + " : " +getFormatStr(selectMinute);
+        String selectTimeStr = getFormatStr(selectHour) + " : " + getFormatStr(selectMinute);
         etTime.setText(selectTimeStr);
 
     }
 
     /**
      * 格式化数字
+     *
      * @param number
-     * @return  小于0 时 加0前缀
+     * @return 小于0 时 加0前缀
      */
-    private String getFormatStr(int number){
+    private String getFormatStr(int number) {
         return number < 10 ? ("0" + number) : ("" + number);
     }
 
 
+    @Override
+    public void onBackPressed() {
+        UIUtils.showToastSafe(this, "onBackPressed");
+        super.onBackPressed();
+    }
 }

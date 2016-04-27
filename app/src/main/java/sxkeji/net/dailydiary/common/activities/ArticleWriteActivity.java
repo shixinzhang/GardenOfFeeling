@@ -91,7 +91,6 @@ public class ArticleWriteActivity extends AppCompatActivity {
     LinearLayout llWriteMarkdown;
     @Bind(R.id.fab_preview_save)
     FloatingActionButton fabPreviewSave;
-    private Cursor cursor;
     private ExtendMediaPicker mediaPicker;
     private String editContent;
     private String articleDate;
