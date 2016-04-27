@@ -33,6 +33,8 @@
     <string name="add_article">有感而发，来篇随笔</string>
     <string name="add_reminder">繁事锁身，记个备忘</string>
     <string name="add_cancel">算了，没什么要写的</string>
+    <string name="view_empty_tip_article">您还没有创建文章</string>
+    <string name="view_empty_tip_todo">您还没有创建待做事项</string>
 
     <!-- 手势密码登录 -->
     <string name="gesture_forget_gesture">忘记手势密码</string>

@@ -37,7 +37,7 @@
             android:paddingBottom="8dp"
             android:layout_below="@id/iv_empty"
             android:layout_centerHorizontal="true"
-            android:text="@string/view_empty_tip_article"
+            android:text="@string/view_empty_tip_todo"
             android:textColor="@color/secondary_text"
             android:textSize="16sp" />
     </RelativeLayout>
