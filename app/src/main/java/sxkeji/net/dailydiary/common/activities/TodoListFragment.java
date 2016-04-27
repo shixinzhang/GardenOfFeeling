@@ -23,6 +23,8 @@ import sxkeji.net.dailydiary.Todo;
 import sxkeji.net.dailydiary.TodoDao;
 import sxkeji.net.dailydiary.common.BaseApplication;
 import sxkeji.net.dailydiary.common.views.adapters.AllTodoRecyclerAdapter;
+import sxkeji.net.dailydiary.storage.Constant;
+import sxkeji.net.dailydiary.storage.SharedPreferencesUtils;
 import sxkeji.net.dailydiary.utils.ViewUtils;
 
 /**
@@ -39,6 +41,7 @@ public class TodoListFragment extends Fragment {
     private AllTodoRecyclerAdapter adapter;
     private TodoDao todoDao;
     private ArrayList<Todo> todoList;
+    private boolean orderByDec = true;     //按照剩余时间升序还是降序排列，默认降序
 
     @Nullable
     @Override
@@ -51,18 +54,32 @@ public class TodoListFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        initData();
         initViews();
+    }
+
+    private void initData() {
+        todoDao = BaseApplication.getDaoSession().getTodoDao();
+        orderByDec = (boolean) SharedPreferencesUtils.get(getContext(), Constant.SETTING_TODO_ORDER, true);
+
         initTodoListData();
     }
 
-    private void initViews() {
-        todoDao = BaseApplication.getDaoSession().getTodoDao();
-    }
-
+    /**
+     * 获取待做事项数据
+     */
     private void initTodoListData() {
         todoList = new ArrayList<>();
-        Query<Todo> query = todoDao.queryBuilder().orderDesc(TodoDao.Properties.Date).build();
+        Query<Todo> query;
+        if (orderByDec) {
+            query = todoDao.queryBuilder().orderDesc(TodoDao.Properties.Date).build();
+        } else {
+            query = todoDao.queryBuilder().orderAsc(TodoDao.Properties.Date).build();
+        }
         todoList = (ArrayList<Todo>) query.list();
+    }
+
+    private void initViews() {
         if (todoList == null || todoList.size() == 0) {
             rlEmptyView.setVisibility(View.VISIBLE);
             return;

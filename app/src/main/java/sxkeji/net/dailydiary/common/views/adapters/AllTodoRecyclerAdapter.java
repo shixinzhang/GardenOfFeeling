@@ -68,7 +68,7 @@ public class AllTodoRecyclerAdapter extends RecyclerView.Adapter<AllTodoRecycler
             holder.tvDate.setVisibility(View.VISIBLE);
             //剩余时间,单位毫秒
             long leftTime = (todoDate.getTime() - nowDate.getTime());
-            showLeftTime(holder.tvDate, Math.abs(leftTime));
+            showLeftTime(holder.tvDate, leftTime);
             holder.tvDate.setTextColor(todoColor);
         } else {
             holder.tvContent.setMaxLines(2);
@@ -98,27 +98,30 @@ public class AllTodoRecyclerAdapter extends RecyclerView.Adapter<AllTodoRecycler
      */
     private void showLeftTime(TextView textView, long leftTime) {
         if (leftTime > oneYear) {
-            textView.setText("还有 " + leftTime / oneYear + "年 结束");
+            textView.setText("还剩 " + leftTime / oneYear + "年 ");
             return;
         }
         if (leftTime > oneMonth) {
-            textView.setText("还有 " + leftTime / oneMonth + "个月 结束");
+            textView.setText("还剩 " + leftTime / oneMonth + "个月 ");
             return;
         }
         if (leftTime > oneDay) {
-            textView.setText("还有 " + leftTime / oneDay + "天 结束");
+            textView.setText("还剩 " + leftTime / oneDay + "天 ");
             return;
         }
         if (leftTime > oneHour) {
-            textView.setText("还有 " + leftTime / oneHour + "小时 结束");
+            textView.setText("还剩 " + leftTime / oneHour + "小时 ");
             return;
         }
         if (leftTime > oneMinute) {
-            textView.setText("还有 " + leftTime / oneMinute + "分钟 结束");
+            textView.setText("还剩 " + leftTime / oneMinute + "分钟 ");
             return;
         }
         if (leftTime > oneSecond) {
-            textView.setText("还有 " + leftTime / oneSecond + "秒 结束");
+            textView.setText("还剩 " + leftTime / oneSecond + "秒 ");
+            return;
+        } else {
+            textView.setText("已过期");
             return;
         }
     }

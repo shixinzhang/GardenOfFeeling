@@ -24,6 +24,9 @@ public class Constant {
     public static final String ACCOUNT_IS_LOGIN = "account_login";
     public static final String ACCOUNT_USER_NUMBER = "account_number";
 
+    //可以用户设置的状态
+    public static final String SETTING_TODO_ORDER = "todo_order";
+
     //Activity间跳转传递的数据
     public static final String EXTRA_FROM = "start_from";
     public static final String EXTRA_TO = "jump_to";
