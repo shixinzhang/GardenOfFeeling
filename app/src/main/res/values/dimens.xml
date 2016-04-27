@@ -23,4 +23,6 @@
     <!-- 设置 -->
     <dimen name="group_margin_top">4dp</dimen>
     <dimen name="group_title_text_size">16dp</dimen>
+
+    <dimen name="todo_margin_left_right">16dp</dimen>
 </resources>

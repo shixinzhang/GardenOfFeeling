@@ -24,7 +24,9 @@ import java.util.List;
 import sxkeji.net.dailydiary.BuildConfig;
 import sxkeji.net.dailydiary.DaoMaster;
 import sxkeji.net.dailydiary.DaoSession;
+import sxkeji.net.dailydiary.R;
 import sxkeji.net.dailydiary.storage.Constant;
+import sxkeji.net.dailydiary.storage.SharedPreferencesUtils;
 import sxkeji.net.dailydiary.utils.LogUtils;
 
 /**

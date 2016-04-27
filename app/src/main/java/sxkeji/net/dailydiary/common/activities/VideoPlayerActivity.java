@@ -80,6 +80,7 @@ public class VideoPlayerActivity extends Activity {
         if (!TextUtils.isEmpty(playTitle)){
             tvTitle.setText(playTitle);
         }
+        Toast.makeText(VideoPlayerActivity.this, "精彩正在缓存，请点击播放", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -114,7 +115,6 @@ public class VideoPlayerActivity extends Activity {
                         isPause = true;
                     }
                 } else {
-                    Toast.makeText(VideoPlayerActivity.this, "精彩马上就来，请稍等", Toast.LENGTH_SHORT).show();
                     if (!TextUtils.isEmpty(playUrl)) {
                         player.playUrl(playUrl);
                         isPlaying = true;

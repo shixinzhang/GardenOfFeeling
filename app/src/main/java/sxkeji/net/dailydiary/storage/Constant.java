@@ -16,6 +16,9 @@ public class Constant {
     public static String ARTICLE_TYPE = "article_type";
     public static String OPEN_EYE_DATA = "open_eye_dialy";
     public static final String GESTURE_PASSWORD = "GesturePassword";
+    public static final String THEME = "theme";
+    public static final String THEME_LIGHT = "theme_light";
+    public static final String THEME_DARK = "theme_dark";
 
     //账户状态相关
     public static final String ACCOUNT_IS_LOGIN = "account_login";
@@ -45,9 +48,9 @@ public class Constant {
     public static final String OPEN_EYE_LAST_CHANNEL = "eyepetizer_meizu_market%20ZHOU";
 
     //文档类型
-    public static final int TYPE_MARKDOWN = 0 ;
+    public static final int TYPE_MARKDOWN = 0 ; //markdown
     public static final int TYPE_NORMAL = 1 ;
-    public static final int TYPE_REMINDER = 2;
+    public static final int TYPE_REMINDER = 2;  //todo
     public static final int TYPE_DRAFT = 3 ; //草稿
 
     //缓存地址

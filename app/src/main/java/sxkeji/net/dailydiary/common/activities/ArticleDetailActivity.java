@@ -24,6 +24,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import sxkeji.net.dailydiary.Article;
 import sxkeji.net.dailydiary.R;
+import sxkeji.net.dailydiary.common.BaseActivity;
 import sxkeji.net.dailydiary.common.BaseApplication;
 import sxkeji.net.dailydiary.storage.Constant;
 
@@ -31,7 +32,7 @@ import sxkeji.net.dailydiary.storage.Constant;
  * 文章详情Activity
  * Created by zhangshixin on 4/13/2016.
  */
-public class ArticleDetailActivity extends AppCompatActivity {
+public class ArticleDetailActivity extends BaseActivity {
     private final String TAG = "ArticleDetailActivity";
     @Bind(R.id.img_select)
     ImageView imgSelect;

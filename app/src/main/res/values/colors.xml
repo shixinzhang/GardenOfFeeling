@@ -38,6 +38,8 @@
     <color name="grey_f6f6f6">#f6f6f6</color>
     <color name="grey_a5a5a5">#A5A5A5</color>
     <color name="grey_dde1e7">#DDE1E7</color>
+    <color name="grey600">#757575</color>
+    <color name="grey300">#E0E0E0</color>
     <color name="red_f4333c">#F4333C</color>
     <color name="red">#FF0000</color>
     <color name="gold">#FFD700</color>

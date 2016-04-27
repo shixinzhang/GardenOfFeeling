@@ -23,6 +23,7 @@ import de.greenrobot.dao.query.Query;
 import sxkeji.net.dailydiary.Article;
 import sxkeji.net.dailydiary.ArticleDao;
 import sxkeji.net.dailydiary.R;
+import sxkeji.net.dailydiary.common.BaseActivity;
 import sxkeji.net.dailydiary.common.BaseApplication;
 import sxkeji.net.dailydiary.http.HttpClient;
 import sxkeji.net.dailydiary.http.LoadingPage;
@@ -34,7 +35,7 @@ import sxkeji.net.dailydiary.utils.UIUtils;
  * 云备份
  * Created by zhangshixin on 4/14/2016.
  */
-public class CloudBackupActivity extends AppCompatActivity {
+public class CloudBackupActivity extends BaseActivity {
     private final String TAG = "CloudBackupActivity";
     @Bind(R.id.toolbar)
     Toolbar toolbar;

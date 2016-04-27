@@ -25,6 +25,69 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_title_todo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:paddingTop="16dp"
+                android:text="ToDo"
+                android:textColor="@color/primary"
+                android:textSize="@dimen/group_title_text_size" />
+
+            <RelativeLayout
+                android:id="@+id/rl_todo_auto_save"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <TextView
+                    android:id="@+id/tv_todo_auto_save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="自动保存"
+                    android:textColor="@color/primary_text"
+                    android:textSize="16sp" />
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/switch_todo_auto_save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_todo_show_when_lock"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <TextView
+                    android:id="@+id/tv_todo_show_when_lock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="自动添加到锁屏"
+                    android:textColor="@color/primary_text"
+                    android:textSize="16sp" />
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/switch_todo_show_when_lock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true" />
+            </RelativeLayout>
+
+            <TextView
                 android:id="@+id/tv_title_sync"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -49,7 +112,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="创建新文章后自动上传"
+                    android:text="保存后自动上传"
                     android:textColor="@color/primary_text"
                     android:textSize="16sp" />
 
@@ -60,6 +123,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true" />
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/rl_sync_platform"
                 android:layout_width="match_parent"
@@ -87,6 +151,7 @@
                     android:textColor="@color/primary_text"
                     android:textSize="16sp" />
             </RelativeLayout>
+
             <TextView
                 android:id="@+id/tv_title_security"
                 android:layout_width="match_parent"
@@ -151,7 +216,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="开启每日提醒"
+                    android:text="每日记录提醒"
                     android:textColor="@color/primary_text"
                     android:textSize="16sp" />
 
@@ -159,10 +224,37 @@
                     android:id="@+id/switch_reminder_every_day"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:checked="true"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true" />
             </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_reminder_time"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="提醒时间"
+                    android:textColor="@color/primary_text"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_reminder_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="8dp"
+                    android:text="20 : 00"
+                    android:textColor="@color/primary_text"
+                    android:textSize="16sp" />
+            </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/rl_reminder_way"
                 android:layout_width="match_parent"
@@ -172,7 +264,6 @@
                 android:paddingRight="16dp">
 
                 <TextView
-                    android:id="@+id/tv_reminder_way"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -181,6 +272,7 @@
                     android:textSize="16sp" />
 
                 <TextView
+                    android:id="@+id/tv_reminder_way"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -222,7 +314,7 @@
                 android:background="@color/white"
                 android:gravity="center_vertical"
                 android:paddingLeft="16dp"
-                android:text="打赏作者"
+                android:text="捐赠作者"
                 android:textColor="@color/primary_text"
                 android:textSize="16sp" />
 

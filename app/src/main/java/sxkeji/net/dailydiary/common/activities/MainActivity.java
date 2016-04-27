@@ -37,6 +37,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import sxkeji.net.dailydiary.R;
 import sxkeji.net.dailydiary.beans.OpenEyeDailyBean;
+import sxkeji.net.dailydiary.common.BaseActivity;
 import sxkeji.net.dailydiary.common.views.adapters.MainTabsVPAdapter;
 import sxkeji.net.dailydiary.http.HttpClient;
 import sxkeji.net.dailydiary.http.HttpResponseHandler;
@@ -49,7 +50,7 @@ import sxkeji.net.dailydiary.utils.UIUtils;
  * 主页
  * Created by zhangshixin on 3/14/2016.
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.tab_layout)
@@ -170,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 changeBgAndCloseDrawer(rlChangeTheme);
-                changeTheme();
+//                changeTheme();
             }
         });
 
@@ -202,13 +203,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * 更换主题
-     */
-    private void changeTheme() {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-    }
-
-    /**
      * 选择要添加的类型
      */
     private void showChooseBottomSheet() {
@@ -225,6 +219,7 @@ public class MainActivity extends AppCompatActivity {
                                 jumpToActivity(ArticleWriteActivity.class);
                                 break;
                             case R.id.item_reminder:
+                                jumpToActivity(TodoWriteActivity.class);
                                 break;
                             case R.id.item_cancel:
                                 break;
