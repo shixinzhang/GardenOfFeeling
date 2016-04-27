@@ -307,7 +307,7 @@ public class MainActivity extends BaseActivity {
     private void loadTabsViewPagerData() {
         MainTabsVPAdapter mTabsVPAdapter = new MainTabsVPAdapter(getSupportFragmentManager());
         mTabsVPAdapter.addFragment(new HomeFragment(), "全部");
-        mTabsVPAdapter.addFragment(new HomeFragment(), "文件夹");
+        mTabsVPAdapter.addFragment(new TodoListFragment(), "ToDo");
         mTabsVPAdapter.addFragment(new RecommandFragment(), "发现");
         vpTabContent.setAdapter(mTabsVPAdapter);
     }

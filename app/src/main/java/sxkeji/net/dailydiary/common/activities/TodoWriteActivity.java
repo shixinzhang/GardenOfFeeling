@@ -172,6 +172,7 @@ public class TodoWriteActivity extends BaseActivity implements TimePickerDialog.
         UIUtils.showToastSafe(TodoWriteActivity.this, "ToDo保存成功");
         LogUtils.e(TAG, "new ToDo :" + newToDo.getDate() + "/" + newToDo.getContent() + "/ "
                 + newToDo.getColor() + "/" + newToDo.getHasReminder());
+        finish();
     }
 
 
@@ -314,7 +315,8 @@ public class TodoWriteActivity extends BaseActivity implements TimePickerDialog.
 
     @Override
     public void onBackPressed() {
-        UIUtils.showToastSafe(this, "onBackPressed");
+        UIUtils.showToastSafe(this, "自动保存");
+        saveToDo2DB();
         super.onBackPressed();
     }
 }

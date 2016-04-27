@@ -149,6 +149,16 @@ public class StringUtils {
         }
     }
 
+    /**
+     * 将日期转换为字符串
+     * @param dateToFormat
+     * @return
+     */
+    public static String dateToString(Date dateToFormat){
+        String formatString = "yyyy年MM月dd日 HH:mm";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(formatString);
+        return simpleDateFormat.format(dateToFormat);
+    }
 
     /**
      * 判断给定字符串时间是否为今日

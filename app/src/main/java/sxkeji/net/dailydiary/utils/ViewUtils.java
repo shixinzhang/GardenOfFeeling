@@ -234,6 +234,10 @@ public class ViewUtils {
                 popupWindow = new PopupWindow(popupView,
                         ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
                 break;
+            case 4  :   //宽、高都是wrap
+                popupWindow = new PopupWindow(popupView,
+                        ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+                break;
             default:
                 popupWindow = new PopupWindow(popupView,
                         ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
@@ -244,6 +248,7 @@ public class ViewUtils {
         popupWindow.setTouchable(true);
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
         popupWindow.showAsDropDown(root);
+//        popupWindow.show
 
         return popupView;
     }
