@@ -5,8 +5,6 @@ package sxkeji.net.dailydiary;
 // KEEP INCLUDES - put your custom includes here
 import java.io.Serializable;
 // KEEP INCLUDES END
-
-
 /**
  * Entity mapped to table ARTICLE.
  */
@@ -23,6 +21,7 @@ public class Article implements Serializable{
     private String content;
     private Integer type;
     private String img_path;
+    private String objectId;
 
     // KEEP FIELDS - put your custom fields here
     // KEEP FIELDS END
@@ -34,7 +33,7 @@ public class Article implements Serializable{
         this.id = id;
     }
 
-    public Article(Long id, String date, String address, String weather, String title, String content, Integer type, String img_path) {
+    public Article(Long id, String date, String address, String weather, String title, String content, Integer type, String img_path, String objectId) {
         this.id = id;
         this.date = date;
         this.address = address;
@@ -43,6 +42,7 @@ public class Article implements Serializable{
         this.content = content;
         this.type = type;
         this.img_path = img_path;
+        this.objectId = objectId;
     }
 
     public Long getId() {
@@ -113,6 +113,14 @@ public class Article implements Serializable{
 
     public void setImg_path(String img_path) {
         this.img_path = img_path;
+    }
+
+    public String getObjectId() {
+        return objectId;
+    }
+
+    public void setObjectId(String objectId) {
+        this.objectId = objectId;
     }
 
     // KEEP METHODS - put your custom methods here

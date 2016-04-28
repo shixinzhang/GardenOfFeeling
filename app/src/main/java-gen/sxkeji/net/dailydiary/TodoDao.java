@@ -29,6 +29,8 @@ public class TodoDao extends AbstractDao<Todo, Long> {
         public final static Property Color = new Property(3, int.class, "color", false, "COLOR");
         public final static Property HasReminder = new Property(4, boolean.class, "hasReminder", false, "HAS_REMINDER");
         public final static Property ShowOnLockScreen = new Property(5, Boolean.class, "showOnLockScreen", false, "SHOW_ON_LOCK_SCREEN");
+        public final static Property IsFinished = new Property(6, boolean.class, "isFinished", false, "IS_FINISHED");
+        public final static Property ObjectId = new Property(7, String.class, "objectId", false, "OBJECT_ID");
     };
 
 
@@ -49,7 +51,9 @@ public class TodoDao extends AbstractDao<Todo, Long> {
                 "'CONTENT' TEXT NOT NULL ," + // 2: content
                 "'COLOR' INTEGER NOT NULL ," + // 3: color
                 "'HAS_REMINDER' INTEGER NOT NULL ," + // 4: hasReminder
-                "'SHOW_ON_LOCK_SCREEN' INTEGER);"); // 5: showOnLockScreen
+                "'SHOW_ON_LOCK_SCREEN' INTEGER," + // 5: showOnLockScreen
+                "'IS_FINISHED' INTEGER NOT NULL ," + // 6: isFinished
+                "'OBJECT_ID' TEXT);"); // 7: objectId
     }
 
     /** Drops the underlying database table. */
@@ -80,6 +84,12 @@ public class TodoDao extends AbstractDao<Todo, Long> {
         if (showOnLockScreen != null) {
             stmt.bindLong(6, showOnLockScreen ? 1l: 0l);
         }
+        stmt.bindLong(7, entity.getIsFinished() ? 1l: 0l);
+ 
+        String objectId = entity.getObjectId();
+        if (objectId != null) {
+            stmt.bindString(8, objectId);
+        }
     }
 
     /** @inheritdoc */
@@ -97,7 +107,9 @@ public class TodoDao extends AbstractDao<Todo, Long> {
             cursor.getString(offset + 2), // content
             cursor.getInt(offset + 3), // color
             cursor.getShort(offset + 4) != 0, // hasReminder
-            cursor.isNull(offset + 5) ? null : cursor.getShort(offset + 5) != 0 // showOnLockScreen
+            cursor.isNull(offset + 5) ? null : cursor.getShort(offset + 5) != 0, // showOnLockScreen
+            cursor.getShort(offset + 6) != 0, // isFinished
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7) // objectId
         );
         return entity;
     }
@@ -111,6 +123,8 @@ public class TodoDao extends AbstractDao<Todo, Long> {
         entity.setColor(cursor.getInt(offset + 3));
         entity.setHasReminder(cursor.getShort(offset + 4) != 0);
         entity.setShowOnLockScreen(cursor.isNull(offset + 5) ? null : cursor.getShort(offset + 5) != 0);
+        entity.setIsFinished(cursor.getShort(offset + 6) != 0);
+        entity.setObjectId(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
      }
     
     /** @inheritdoc */

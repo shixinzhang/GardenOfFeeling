@@ -31,6 +31,7 @@ public class ArticleDao extends AbstractDao<Article, Long> {
         public final static Property Content = new Property(5, String.class, "content", false, "CONTENT");
         public final static Property Type = new Property(6, Integer.class, "type", false, "TYPE");
         public final static Property Img_path = new Property(7, String.class, "img_path", false, "IMG_PATH");
+        public final static Property ObjectId = new Property(8, String.class, "objectId", false, "OBJECT_ID");
     };
 
 
@@ -53,7 +54,8 @@ public class ArticleDao extends AbstractDao<Article, Long> {
                 "'TITLE' TEXT NOT NULL ," + // 4: title
                 "'CONTENT' TEXT NOT NULL ," + // 5: content
                 "'TYPE' INTEGER," + // 6: type
-                "'IMG_PATH' TEXT);"); // 7: img_path
+                "'IMG_PATH' TEXT," + // 7: img_path
+                "'OBJECT_ID' TEXT);"); // 8: objectId
     }
 
     /** Drops the underlying database table. */
@@ -94,6 +96,11 @@ public class ArticleDao extends AbstractDao<Article, Long> {
         if (img_path != null) {
             stmt.bindString(8, img_path);
         }
+ 
+        String objectId = entity.getObjectId();
+        if (objectId != null) {
+            stmt.bindString(9, objectId);
+        }
     }
 
     /** @inheritdoc */
@@ -113,7 +120,8 @@ public class ArticleDao extends AbstractDao<Article, Long> {
             cursor.getString(offset + 4), // title
             cursor.getString(offset + 5), // content
             cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // type
-            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7) // img_path
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // img_path
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8) // objectId
         );
         return entity;
     }
@@ -129,6 +137,7 @@ public class ArticleDao extends AbstractDao<Article, Long> {
         entity.setContent(cursor.getString(offset + 5));
         entity.setType(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
         entity.setImg_path(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setObjectId(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
      }
     
     /** @inheritdoc */

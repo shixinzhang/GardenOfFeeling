@@ -98,13 +98,13 @@ public class SplashActivity extends Activity implements ISplashView {
     private void getDataFromNet() {
         mLatestImge = FileUtils.getLatestSaveImgFilr(this);
 
+        saveImgFromNet();
+        getRecommandData();
         // TODO: 4/28/2016 线程池
         new Thread(new Runnable() {
             @Override
             public void run() {
                 Log.e(TAG, "this is from thread");
-                saveImgFromNet();
-                getRecommandData();
             }
         }).start();
     }

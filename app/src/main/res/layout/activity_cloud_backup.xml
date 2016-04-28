@@ -125,7 +125,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="8dp"
-                android:text="2015-3-23 11:46"
+                android:text="不记得了"
                 android:textColor="@color/primary_text"
                 android:textSize="16sp" />
         </RelativeLayout>
@@ -161,7 +161,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="8dp"
-                android:text="12篇"
+                android:text="0篇"
                 android:textColor="@color/primary_text"
                 android:textSize="16sp" />
         </RelativeLayout>
@@ -188,7 +188,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="8dp"
-                android:text="15篇"
+                android:text="0篇"
                 android:textColor="@color/primary_text"
                 android:textSize="16sp" />
         </RelativeLayout>
@@ -225,7 +225,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="8dp"
-                android:text="12篇"
+                android:text="0篇"
                 android:textColor="@color/primary_text"
                 android:textSize="16sp" />
         </RelativeLayout>
@@ -252,7 +252,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="8dp"
-                android:text="15篇"
+                android:text="0篇"
                 android:textColor="@color/primary_text"
                 android:textSize="16sp" />
         </RelativeLayout>
@@ -261,6 +261,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:gravity="center"
             android:paddingLeft="16dp"

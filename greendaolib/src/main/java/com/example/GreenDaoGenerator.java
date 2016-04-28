@@ -29,6 +29,8 @@ public class GreenDaoGenerator {
         toDo.addIntProperty("color").notNull();
         toDo.addBooleanProperty("hasReminder").notNull();
         toDo.addBooleanProperty("showOnLockScreen");
+        toDo.addBooleanProperty("isFinished").notNull();
+        toDo.addStringProperty("objectId");
     }
 
     /**
@@ -47,6 +49,7 @@ public class GreenDaoGenerator {
         entity.addStringProperty("content").notNull();
         entity.addIntProperty("type");
         entity.addStringProperty("img_path");
+        entity.addStringProperty("objectId");
         entity.setHasKeepSections(true);
 
     }

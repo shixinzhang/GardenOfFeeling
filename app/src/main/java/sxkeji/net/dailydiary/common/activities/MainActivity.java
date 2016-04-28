@@ -147,6 +147,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 changeBgAndCloseDrawer(rlBackup);
+                isLogin = (boolean) SharedPreferencesUtils.get(MainActivity.this, Constant.ACCOUNT_IS_LOGIN, false);
                 if (!isLogin) {   //未登录
                     Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                     intent.putExtra(Constant.EXTRA_TO, Constant.ACTIVITY_CLOUD_BACK);
@@ -161,6 +162,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 changeBgAndCloseDrawer(rlLocalExport);
+                isLogin = (boolean) SharedPreferencesUtils.get(MainActivity.this, Constant.ACCOUNT_IS_LOGIN, false);
                 if (!isLogin) {   //未登录
                     Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                     intent.putExtra(Constant.EXTRA_TO, Constant.ACTIVITY_LOCAL_EXPROT);
@@ -207,6 +209,10 @@ public class MainActivity extends BaseActivity {
             LogUtils.e("checkLoginState", "userNumber is null");
         } else {
             LogUtils.e("checkLoginState", "userNumber " + userNumber);
+        }
+
+        if (!TextUtils.isEmpty(userNumber)) {
+            userName.setText(userNumber);
         }
     }
 

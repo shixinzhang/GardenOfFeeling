@@ -62,6 +62,7 @@ public class Constant {
     //缓存相关
     public static final String LAST_UPDATE_IMG = "last_update_img";
     public static final String LAST_UPDATE_OPEN_EYE = "last_update_eye";
+    public static final String LAST_SYNC_TIME = "last_sync_time";
 
     //缓存地址
     public static final String BASE_CACHE_FILE_PATH = "sdcard/sxkeji/";

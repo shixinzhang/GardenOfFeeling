@@ -164,7 +164,11 @@ public class SettingActivity extends AppCompatActivity {
                         yesTextView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-//                    SharedPreferencesUtils.clear(SettingActivity.this);
+                                SharedPreferencesUtils.clear(SettingActivity.this);
+                                Intent intent = new Intent(SettingActivity.this, LoginActivity.class);
+                                intent.putExtra(Constant.EXTRA_TO, Constant.ACTIVITY_SETTING);
+                                startActivity(intent);
+                                finish();
                             }
                         });
                     }

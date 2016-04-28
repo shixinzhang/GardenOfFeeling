@@ -10,9 +10,12 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
+import com.avos.avoscloud.AVCloudQueryResult;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVQuery;
+import com.avos.avoscloud.CloudQueryCallback;
 import com.avos.avoscloud.RequestMobileCodeCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.squareup.okhttp.Callback;
@@ -320,16 +323,22 @@ public class HttpClient {
 
     /**
      * 上传ToDo到云端
+     *
      * @param context
      * @param todo
      */
-    public static void uploadTodo2Cloud(final Context context, Todo todo) {
+    public static AVObject uploadTodo2Cloud(final Context context, Todo todo) {
         String userNumber = (String) SharedPreferencesUtils.get(context, Constant.ACCOUNT_USER_NUMBER, "");
         if (TextUtils.isEmpty(userNumber)) {
             LogUtils.e("uploadTodo2Cloud", "userNumber is null , upload failed!");
-            return;
+            return null;
         }
+        String objectId = todo.getObjectId();
+
         AVObject uploadTodo = new AVObject(Constant.LEANCLOUD_TABLE_TODO);
+        if (!TextUtils.isEmpty(objectId)){
+            uploadTodo.put("objectId", objectId);
+        }
         uploadTodo.put(Constant.LEANCLOUD_TABLE_USERNUMBER, userNumber);
         uploadTodo.put("date", todo.getDate());
         //TODO:到底要不要内容呢？还是只一个标题就好了,在"一起改进"里问一下
@@ -350,7 +359,7 @@ public class HttpClient {
                 }
             }
         });
+        return uploadTodo;
     }
-
-
 }
+

@@ -3,6 +3,7 @@ package sxkeji.net.dailydiary.common.activities;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -12,6 +13,8 @@ import android.graphics.drawable.Drawable;
 import android.media.ThumbnailUtils;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -31,6 +34,7 @@ import android.widget.Toast;
 
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.RefreshCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.OkHttpDownloader;
@@ -51,6 +55,7 @@ import sxkeji.net.dailydiary.R;
 import sxkeji.net.dailydiary.common.BaseApplication;
 import sxkeji.net.dailydiary.http.HttpClient;
 import sxkeji.net.dailydiary.storage.Constant;
+import sxkeji.net.dailydiary.storage.SharedPreferencesUtils;
 import sxkeji.net.dailydiary.utils.FileUtils;
 import sxkeji.net.dailydiary.utils.LogUtils;
 import sxkeji.net.dailydiary.utils.MediaUtils;
@@ -99,6 +104,9 @@ public class ArticleWriteActivity extends AppCompatActivity {
     private String articleImgPath;
     private int articleType;
     private Picasso mPicasso;
+    private boolean autoSync;
+    private Article newArticle;
+    private final String UPLOAD_ARTICLE = "upload_article";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -114,6 +122,7 @@ public class ArticleWriteActivity extends AppCompatActivity {
 //        updateMarkdownPreview(editContent);
         articleImgFile = FileUtils.getLatestSaveImgFilr(this);
         articleImgPath = articleImgFile.getPath();
+        autoSync = (boolean) SharedPreferencesUtils.get(this, Constant.SETTING_TODO_AUTO_SYNC, false);
     }
 
     /**
@@ -330,14 +339,106 @@ public class ArticleWriteActivity extends AppCompatActivity {
             articleType = Constant.TYPE_MARKDOWN;
             showToast("文章保存成功");
         }
-        Article article = new Article(null, articleDate, null, null, title, content, articleType, articleImgPath);
-        BaseApplication.getDaoSession().getArticleDao().insert(article);
 
-        HttpClient.uploadArticle2LeanCloud(ArticleWriteActivity.this,article);
-
-        LogUtils.e(TAG, "Insert new article, id : " + article.getId());
+        newArticle = new Article(null, articleDate, null, null, title, content, articleType, articleImgPath, null);
+        if (autoSync) {      //开启自动上传
+            uploadArticle2LeanCloud(this, newArticle);
+        } else {
+            save2DB(newArticle);
+        }
         ArticleWriteActivity.this.finish();
     }
+
+    private void save2DB(Article article) {
+        BaseApplication.getDaoSession().getArticleDao().insert(article);
+        LogUtils.e(TAG, "Insert new article, content : " + article.getContent());
+    }
+
+    private void update2DB(Article article) {
+        BaseApplication.getDaoSession().getArticleDao().update(article);
+        LogUtils.e(TAG, "update article, content : " + article.getContent());
+    }
+
+    /**
+     * 上传Article到LeanCloud
+     *
+     * @param article
+     */
+    public void uploadArticle2LeanCloud(final Context context, final Article article) {
+        String userNumber = (String) SharedPreferencesUtils.get(context, Constant.ACCOUNT_USER_NUMBER, "");
+        if (TextUtils.isEmpty(userNumber)) {
+            LogUtils.e("upload2LeanCloud", "userNumber is null , upload failed!");
+            return;
+        }
+        String objectId = article.getObjectId();
+
+        final AVObject uploadArticle = new AVObject(Constant.LEANCLOUD_TABLE_DIARY);
+        uploadArticle.put("address", article.getAddress());
+        uploadArticle.put("weather", article.getWeather());
+        uploadArticle.put("title", article.getTitle());
+        uploadArticle.put("content", article.getContent());
+        uploadArticle.put("type", article.getType());
+        uploadArticle.put("img_path", article.getImg_path());
+        uploadArticle.put(Constant.LEANCLOUD_TABLE_USERNUMBER, userNumber);
+
+        if (TextUtils.isEmpty(objectId)) {          //新的，创建
+            uploadArticle.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(AVException e) {
+                    if (e == null) {
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable(UPLOAD_ARTICLE, uploadArticle);
+                        Message msg = new Message();
+                        msg.setData(bundle);
+                        msg.what = 1;
+                        handler.sendMessage(msg);
+
+                        UIUtils.showToastSafe(context, "上传云端成功");
+
+                    } else {
+                        UIUtils.showToastSafe(context, "上传云端失败" + e.getMessage());
+//                    LogUtils.e("upload2LeanCloud", "LeanCloud save result : " + e.getMessage());
+                    }
+                }
+            });
+        } else {                        //旧的，更新
+            uploadArticle.put("objectId", objectId);
+            uploadArticle.refreshInBackground(new RefreshCallback<AVObject>() {
+                @Override
+                public void done(AVObject avObject, AVException e) {
+                    if (e == null) {
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable(UPLOAD_ARTICLE, uploadArticle);
+                        Message msg = new Message();
+                        msg.setData(bundle);
+                        msg.what = 2;
+                        handler.sendMessage(msg);
+                        UIUtils.showToastSafe(context, "上传云端成功");
+                    } else {
+                        UIUtils.showToastSafe(context, "上传云端失败" + e.getMessage());
+                    }
+                }
+            });
+        }
+    }
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 1:     //保存
+                    AVObject upLoadObject = msg.getData().getParcelable(UPLOAD_ARTICLE);
+                    newArticle.setObjectId(upLoadObject.getObjectId());
+                    save2DB(newArticle);
+                    break;
+                case 2:     //更新
+                    AVObject upLoadObject2 = msg.getData().getParcelable(UPLOAD_ARTICLE);
+                    newArticle.setObjectId(upLoadObject2.getObjectId());
+                    update2DB(newArticle);
+            }
+        }
+    };
 
 
     private void showToast(String s) {

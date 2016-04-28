@@ -2,10 +2,13 @@ package sxkeji.net.dailydiary.common.activities;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.SwitchCompat;
@@ -19,6 +22,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.SaveCallback;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
@@ -68,12 +74,14 @@ public class TodoWriteActivity extends BaseActivity implements TimePickerDialog.
     FloatingActionButton fabDone;
 
     private final String TAG = "TodoWriteActivity";
+    private final String UPLOAD_TODO = "upload_todo";   //上传过云端的toDo,有了ObjectId
     private Date currentDate, selectDate;
     private int currentYear, currentMonth, currentDay, currentHour, currentMinute;
     private int selectYear, selectMonth, selectDay, selectHour, selectMinute;
     private boolean hasReminder;    //是否要提醒
     private boolean showOnLockScreen;   //是否显示到锁屏
     private boolean autoSync;
+    private Todo newToDo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,33 +166,100 @@ public class TodoWriteActivity extends BaseActivity implements TimePickerDialog.
         fabDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveToDo2DB();
+                saveToDo();
             }
         });
     }
 
     /**
      * 保存ToDo
+     * 如果要自动上传的话，先上传、后保存到DB
      */
-    private void saveToDo2DB() {
+    private void saveToDo() {
         String todoContent = etContent.getText().toString();
         int todoColor = ColorGeneratorUtils.MATERIAL.getRandomColor();
+        String todoObjectId = null;
         if (TextUtils.isEmpty(todoContent)) {
             UIUtils.showToastSafe(TodoWriteActivity.this, "你忘了输入哦");
             return;
         }
-        Todo newToDo = new Todo(null, selectDate, todoContent, todoColor, hasReminder, showOnLockScreen);
-        BaseApplication.getDaoSession().getTodoDao().insert(newToDo);
-        UIUtils.showToastSafe(TodoWriteActivity.this, "ToDo保存成功");
-        LogUtils.e(TAG, "new ToDo :" + newToDo.getDate() + "/" + newToDo.getContent() + "/ "
-                + newToDo.getColor() + "/" + newToDo.getHasReminder());
-
-        if (autoSync){      //开启自动上传
-            HttpClient.uploadTodo2Cloud(this, newToDo);
+        newToDo = new Todo(null, selectDate, todoContent, todoColor, hasReminder, showOnLockScreen, false, todoObjectId);
+        if (autoSync) {      //开启自动上传
+            uploadTodo2Cloud(this, newToDo);
+        } else {
+            saveToDo2DB(newToDo);
         }
+
         finish();
     }
 
+    private void saveToDo2DB(Todo todo) {
+        BaseApplication.getDaoSession().getTodoDao().insert(todo);
+        UIUtils.showToastSafe(TodoWriteActivity.this, "ToDo保存成功");
+        LogUtils.e(TAG, "new ToDo :" + todo.getDate() + "/" + todo.getContent() + "/ "
+                + todo.getColor() + "/" + todo.getHasReminder() + "/ objectId " + todo.getObjectId());
+    }
+
+    /**
+     * 上传ToDo到云端、然后设置此ToDo的objectId,再存储
+     *
+     * @param context
+     * @param todo
+     */
+    public void uploadTodo2Cloud(final Context context, Todo todo) {
+        String userNumber = (String) SharedPreferencesUtils.get(context, Constant.ACCOUNT_USER_NUMBER, "");
+        if (TextUtils.isEmpty(userNumber)) {
+            LogUtils.e("uploadTodo2Cloud", "userNumber is null , upload failed!");
+            return;
+        }
+        String objectId = todo.getObjectId();
+
+        final AVObject uploadTodo = new AVObject(Constant.LEANCLOUD_TABLE_TODO);
+        if (!TextUtils.isEmpty(objectId)) {
+            uploadTodo.put("objectId", objectId);
+            LogUtils.e(TAG, "Update todo " + objectId);
+        }
+        uploadTodo.put(Constant.LEANCLOUD_TABLE_USERNUMBER, userNumber);
+        uploadTodo.put("date", todo.getDate());
+        //TODO:到底要不要内容呢？还是只一个标题就好了,在"一起改进"里问一下
+        uploadTodo.put("title", todo.getContent());
+        uploadTodo.put("color", todo.getColor());
+        uploadTodo.put("isFinished", false);
+        uploadTodo.put("hasReminder", todo.getHasReminder());
+        uploadTodo.put("showOnLockScreen", todo.getShowOnLockScreen());
+
+        uploadTodo.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(AVException e) {
+                if (e == null) {
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable(UPLOAD_TODO, uploadTodo);
+                    Message msg = new Message();
+                    msg.setData(bundle);
+                    msg.what = 1;
+                    handler.sendMessage(msg);
+                    UIUtils.showToastSafe(context, "上传云端成功");
+                } else {
+                    UIUtils.showToastSafe(context, "上传云端失败" + e.getMessage());
+//                    LogUtils.e("upload2LeanCloud", "LeanCloud save result : " + e.getMessage());
+                }
+            }
+        });
+    }
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 1:     //更新
+                    AVObject upLoadObject = msg.getData().getParcelable(UPLOAD_TODO);
+                    newToDo.setObjectId(upLoadObject.getObjectId());
+                    saveToDo2DB(newToDo);
+                    break;
+            }
+        }
+    };
 
     /**
      * 隐藏、显示 日期选择
@@ -326,7 +401,7 @@ public class TodoWriteActivity extends BaseActivity implements TimePickerDialog.
     @Override
     public void onBackPressed() {
         UIUtils.showToastSafe(this, "自动保存");
-        saveToDo2DB();
+        saveToDo();
         super.onBackPressed();
     }
 }
