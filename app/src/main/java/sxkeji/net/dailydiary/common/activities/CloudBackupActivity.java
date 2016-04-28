@@ -1,5 +1,6 @@
 package sxkeji.net.dailydiary.common.activities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -80,6 +81,7 @@ public class CloudBackupActivity extends BaseActivity {
     private final String UPDATE_TODO = "update_todo";   //要更新的todo
     private final String UPLOAD_ARTICLE = "upload_article";
     private final String UPDATE_ARTICLE = "update_article";   //要更新的article
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +98,12 @@ public class CloudBackupActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 upload2Server();
+            }
+        });
+        tvDownload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                download2Local();
             }
         });
     }
@@ -134,13 +142,14 @@ public class CloudBackupActivity extends BaseActivity {
      */
     private void queryCloudNumber() {
         //查询文章数量
-        queryCloudArticleNumber();
+        queryCloudArticleNumber(false);
 
         //查询todo数量
-        queryCloudTodoNumber();
+        queryCloudTodoNumber(false);
     }
 
-    private void queryCloudTodoNumber() {
+    private void queryCloudTodoNumber(final boolean save2Local) {
+        startProgress();
         AVQuery<AVObject> todoQuery = new AVQuery<>(Constant.LEANCLOUD_TABLE_TODO);
         todoQuery.whereEqualTo(Constant.LEANCLOUD_TABLE_USERNUMBER, userNumber);
         todoQuery.findInBackground(new FindCallback<AVObject>() {
@@ -148,22 +157,53 @@ public class CloudBackupActivity extends BaseActivity {
             public void done(List<AVObject> list, AVException e) {
                 if (e == null) {
                     if (list != null) {
-                        cloudTodoNumber = list.size();
-                        cloudNumber += cloudTodoNumber;
-                        tvCloudTodoNumber.setText(cloudTodoNumber + "篇");
-                        tvCloudNumber.setText(cloudNumber + "篇");
-                        LogUtils.e(TAG, "query success , cloudTodoNumber is " + cloudTodoNumber);
+                        if (save2Local) {
+                            showToast("下载成功");
+                            saveTodo2DB(list);
+                        } else {
+                            cloudTodoNumber = list.size();
+                            cloudNumber += cloudTodoNumber;
+                            tvCloudTodoNumber.setText(cloudTodoNumber + "篇");
+                            tvCloudNumber.setText(cloudNumber + "篇");
+                            LogUtils.e(TAG, "query success , cloudTodoNumber is " + cloudTodoNumber);
+                            dismissProgress();
+                        }
                     } else {
                         LogUtils.e(TAG, "query success ,cloudTodoNumber is null ;size is " + list.size());
+                        dismissProgress();
                     }
                 } else {
+                    showToast("下载失败 " + e.getMessage());
                     LogUtils.e(TAG, "query number from server failed " + e.getMessage());
+                    dismissProgress();
                 }
             }
         });
     }
 
-    private void queryCloudArticleNumber() {
+    /**
+     * 将下载的todo保存到本地
+     *
+     * @param list
+     */
+    private void saveTodo2DB(List<AVObject> list) {
+        for (AVObject avObject : list) {
+            Todo tempTodo = new Todo();
+            tempTodo.setDate(avObject.getDate(Constant.LEANCLOUD_TODO_PROPERTY_DATE));
+            tempTodo.setContent(avObject.getString(Constant.LEANCLOUD_TODO_PROPERTY_TITLE));
+            tempTodo.setColor(avObject.getInt(Constant.LEANCLOUD_TODO_PROPERTY_COLOR));
+            tempTodo.setHasReminder(avObject.getBoolean(Constant.LEANCLOUD_TODO_PROPERTY_REMINDER));
+            tempTodo.setShowOnLockScreen(avObject.getBoolean(Constant.LEANCLOUD_TODO_PROPERTY_SHOW_ON_SCREEN));
+            tempTodo.setIsFinished(avObject.getBoolean(Constant.LEANCLOUD_TODO_PROPERTY_ISFINISHED));
+            tempTodo.setObjectId(avObject.getObjectId());
+            todoDao.insertOrReplace(tempTodo);
+        }
+        dismissProgress();
+        LogUtils.e(TAG, "saveTodo2DB size " + list.size());
+    }
+
+    private void queryCloudArticleNumber(final boolean save2Local) {
+        startProgress();
         AVQuery<AVObject> query = new AVQuery<>(Constant.LEANCLOUD_TABLE_DIARY);
         query.whereEqualTo(Constant.LEANCLOUD_TABLE_USERNUMBER, userNumber);
         query.findInBackground(new FindCallback<AVObject>() {
@@ -172,18 +212,54 @@ public class CloudBackupActivity extends BaseActivity {
                 if (e == null) {
                     if (list != null) {
                         cloudArticleNumber = list.size();
-                        cloudNumber += cloudArticleNumber;
-                        tvCloudArticleNumber.setText(cloudArticleNumber + "篇");
-                        tvCloudNumber.setText(cloudNumber + "篇");
-                        LogUtils.e(TAG, "query success , cloudArticleNumber is " + cloudArticleNumber);
+                        if (save2Local) {
+                            showToast("下载成功");
+                            saveArticle2DB(list);
+
+                        } else {
+                            cloudNumber += cloudArticleNumber;
+                            tvCloudArticleNumber.setText(cloudArticleNumber + "篇");
+                            tvCloudNumber.setText(cloudNumber + "篇");
+                            LogUtils.e(TAG, "query success , cloudArticleNumber is " + cloudArticleNumber);
+                            dismissProgress();
+                        }
                     } else {
                         LogUtils.e(TAG, "query success , cloudArticleNumber is null ;size is " + list.size());
+                        dismissProgress();
                     }
                 } else {
+                    showToast("下载失败 " + e.getMessage());
                     LogUtils.e(TAG, "query number from server failed " + e.getMessage());
+                    dismissProgress();
                 }
             }
         });
+    }
+
+    /**
+     * 下载的文章数据保存到本地
+     *
+     * @param list
+     */
+    private void saveArticle2DB(List<AVObject> list) {
+        for (AVObject avObject : list) {
+            Article tempArticle = new Article();
+            String date = avObject.getString(Constant.LEANCLOUD_ARTICLE_PROPERTY_DATE);
+            if (TextUtils.isEmpty(date)) {
+                date = "";
+            }
+            tempArticle.setDate(date);
+            tempArticle.setAddress(avObject.getString(Constant.LEANCLOUD_ARTICLE_PROPERTY_ADDRESS));
+            tempArticle.setWeather(avObject.getString(Constant.LEANCLOUD_ARTICLE_PROPERTY_WEATHER));
+            tempArticle.setTitle(avObject.getString(Constant.LEANCLOUD_ARTICLE_PROPERTY_TITLE));
+            tempArticle.setContent(avObject.getString(Constant.LEANCLOUD_ARTICLE_PROPERTY_CONTENT));
+            tempArticle.setType(avObject.getInt(Constant.LEANCLOUD_ARTICLE_PROPERTY_TYPE));
+            tempArticle.setImg_path(avObject.getString(Constant.LEANCLOUD_ARTICLE_PROPERTY_IMGPATH));
+            tempArticle.setObjectId(avObject.getObjectId());
+            articleDao.insertOrReplace(tempArticle);
+        }
+        dismissProgress();
+        LogUtils.e(TAG, "saveArticle2DB size " + list.size());
     }
 
     private void queryLocalTodoNumber() {
@@ -211,14 +287,14 @@ public class CloudBackupActivity extends BaseActivity {
                 uploadArticle2LeanCloud(this, article);
             }
             cloudNumber = cloudTodoNumber;
-            queryCloudArticleNumber();
+            queryCloudArticleNumber(false);
         }
         if (localTodoNumber > cloudTodoNumber) {     //本地Todo数量多于云端，上传Todo
             for (Todo todo : localTodos) {
                 uploadTodo2Cloud(this, todo);
             }
             cloudNumber = cloudArticleNumber;
-            queryCloudTodoNumber();
+            queryCloudTodoNumber(false);
         }
         if (localArticleNumber == 0 && localTodoNumber == 0) {
             showToast("您还没有写任何文字");
@@ -231,6 +307,31 @@ public class CloudBackupActivity extends BaseActivity {
     }
 
     /**
+     * 下载到本地
+     */
+    private void download2Local() {
+        if (localArticleNumber < cloudArticleNumber) {     //本地文章数量少于云端，下载文章
+            queryCloudArticleNumber(true);
+            localNumber = localTodoNumber;
+            queryLocalArticleNumber();
+        }
+        if (localTodoNumber < cloudTodoNumber) {     //本地Todo数量少于云端，下载To do
+            queryCloudTodoNumber(true);
+            localNumber = localArticleNumber;
+            queryLocalTodoNumber();
+        }
+        if (cloudArticleNumber == 0 && cloudTodoNumber == 0) {
+            showToast("云端没有任何内容");
+            return;
+        }
+        if (localArticleNumber >= cloudArticleNumber && localTodoNumber >= cloudTodoNumber) {
+            showToast("没有新内容可以下载");
+        }
+
+    }
+
+
+    /**
      * 上传Article到LeanCloud
      *
      * @param article
@@ -241,15 +342,17 @@ public class CloudBackupActivity extends BaseActivity {
             LogUtils.e("upload2LeanCloud", "userNumber is null , upload failed!");
             return;
         }
+        startProgress();
         String objectId = article.getObjectId();
 
         final AVObject uploadArticle = new AVObject(Constant.LEANCLOUD_TABLE_DIARY);
-        uploadArticle.put("address", article.getAddress());
-        uploadArticle.put("weather", article.getWeather());
-        uploadArticle.put("title", article.getTitle());
-        uploadArticle.put("content", article.getContent());
-        uploadArticle.put("type", article.getType());
-        uploadArticle.put("img_path", article.getImg_path());
+        uploadArticle.put(Constant.LEANCLOUD_ARTICLE_PROPERTY_DATE, article.getDate());
+        uploadArticle.put(Constant.LEANCLOUD_ARTICLE_PROPERTY_ADDRESS, article.getAddress());
+        uploadArticle.put(Constant.LEANCLOUD_ARTICLE_PROPERTY_WEATHER, article.getWeather());
+        uploadArticle.put(Constant.LEANCLOUD_ARTICLE_PROPERTY_TITLE, article.getTitle());
+        uploadArticle.put(Constant.LEANCLOUD_ARTICLE_PROPERTY_CONTENT, article.getContent());
+        uploadArticle.put(Constant.LEANCLOUD_ARTICLE_PROPERTY_TYPE, article.getType());
+        uploadArticle.put(Constant.LEANCLOUD_ARTICLE_PROPERTY_IMGPATH, article.getImg_path());
         uploadArticle.put(Constant.LEANCLOUD_TABLE_USERNUMBER, userNumber);
 
         if (TextUtils.isEmpty(objectId)) {          //新的，上传
@@ -257,6 +360,7 @@ public class CloudBackupActivity extends BaseActivity {
                 @Override
                 public void done(AVException e) {
                     if (e == null) {
+                        UIUtils.showToastSafe(context, "上传云端成功");
                         Bundle bundle = new Bundle();
                         bundle.putParcelable(UPLOAD_ARTICLE, uploadArticle);
                         bundle.putSerializable(UPDATE_ARTICLE, article);
@@ -264,15 +368,15 @@ public class CloudBackupActivity extends BaseActivity {
                         msg.setData(bundle);
                         msg.what = 2;
                         handler.sendMessage(msg);
-                        UIUtils.showToastSafe(context, "上传云端成功");
 
                     } else {
                         UIUtils.showToastSafe(context, "上传云端失败" + e.getMessage());
                     }
+                    dismissProgress();
                 }
             });
         } else {                        //旧的，更新
-            uploadArticle.put("objectId", objectId);
+            uploadArticle.put(Constant.LEANCLOUD_ARTICLE_PROPERTY_OBJECTID, objectId);
             uploadArticle.refreshInBackground(new RefreshCallback<AVObject>() {
                 @Override
                 public void done(AVObject avObject, AVException e) {
@@ -281,6 +385,7 @@ public class CloudBackupActivity extends BaseActivity {
                     } else {
                         UIUtils.showToastSafe(context, "上传云端失败" + e.getMessage());
                     }
+                    dismissProgress();
                 }
             });
         }
@@ -301,20 +406,21 @@ public class CloudBackupActivity extends BaseActivity {
         final String objectId = todo.getObjectId();
 
         final AVObject uploadTodo = new AVObject(Constant.LEANCLOUD_TABLE_TODO);
-        uploadTodo.put(Constant.LEANCLOUD_TABLE_USERNUMBER, userNumber);
-        uploadTodo.put("date", todo.getDate());
-        //TODO:到底要不要内容呢？还是只一个标题就好了,在"一起改进"里问一下
-        uploadTodo.put("title", todo.getContent());
-        uploadTodo.put("color", todo.getColor());
-        uploadTodo.put("isFinished", false);
-        uploadTodo.put("hasReminder", todo.getHasReminder());
-        uploadTodo.put("showOnLockScreen", todo.getShowOnLockScreen());
 
+        uploadTodo.put(Constant.LEANCLOUD_TABLE_USERNUMBER, userNumber);
+        uploadTodo.put(Constant.LEANCLOUD_TODO_PROPERTY_DATE, todo.getDate());
+        //TODO:到底要不要内容呢？还是只一个标题就好了,在"一起改进"里问一下
+        uploadTodo.put(Constant.LEANCLOUD_TODO_PROPERTY_TITLE, todo.getContent());
+        uploadTodo.put(Constant.LEANCLOUD_TODO_PROPERTY_COLOR, todo.getColor());
+        uploadTodo.put(Constant.LEANCLOUD_TODO_PROPERTY_ISFINISHED, false);
+        uploadTodo.put(Constant.LEANCLOUD_TODO_PROPERTY_REMINDER, todo.getHasReminder());
+        uploadTodo.put(Constant.LEANCLOUD_TODO_PROPERTY_SHOW_ON_SCREEN, todo.getShowOnLockScreen());
         if (TextUtils.isEmpty(objectId)) {              //上传
             uploadTodo.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(AVException e) {
                     if (e == null) {
+                        UIUtils.showToastSafe(context, "上传云端成功");
                         //之前没上传过，上传后需要更新本地objectId，下次上传就不传了
                         Bundle bundle = new Bundle();
                         bundle.putParcelable(UPLOAD_TODO, uploadTodo);
@@ -324,14 +430,15 @@ public class CloudBackupActivity extends BaseActivity {
                         msg.what = 1;
                         handler.sendMessage(msg);
 
-                        UIUtils.showToastSafe(context, "上传云端成功");
                     } else {
                         UIUtils.showToastSafe(context, "上传云端失败" + e.getMessage());
                     }
+
+                    dismissProgress();
                 }
             });
         } else {             //更新
-            uploadTodo.put("objectId", objectId);
+            uploadTodo.put(Constant.LEANCLOUD_TODO_PROPERTY_OBJECTID, objectId);
             uploadTodo.refreshInBackground(new RefreshCallback<AVObject>() {
                 @Override
                 public void done(AVObject avObject, AVException e) {
@@ -340,10 +447,10 @@ public class CloudBackupActivity extends BaseActivity {
                     } else {
                         LogUtils.e(TAG, "update todo failed " + e.getMessage());
                     }
+                    dismissProgress();
                 }
             });
         }
-
 
     }
 
@@ -373,6 +480,19 @@ public class CloudBackupActivity extends BaseActivity {
         }
     };
 
+    private void startProgress() {
+        if (progressDialog != null && !progressDialog.isShowing()) {
+            progressDialog.setTitle("正在努力进行中...");
+            progressDialog.show();
+        }
+    }
+
+    private void dismissProgress() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.cancel();
+        }
+    }
+
     private void showToast(String str) {
         UIUtils.showToastSafe(CloudBackupActivity.this, str);
     }
@@ -386,6 +506,8 @@ public class CloudBackupActivity extends BaseActivity {
                 onBackPressed();
             }
         });
+
+        progressDialog = new ProgressDialog(this);
     }
 
     @Override

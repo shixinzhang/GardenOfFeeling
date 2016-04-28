@@ -173,7 +173,9 @@ public class SettingActivity extends AppCompatActivity {
                         });
                     }
                 } else {
-                    jump2Activity(LoginActivity.class);
+                    Intent intent = new Intent(SettingActivity.this, LoginActivity.class);
+                    intent.putExtra(Constant.EXTRA_TO, Constant.ACTIVITY_SETTING);
+                    startActivity(intent);
                 }
             }
         });

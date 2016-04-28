@@ -216,17 +216,17 @@ public class TodoWriteActivity extends BaseActivity implements TimePickerDialog.
 
         final AVObject uploadTodo = new AVObject(Constant.LEANCLOUD_TABLE_TODO);
         if (!TextUtils.isEmpty(objectId)) {
-            uploadTodo.put("objectId", objectId);
+            uploadTodo.put(Constant.LEANCLOUD_TODO_PROPERTY_OBJECTID, objectId);
             LogUtils.e(TAG, "Update todo " + objectId);
         }
         uploadTodo.put(Constant.LEANCLOUD_TABLE_USERNUMBER, userNumber);
-        uploadTodo.put("date", todo.getDate());
+        uploadTodo.put(Constant.LEANCLOUD_TODO_PROPERTY_DATE, todo.getDate());
         //TODO:到底要不要内容呢？还是只一个标题就好了,在"一起改进"里问一下
-        uploadTodo.put("title", todo.getContent());
-        uploadTodo.put("color", todo.getColor());
-        uploadTodo.put("isFinished", false);
-        uploadTodo.put("hasReminder", todo.getHasReminder());
-        uploadTodo.put("showOnLockScreen", todo.getShowOnLockScreen());
+        uploadTodo.put(Constant.LEANCLOUD_TODO_PROPERTY_TITLE, todo.getContent());
+        uploadTodo.put(Constant.LEANCLOUD_TODO_PROPERTY_COLOR, todo.getColor());
+        uploadTodo.put(Constant.LEANCLOUD_TODO_PROPERTY_ISFINISHED, false);
+        uploadTodo.put(Constant.LEANCLOUD_TODO_PROPERTY_REMINDER, todo.getHasReminder());
+        uploadTodo.put(Constant.LEANCLOUD_TODO_PROPERTY_SHOW_ON_SCREEN, todo.getShowOnLockScreen());
 
         uploadTodo.saveInBackground(new SaveCallback() {
             @Override

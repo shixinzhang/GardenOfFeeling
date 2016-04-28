@@ -40,10 +40,28 @@ public class Constant {
     //LeanCloud ID 和 Key
     public static String LEANCLOUD_APPID = "p5u1dmlmaznldib4hu0goexf4cg5kwwed7to6pdhsm9x8dpd";
     public static String LEANCLOUD_KEY = "3qd9nuefo4fyzknx3cwk15mvgwoctym1l3ohb1ndhk5xfl3y";
-    //LeanCloud 表名
+    //LeanCloud 表名、字段名
     public static String LEANCLOUD_TABLE_DIARY = "articles_365";
     public static String LEANCLOUD_TABLE_TODO = "todo_365";
     public static String LEANCLOUD_TABLE_USERNUMBER = "user_number";
+    //Article 字段名
+    public static String LEANCLOUD_ARTICLE_PROPERTY_DATE = "date";
+    public static String LEANCLOUD_ARTICLE_PROPERTY_ADDRESS = "address";
+    public static String LEANCLOUD_ARTICLE_PROPERTY_WEATHER = "weather";
+    public static String LEANCLOUD_ARTICLE_PROPERTY_TITLE = "title";
+    public static String LEANCLOUD_ARTICLE_PROPERTY_CONTENT = "content";
+    public static String LEANCLOUD_ARTICLE_PROPERTY_TYPE = "type";
+    public static String LEANCLOUD_ARTICLE_PROPERTY_IMGPATH = "img_path";
+    public static String LEANCLOUD_ARTICLE_PROPERTY_OBJECTID = "objectId";
+
+    //To do 字段名
+    public static String LEANCLOUD_TODO_PROPERTY_DATE = "date";
+    public static String LEANCLOUD_TODO_PROPERTY_TITLE = "title";
+    public static String LEANCLOUD_TODO_PROPERTY_COLOR = "color";
+    public static String LEANCLOUD_TODO_PROPERTY_ISFINISHED = "isFinished";
+    public static String LEANCLOUD_TODO_PROPERTY_REMINDER = "hasReminder";
+    public static String LEANCLOUD_TODO_PROPERTY_SHOW_ON_SCREEN = "showOnLockScreen";
+    public static String LEANCLOUD_TODO_PROPERTY_OBJECTID = "objectId";
 
     public static final String OPEN_EYE_UID = "57e17df8bc634de8b5d427bd27a126b9f1ba1a56";
     //    vc=74&vn=1.10.1&deviceModel=m1%20note&first_channel=eyepetizer_meizu_market&last_channel=eyepetizer_meizu_market%20ZHOU

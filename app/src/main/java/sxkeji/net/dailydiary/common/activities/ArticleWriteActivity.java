@@ -373,12 +373,13 @@ public class ArticleWriteActivity extends AppCompatActivity {
         String objectId = article.getObjectId();
 
         final AVObject uploadArticle = new AVObject(Constant.LEANCLOUD_TABLE_DIARY);
-        uploadArticle.put("address", article.getAddress());
-        uploadArticle.put("weather", article.getWeather());
-        uploadArticle.put("title", article.getTitle());
-        uploadArticle.put("content", article.getContent());
-        uploadArticle.put("type", article.getType());
-        uploadArticle.put("img_path", article.getImg_path());
+        uploadArticle.put(Constant.LEANCLOUD_ARTICLE_PROPERTY_DATE, article.getDate());
+        uploadArticle.put(Constant.LEANCLOUD_ARTICLE_PROPERTY_ADDRESS, article.getAddress());
+        uploadArticle.put(Constant.LEANCLOUD_ARTICLE_PROPERTY_WEATHER, article.getWeather());
+        uploadArticle.put(Constant.LEANCLOUD_ARTICLE_PROPERTY_TITLE, article.getTitle());
+        uploadArticle.put(Constant.LEANCLOUD_ARTICLE_PROPERTY_CONTENT, article.getContent());
+        uploadArticle.put(Constant.LEANCLOUD_ARTICLE_PROPERTY_TYPE, article.getType());
+        uploadArticle.put(Constant.LEANCLOUD_ARTICLE_PROPERTY_IMGPATH, article.getImg_path());
         uploadArticle.put(Constant.LEANCLOUD_TABLE_USERNUMBER, userNumber);
 
         if (TextUtils.isEmpty(objectId)) {          //新的，创建
@@ -402,7 +403,7 @@ public class ArticleWriteActivity extends AppCompatActivity {
                 }
             });
         } else {                        //旧的，更新
-            uploadArticle.put("objectId", objectId);
+            uploadArticle.put(Constant.LEANCLOUD_ARTICLE_PROPERTY_OBJECTID, objectId);
             uploadArticle.refreshInBackground(new RefreshCallback<AVObject>() {
                 @Override
                 public void done(AVObject avObject, AVException e) {

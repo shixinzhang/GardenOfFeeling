@@ -75,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
     private String userNumber;
     private String userPassword;
     private String verifyCode;
-    private String jump2WhichActivity;
+    private String jump2WhichActivity = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
