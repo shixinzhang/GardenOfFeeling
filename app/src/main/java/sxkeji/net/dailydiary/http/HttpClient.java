@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
@@ -30,9 +31,11 @@ import java.util.concurrent.TimeUnit;
 
 import sxkeji.net.dailydiary.Article;
 import sxkeji.net.dailydiary.R;
+import sxkeji.net.dailydiary.Todo;
 import sxkeji.net.dailydiary.http.coreprogress.helper.ProgressHelper;
 import sxkeji.net.dailydiary.http.coreprogress.listener.impl.UIProgressListener;
 import sxkeji.net.dailydiary.storage.Constant;
+import sxkeji.net.dailydiary.storage.SharedPreferencesUtils;
 import sxkeji.net.dailydiary.utils.LogUtils;
 import sxkeji.net.dailydiary.utils.NetWorkUtils;
 import sxkeji.net.dailydiary.utils.UIUtils;
@@ -283,18 +286,24 @@ public class HttpClient {
     }
 
     /**
-     * 上传到LeanCloud
+     * 上传Article到LeanCloud
+     *
      * @param article
      */
     public static void upload2LeanCloud(final Context context, Article article) {
+        String userNumber = (String) SharedPreferencesUtils.get(context, Constant.ACCOUNT_USER_NUMBER, "");
+        if (TextUtils.isEmpty(userNumber)) {
+            LogUtils.e("upload2LeanCloud", "userNumber is null , upload failed!");
+            return;
+        }
         AVObject uploadArticle = new AVObject(Constant.LEANCLOUD_TABLE_DIARY);
-        uploadArticle.put("address",article.getAddress());
-        uploadArticle.put("weather",article.getWeather());
-        uploadArticle.put("title",article.getTitle());
-        uploadArticle.put("content",article.getContent());
-        uploadArticle.put("type",article.getType());
-        uploadArticle.put("img_path",article.getImg_path());
-        uploadArticle.put(Constant.LEANCLOUD_TABLE_USERNUMBER,"18789440700");
+        uploadArticle.put("address", article.getAddress());
+        uploadArticle.put("weather", article.getWeather());
+        uploadArticle.put("title", article.getTitle());
+        uploadArticle.put("content", article.getContent());
+        uploadArticle.put("type", article.getType());
+        uploadArticle.put("img_path", article.getImg_path());
+        uploadArticle.put(Constant.LEANCLOUD_TABLE_USERNUMBER, userNumber);
 
         uploadArticle.saveInBackground(new SaveCallback() {
             @Override
@@ -307,6 +316,25 @@ public class HttpClient {
                 }
             }
         });
+    }
+    private Long id;
+    private java.util.Date date;
+    /** Not-null value. */
+    private String content;
+    private int color;
+    private boolean hasReminder;
+    private Boolean showOnLockScreen;
+    public static void uploadTodo2Cloud(final Context context, Todo todo) {
+        String userNumber = (String) SharedPreferencesUtils.get(context, Constant.ACCOUNT_USER_NUMBER, "");
+        if (TextUtils.isEmpty(userNumber)) {
+            LogUtils.e("uploadTodo2Cloud", "userNumber is null , upload failed!");
+            return;
+        }
+        AVObject uploadTodo = new AVObject(Constant.LEANCLOUD_TABLE_TODO);
+        uploadTodo.put("date", todo.getDate());
+        //TODO:到底要不要内容呢？还是只一个标题就好了,在一起改进里问一下
+        uploadTodo.put("title", todo.getContent());
+
     }
 
 

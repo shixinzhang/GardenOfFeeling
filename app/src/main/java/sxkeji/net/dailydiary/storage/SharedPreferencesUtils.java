@@ -59,7 +59,7 @@ public class SharedPreferencesUtils {
      *
      * @param context
      * @param key
-     * @param defaultObject
+     * @param defaultObject can not be null !!!
      * @return
      */
     public static Object get(Context context, String key, Object defaultObject)

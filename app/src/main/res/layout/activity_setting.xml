@@ -57,9 +57,9 @@
                     android:id="@+id/switch_todo_auto_save"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
                     android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true" />
+                    android:layout_centerVertical="true"
+                    android:checked="true" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -190,6 +190,58 @@
                     android:layout_centerVertical="true" />
             </RelativeLayout>
 
+            <RelativeLayout
+                android:id="@+id/rl_security_save_encrypt"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <TextView
+                    android:id="@+id/tv_security_save_encrypt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="保存时加密信息"
+                    android:textColor="@color/primary_text"
+                    android:textSize="16sp" />
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/switch_security_save_encrypt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:checked="true" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_security_sync_encrypt"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <TextView
+                    android:id="@+id/tv_security_sync_encrypt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="上传前加密信息"
+                    android:textColor="@color/primary_text"
+                    android:textSize="16sp" />
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/switch_security_sync_encrypt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:checked="true" />
+            </RelativeLayout>
+
             <TextView
                 android:id="@+id/tv_title_reminder"
                 android:layout_width="match_parent"
@@ -224,10 +276,11 @@
                     android:id="@+id/switch_reminder_every_day"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
                     android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true" />
+                    android:layout_centerVertical="true"
+                    android:checked="true" />
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/rl_reminder_time"
                 android:layout_width="match_parent"
@@ -255,6 +308,7 @@
                     android:textColor="@color/primary_text"
                     android:textSize="16sp" />
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/rl_reminder_way"
                 android:layout_width="match_parent"
@@ -332,6 +386,17 @@
                 android:textSize="@dimen/group_title_text_size" />
 
             <TextView
+                android:id="@+id/tv_feedback_make_better_together"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:text="一起改进这款软件"
+                android:textColor="@color/primary_text"
+                android:textSize="16sp" />
+
+            <TextView
                 android:id="@+id/tv_feedback_evaluate"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
@@ -354,6 +419,7 @@
                 android:textSize="16sp" />
 
             <Button
+                android:id="@+id/btn_login_out"
                 android:layout_width="match_parent"
                 android:layout_height="36dp"
                 android:layout_marginBottom="8dp"

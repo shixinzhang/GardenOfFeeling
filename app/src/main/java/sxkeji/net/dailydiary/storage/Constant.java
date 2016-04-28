@@ -26,20 +26,23 @@ public class Constant {
 
     //可以用户设置的状态
     public static final String SETTING_TODO_ORDER = "todo_order";
+    public static final String SETTING_TODO_AUTO_SYNC = "todo_auto_sync";       //保存后自动上传
 
     //Activity间跳转传递的数据
     public static final String EXTRA_FROM = "start_from";
     public static final String EXTRA_TO = "jump_to";
     public static final String ACTIVITY_CLOUD_BACK = "activity_cloud_back";
     public static final String ACTIVITY_LOCAL_EXPROT = "activity_local_export";
+    public static final String ACTIVITY_SETTING = "activity_setting";
     public static final String PLAY_TITLE = "play_title";
     public static final String PLAY_URL = "play_url";
 
     //LeanCloud ID 和 Key
     public static String LEANCLOUD_APPID = "p5u1dmlmaznldib4hu0goexf4cg5kwwed7to6pdhsm9x8dpd";
     public static String LEANCLOUD_KEY = "3qd9nuefo4fyzknx3cwk15mvgwoctym1l3ohb1ndhk5xfl3y";
-    //LeanCloud 日记表名
+    //LeanCloud 表名
     public static String LEANCLOUD_TABLE_DIARY = "articles_365";
+    public static String LEANCLOUD_TABLE_TODO = "todo_365";
     public static String LEANCLOUD_TABLE_USERNUMBER = "user_number";
 
     public static final String OPEN_EYE_UID = "57e17df8bc634de8b5d427bd27a126b9f1ba1a56";

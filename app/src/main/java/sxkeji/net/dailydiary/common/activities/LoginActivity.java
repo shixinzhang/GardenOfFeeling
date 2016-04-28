@@ -250,6 +250,7 @@ public class LoginActivity extends AppCompatActivity {
      * @param number
      */
     private void writeState2Local(String number) {
+        LogUtils.e(TAG,"writeState2Local " + number);
         SharedPreferencesUtils.put(LoginActivity.this, Constant.ACCOUNT_USER_NUMBER, number);
         SharedPreferencesUtils.put(LoginActivity.this, Constant.ACCOUNT_IS_LOGIN, true);
     }
@@ -265,6 +266,9 @@ public class LoginActivity extends AppCompatActivity {
                 break;
             case Constant.ACTIVITY_LOCAL_EXPROT:
                 intent = new Intent(LoginActivity.this, LocalExportActivity.class);
+                break;
+            case Constant.ACTIVITY_SETTING:
+                intent = new Intent(LoginActivity.this, SettingActivity.class);
                 break;
             default:
                 intent = new Intent(LoginActivity.this, MainActivity.class);

@@ -44,6 +44,7 @@ import sxkeji.net.dailydiary.http.HttpResponseHandler;
 import sxkeji.net.dailydiary.storage.ACache;
 import sxkeji.net.dailydiary.storage.Constant;
 import sxkeji.net.dailydiary.storage.SharedPreferencesUtils;
+import sxkeji.net.dailydiary.utils.LogUtils;
 import sxkeji.net.dailydiary.utils.UIUtils;
 
 /**
@@ -98,6 +99,8 @@ public class MainActivity extends BaseActivity {
     private OpenEyeDailyBean mDailyBean;
     long[] mHits = new long[2];
     ACache aCache;
+    private boolean isLogin;
+    private String userNumber;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -143,7 +146,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 changeBgAndCloseDrawer(rlBackup);
-                if (!checkLoginState()) {   //未登录
+                if (!isLogin) {   //未登录
                     Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                     intent.putExtra(Constant.EXTRA_TO, Constant.ACTIVITY_CLOUD_BACK);
                     startActivity(intent);
@@ -157,7 +160,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 changeBgAndCloseDrawer(rlLocalExport);
-                if (!checkLoginState()) {   //未登录
+                if (!isLogin) {   //未登录
                     Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                     intent.putExtra(Constant.EXTRA_TO, Constant.ACTIVITY_LOCAL_EXPROT);
                     startActivity(intent);
@@ -195,11 +198,15 @@ public class MainActivity extends BaseActivity {
 
     /**
      * 检查是否登录，有些操作需要登录后才可以进行
-     *  @return true if logined ; false not
      */
-    private boolean checkLoginState() {
-        boolean isLogin = (boolean) SharedPreferencesUtils.get(this, Constant.ACCOUNT_IS_LOGIN, false);
-        return isLogin;
+    private void checkLoginState() {
+        isLogin = (boolean) SharedPreferencesUtils.get(this, Constant.ACCOUNT_IS_LOGIN, false);
+        userNumber = (String) SharedPreferencesUtils.get(this, Constant.ACCOUNT_USER_NUMBER, "");
+        if (TextUtils.isEmpty(userNumber)){
+            LogUtils.e("checkLoginState","userNumber is null" );
+        }else {
+            LogUtils.e("checkLoginState","userNumber " + userNumber);
+        }
     }
 
     /**
@@ -266,14 +273,15 @@ public class MainActivity extends BaseActivity {
         mDrawerToggle.syncState();
         drawerLayout.setDrawerListener(mDrawerToggle);
 
-        Intent intent = new Intent();
-        intent.resolveActivity(getPackageManager());
+//        Intent intent = new Intent();
+//        intent.resolveActivity(getPackageManager());
     }
 
     /**
      * 加载数据
      */
     private void loadData() {
+        checkLoginState();
         loadRecommandData();
         loadTabsViewPagerData();
         loadTabsData();
