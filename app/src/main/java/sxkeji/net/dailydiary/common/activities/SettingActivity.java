@@ -7,6 +7,7 @@ import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -15,6 +16,7 @@ import butterknife.ButterKnife;
 import sxkeji.net.dailydiary.R;
 import sxkeji.net.dailydiary.storage.Constant;
 import sxkeji.net.dailydiary.storage.SharedPreferencesUtils;
+import sxkeji.net.dailydiary.utils.LogUtils;
 import sxkeji.net.dailydiary.utils.ViewUtils;
 
 /**
@@ -92,6 +94,7 @@ public class SettingActivity extends AppCompatActivity {
     TextView btnLoginOut;
 
     private boolean isLogin;
+    private boolean autoSync;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,15 +106,37 @@ public class SettingActivity extends AppCompatActivity {
         setListeners();
     }
 
-    private void setListeners() {
-        rlSyncAuto.setOnClickListener(new View.OnClickListener() {
+    private void initData() {
+        isLogin = (boolean) SharedPreferencesUtils.get(this, Constant.ACCOUNT_IS_LOGIN, false);
+        autoSync = (boolean) SharedPreferencesUtils.get(this, Constant.SETTING_TODO_AUTO_SYNC, false);
+    }
+
+    private void initViews() {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+        if (isLogin) {
+            btnLoginOut.setText("退出当前账号");
+        } else {
+            btnLoginOut.setText("登录");
+        }
+
+        switchSyncAuto.setChecked(autoSync);
+    }
+
+    private void setListeners() {
+        switchSyncAuto.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isLogin) {
-                    boolean isOpened = switchSyncAuto.isChecked();
-                    switchSyncAuto.setChecked(!isOpened);
-                    // isOpened == true ? 开启自动上传 : 关闭自动上传
-                    SharedPreferencesUtils.put(SettingActivity.this, Constant.SETTING_TODO_AUTO_SYNC, isOpened);
+                    // isChecked == true ? 开启自动上传 : 关闭自动上传
+                    saveSettingState(Constant.SETTING_TODO_AUTO_SYNC, switchSyncAuto.isChecked());
                 } else {
                     // TODO: 4/28/2016  弹出是否去登录
                     View yesTextView = showPopupWindow("您还没有登录，是否去登录?");
@@ -150,27 +175,17 @@ public class SettingActivity extends AppCompatActivity {
         });
     }
 
-    private void initData() {
-        isLogin = (boolean) SharedPreferencesUtils.get(this, Constant.ACCOUNT_IS_LOGIN, false);
-
+    /**
+     * 保存状态
+     *
+     * @param name
+     * @param value
+     */
+    private void saveSettingState(String name, boolean value) {
+        SharedPreferencesUtils.put(SettingActivity.this, name, value);
+        LogUtils.e("saveSettingState", "save name " + name + "/ value " + value);
     }
 
-    private void initViews() {
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-
-        if (isLogin) {
-            btnLoginOut.setText("退出当前账号");
-        } else {
-            btnLoginOut.setText("登录");
-        }
-    }
 
     /**
      * 弹出提示框，

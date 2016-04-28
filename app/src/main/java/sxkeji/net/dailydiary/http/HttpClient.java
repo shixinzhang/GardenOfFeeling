@@ -290,7 +290,7 @@ public class HttpClient {
      *
      * @param article
      */
-    public static void upload2LeanCloud(final Context context, Article article) {
+    public static void uploadArticle2LeanCloud(final Context context, Article article) {
         String userNumber = (String) SharedPreferencesUtils.get(context, Constant.ACCOUNT_USER_NUMBER, "");
         if (TextUtils.isEmpty(userNumber)) {
             LogUtils.e("upload2LeanCloud", "userNumber is null , upload failed!");
@@ -309,21 +309,20 @@ public class HttpClient {
             @Override
             public void done(AVException e) {
                 if (e == null) {
-                    UIUtils.showToastSafe(context, "上传服务器成功");
+                    UIUtils.showToastSafe(context, "上传云端成功");
                 } else {
-                    UIUtils.showToastSafe(context, "上传服务器失败" + e.getMessage());
+                    UIUtils.showToastSafe(context, "上传云端失败" + e.getMessage());
 //                    LogUtils.e("upload2LeanCloud", "LeanCloud save result : " + e.getMessage());
                 }
             }
         });
     }
-    private Long id;
-    private java.util.Date date;
-    /** Not-null value. */
-    private String content;
-    private int color;
-    private boolean hasReminder;
-    private Boolean showOnLockScreen;
+
+    /**
+     * 上传ToDo到云端
+     * @param context
+     * @param todo
+     */
     public static void uploadTodo2Cloud(final Context context, Todo todo) {
         String userNumber = (String) SharedPreferencesUtils.get(context, Constant.ACCOUNT_USER_NUMBER, "");
         if (TextUtils.isEmpty(userNumber)) {
@@ -331,10 +330,26 @@ public class HttpClient {
             return;
         }
         AVObject uploadTodo = new AVObject(Constant.LEANCLOUD_TABLE_TODO);
+        uploadTodo.put(Constant.LEANCLOUD_TABLE_USERNUMBER, userNumber);
         uploadTodo.put("date", todo.getDate());
-        //TODO:到底要不要内容呢？还是只一个标题就好了,在一起改进里问一下
+        //TODO:到底要不要内容呢？还是只一个标题就好了,在"一起改进"里问一下
         uploadTodo.put("title", todo.getContent());
+        uploadTodo.put("color", todo.getColor());
+        uploadTodo.put("isFinished", false);
+        uploadTodo.put("hasReminder", todo.getHasReminder());
+        uploadTodo.put("showOnLockScreen", todo.getShowOnLockScreen());
 
+        uploadTodo.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(AVException e) {
+                if (e == null) {
+                    UIUtils.showToastSafe(context, "上传云端成功");
+                } else {
+                    UIUtils.showToastSafe(context, "上传云端失败" + e.getMessage());
+//                    LogUtils.e("upload2LeanCloud", "LeanCloud save result : " + e.getMessage());
+                }
+            }
+        });
     }
 
 

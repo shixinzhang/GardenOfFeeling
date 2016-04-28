@@ -31,6 +31,9 @@ import sxkeji.net.dailydiary.R;
 import sxkeji.net.dailydiary.Todo;
 import sxkeji.net.dailydiary.common.BaseActivity;
 import sxkeji.net.dailydiary.common.BaseApplication;
+import sxkeji.net.dailydiary.http.HttpClient;
+import sxkeji.net.dailydiary.storage.Constant;
+import sxkeji.net.dailydiary.storage.SharedPreferencesUtils;
 import sxkeji.net.dailydiary.utils.ColorGeneratorUtils;
 import sxkeji.net.dailydiary.utils.LogUtils;
 import sxkeji.net.dailydiary.utils.UIUtils;
@@ -70,6 +73,7 @@ public class TodoWriteActivity extends BaseActivity implements TimePickerDialog.
     private int selectYear, selectMonth, selectDay, selectHour, selectMinute;
     private boolean hasReminder;    //是否要提醒
     private boolean showOnLockScreen;   //是否显示到锁屏
+    private boolean autoSync;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +106,8 @@ public class TodoWriteActivity extends BaseActivity implements TimePickerDialog.
         selectDay = currentDay = calendar.get(Calendar.DAY_OF_MONTH);
         selectHour = currentHour = calendar.get(Calendar.HOUR_OF_DAY);
         selectMinute = currentMinute = calendar.get(Calendar.MINUTE);
+
+        autoSync = (boolean) SharedPreferencesUtils.get(this, Constant.SETTING_TODO_AUTO_SYNC, false);
     }
 
     private void initViews() {
@@ -172,6 +178,10 @@ public class TodoWriteActivity extends BaseActivity implements TimePickerDialog.
         UIUtils.showToastSafe(TodoWriteActivity.this, "ToDo保存成功");
         LogUtils.e(TAG, "new ToDo :" + newToDo.getDate() + "/" + newToDo.getContent() + "/ "
                 + newToDo.getColor() + "/" + newToDo.getHasReminder());
+
+        if (autoSync){      //开启自动上传
+            HttpClient.uploadTodo2Cloud(this, newToDo);
+        }
         finish();
     }
 

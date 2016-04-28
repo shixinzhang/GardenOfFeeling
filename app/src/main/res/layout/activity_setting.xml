@@ -203,7 +203,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="保存时加密信息"
+                    android:text="保存时加密"
                     android:textColor="@color/primary_text"
                     android:textSize="16sp" />
 
@@ -229,7 +229,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="上传前加密信息"
+                    android:text="上传前加密"
                     android:textColor="@color/primary_text"
                     android:textSize="16sp" />
 

@@ -333,7 +333,7 @@ public class ArticleWriteActivity extends AppCompatActivity {
         Article article = new Article(null, articleDate, null, null, title, content, articleType, articleImgPath);
         BaseApplication.getDaoSession().getArticleDao().insert(article);
 
-        HttpClient.upload2LeanCloud(ArticleWriteActivity.this,article);
+        HttpClient.uploadArticle2LeanCloud(ArticleWriteActivity.this,article);
 
         LogUtils.e(TAG, "Insert new article, id : " + article.getId());
         ArticleWriteActivity.this.finish();

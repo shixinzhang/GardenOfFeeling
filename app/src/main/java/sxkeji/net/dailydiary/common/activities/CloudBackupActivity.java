@@ -129,7 +129,7 @@ public class CloudBackupActivity extends BaseActivity {
         if (localArticles != null){
             if (localNumber > cloudNumber){
                 for (Article article : localArticles) {
-                    HttpClient.upload2LeanCloud(CloudBackupActivity.this,article);
+                    HttpClient.uploadArticle2LeanCloud(CloudBackupActivity.this,article);
                 }
                 queryLocalNumber();
             }else {
