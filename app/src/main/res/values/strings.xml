@@ -25,6 +25,7 @@
     <string name="input_verify_code">请输入6位验证码</string>
     <string name="menu_forget_pwd">忘记密码</string>
     <string name="menu_cloud_back_help">帮助</string>
+    <string name="menu_setting">设置</string>
 
     <!-- 首页 -->
     <string name="drawer_open">菜单</string>

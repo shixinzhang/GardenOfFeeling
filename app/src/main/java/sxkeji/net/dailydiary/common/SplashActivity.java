@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -19,13 +20,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.okhttp.Request;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -34,9 +40,13 @@ import sxkeji.net.dailydiary.common.activities.MainActivity;
 import sxkeji.net.dailydiary.common.presenters.SplashPresenter;
 import sxkeji.net.dailydiary.common.views.ISplashView;
 import sxkeji.net.dailydiary.common.views.adapters.GuideViewPaperAdapter;
+import sxkeji.net.dailydiary.http.HttpClient;
+import sxkeji.net.dailydiary.http.HttpResponseHandler;
+import sxkeji.net.dailydiary.storage.ACache;
 import sxkeji.net.dailydiary.storage.Constant;
 import sxkeji.net.dailydiary.storage.SharedPreferencesUtils;
 import sxkeji.net.dailydiary.utils.FileUtils;
+import sxkeji.net.dailydiary.utils.LogUtils;
 import sxkeji.net.dailydiary.utils.SystemUtils;
 import sxkeji.net.dailydiary.utils.UIUtils;
 import sxkeji.net.dailydiary.utils.ViewUtils;
@@ -45,11 +55,11 @@ import sxkeji.net.dailydiary.widgets.GuidePageTransformer;
 
 /**
  * What's MVP?
- * <p>
+ * <p/>
  * Model(业务相关的操作、数据，2个部分：接口、实现)-----> Presenter(根据业务选择调用哪些操作) <-----View(布局里涉及的操作接口)
  * ↓
  * Activity(布局里操作的具体实现，最终的调用者)
- * <p>
+ * <p/>
  * Created by zhangshixin on 2015/11/26.
  *
  * @description Codes there always can be better.
@@ -70,7 +80,9 @@ public class SplashActivity extends Activity implements ISplashView {
     private Target mDownloadTarget;
     private Picasso mPicasso;
     private File mLatestImge;
+    private ACache aCache;
     private int screenWidth, screenHeight;
+    private long lastUpdateImgTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,24 +96,72 @@ public class SplashActivity extends Activity implements ISplashView {
     }
 
     private void getDataFromNet() {
-
-        saveImgFromNet();
         mLatestImge = FileUtils.getLatestSaveImgFilr(this);
 
-        getRecommandData();
+        // TODO: 4/28/2016 线程池
         new Thread(new Runnable() {
             @Override
             public void run() {
                 Log.e(TAG, "this is from thread");
-
+                saveImgFromNet();
+                getRecommandData();
             }
         }).start();
     }
 
+    /**
+     * 每天更新一张图片
+     */
     private void saveImgFromNet() {
-        mDownloadTarget = FileUtils.getDownloadTarget(this);
-        mPicasso.load(Constant.URL_IMG).skipMemoryCache().into(mDownloadTarget);
+        Date now = new Date();
+        lastUpdateImgTime = (long) SharedPreferencesUtils.get(this, Constant.LAST_UPDATE_IMG, now.getTime());
+        long updateTime = now.getTime() - lastUpdateImgTime;        //距离上次更新多久了，单位毫秒
+        long oneDay = 1000 * 60 * 60 * 24;
+        if (updateTime == 0 || updateTime > oneDay) {                   //头一次启动或者上次更新是一天前，更新
+            LogUtils.e(TAG, "It's time to update img from net.");
+            mDownloadTarget = FileUtils.getDownloadTarget(this);
+            mPicasso.load(Constant.URL_IMG).skipMemoryCache().into(mDownloadTarget);
+            SharedPreferencesUtils.put(this, Constant.LAST_UPDATE_IMG, now.getTime());
+        } else {        //上次更新到目前为止不足一天，不更新
+            LogUtils.e(TAG, "update img left time : " + updateTime + " / " + oneDay);
+        }
     }
+
+    /**
+     * 每天更新一次推荐
+     */
+    private void getRecommandData() {
+        final Date now = new Date();
+        //上次更新开眼数据时间
+        long lastUpdateOpenEyeTime = (long) SharedPreferencesUtils.get(this, Constant.LAST_UPDATE_OPEN_EYE, now.getTime());
+        long updateTime = now.getTime() - lastUpdateOpenEyeTime;        //距离上次更新多久了，单位毫秒
+        long oneDay = 1000 * 60 * 60 * 24;
+        if (updateTime == 0 || updateTime > oneDay) {                   //头一次启动或者上次更新是一天前，更新
+            LogUtils.e(TAG, "It's time to update open eye");
+            Map<String, String> map = new HashMap<>();
+            map.put("num", "2");
+            HttpClient.builder(this).get(Constant.URL_OPEN_EYE_DIALY, map, new HttpResponseHandler() {
+                @Override
+                public void onSuccess(String content) {
+                    super.onSuccess(content);
+                    if (!TextUtils.isEmpty(content)) {
+                        aCache.put(Constant.OPEN_EYE_DATA, content);
+                        SharedPreferencesUtils.put(SplashActivity.this, Constant.LAST_UPDATE_OPEN_EYE, now.getTime());
+                    }
+                    Log.e(TAG, content.toString());
+                }
+
+                @Override
+                public void onFailure(Request request, IOException e) {
+                    super.onFailure(request, e);
+                }
+            });
+
+        } else {        //上次更新到目前为止不足一天，不更新
+            LogUtils.e(TAG, "update open eye left time : " + updateTime + " / " + oneDay);
+        }
+    }
+
 
     private void initViews() {
         ll_guide = (LinearLayout) findViewById(R.id.ll_guide);
@@ -117,6 +177,7 @@ public class SplashActivity extends Activity implements ISplashView {
         screenWidth = getWindowManager().getDefaultDisplay().getWidth();
         screenHeight = getWindowManager().getDefaultDisplay().getHeight();
         mPicasso = BaseApplication.getPicassoSingleton();
+        aCache = ACache.get(this);
     }
 
     @Override
@@ -145,7 +206,7 @@ public class SplashActivity extends Activity implements ISplashView {
             btnLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    startActivity(new Intent(SplashActivity.this,MainActivity.class));
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
                     Toast.makeText(SplashActivity.this, "进入登录页面", Toast.LENGTH_SHORT).show();
                 }
             });
@@ -218,7 +279,7 @@ public class SplashActivity extends Activity implements ISplashView {
             Log.e("showSplashPic", mLatestImge.getName());
             mPicasso.load(mLatestImge)
                     .config(Bitmap.Config.RGB_565)
-                    .resize(screenWidth,screenHeight)
+                    .resize(screenWidth, screenHeight)
                     .centerInside()
                     .skipMemoryCache()
                     .priority(Picasso.Priority.LOW)
@@ -292,7 +353,4 @@ public class SplashActivity extends Activity implements ISplashView {
 //        mPicasso.cancelRequest(mDownloadTarget);
     }
 
-    public void getRecommandData() {
-
-    }
 }

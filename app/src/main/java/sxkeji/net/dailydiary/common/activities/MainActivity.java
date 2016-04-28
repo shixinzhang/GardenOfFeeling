@@ -30,6 +30,7 @@ import com.cocosw.bottomsheet.BottomSheet;
 import com.squareup.okhttp.Request;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -150,7 +151,7 @@ public class MainActivity extends BaseActivity {
                     Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                     intent.putExtra(Constant.EXTRA_TO, Constant.ACTIVITY_CLOUD_BACK);
                     startActivity(intent);
-                }else {
+                } else {
                     jumpToActivity(CloudBackupActivity.class);
                 }
             }
@@ -164,7 +165,7 @@ public class MainActivity extends BaseActivity {
                     Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                     intent.putExtra(Constant.EXTRA_TO, Constant.ACTIVITY_LOCAL_EXPROT);
                     startActivity(intent);
-                }else {
+                } else {
                     jumpToActivity(LocalExportActivity.class);
                 }
             }
@@ -202,10 +203,10 @@ public class MainActivity extends BaseActivity {
     private void checkLoginState() {
         isLogin = (boolean) SharedPreferencesUtils.get(this, Constant.ACCOUNT_IS_LOGIN, false);
         userNumber = (String) SharedPreferencesUtils.get(this, Constant.ACCOUNT_USER_NUMBER, "");
-        if (TextUtils.isEmpty(userNumber)){
-            LogUtils.e("checkLoginState","userNumber is null" );
-        }else {
-            LogUtils.e("checkLoginState","userNumber " + userNumber);
+        if (TextUtils.isEmpty(userNumber)) {
+            LogUtils.e("checkLoginState", "userNumber is null");
+        } else {
+            LogUtils.e("checkLoginState", "userNumber " + userNumber);
         }
     }
 
@@ -282,40 +283,51 @@ public class MainActivity extends BaseActivity {
      */
     private void loadData() {
         checkLoginState();
-        loadRecommandData();
+//        loadRecommandData();
         loadTabsViewPagerData();
         loadTabsData();
     }
 
     private void loadRecommandData() {
-        Map<String, String> map = new HashMap<>();
-        map.put("num", "2");
-        HttpClient.builder(MainActivity.this).get(Constant.URL_OPEN_EYE_DIALY, map, new HttpResponseHandler() {
-            @Override
-            public void onSuccess(String content) {
-                super.onSuccess(content);
-                if (!TextUtils.isEmpty(content)) {
-                    aCache.put(Constant.OPEN_EYE_DATA, content);
+        final Date now = new Date();
+        //上次更新开眼数据时间
+        long lastUpdateOpenEyeTime = (long) SharedPreferencesUtils.get(this, Constant.LAST_UPDATE_OPEN_EYE, now.getTime());
+        long updateTime = now.getTime() - lastUpdateOpenEyeTime;        //距离上次更新多久了，单位毫秒
+        long oneDay = 1000 * 60 * 60 * 24;
+        if (updateTime == 0 || updateTime > oneDay) {                   //头一次启动或者上次更新是一天前，更新
+            LogUtils.e("loadRecommandData", "It's time to update open eye");
+            Map<String, String> map = new HashMap<>();
+            map.put("num", "2");
+            HttpClient.builder(MainActivity.this).get(Constant.URL_OPEN_EYE_DIALY, map, new HttpResponseHandler() {
+                @Override
+                public void onSuccess(String content) {
+                    super.onSuccess(content);
+                    if (!TextUtils.isEmpty(content)) {
+                        aCache.put(Constant.OPEN_EYE_DATA, content);
+                        SharedPreferencesUtils.put(MainActivity.this, Constant.LAST_UPDATE_OPEN_EYE, now.getTime());
+                    }
+                    Log.e("loadRecommandData", content.toString());
                 }
-//                mDailyBean = GsonUtils.fromJson(content, OpenEyeDailyBean.class);
 
-                Log.e("loadRecommandData", content.toString());
-            }
+                @Override
+                public void onFailure(Request request, IOException e) {
+                    super.onFailure(request, e);
+                }
+            });
 
-            @Override
-            public void onFailure(Request request, IOException e) {
-                super.onFailure(request, e);
-            }
-        });
+        } else {        //上次更新到目前为止不足一天，不更新
+            LogUtils.e("loadRecommandData", "left time : " + updateTime + " / " + oneDay);
+        }
     }
 
     /**
      * 加载Tab列表的viewPager的内容
      */
+
     private void loadTabsViewPagerData() {
         MainTabsVPAdapter mTabsVPAdapter = new MainTabsVPAdapter(getSupportFragmentManager());
-        mTabsVPAdapter.addFragment(new HomeFragment(), "全部");
-        mTabsVPAdapter.addFragment(new TodoListFragment(), "ToDo");
+        mTabsVPAdapter.addFragment(new HomeFragment(), "文章");
+        mTabsVPAdapter.addFragment(new TodoListFragment(), "待做");
         mTabsVPAdapter.addFragment(new RecommandFragment(), "发现");
         vpTabContent.setAdapter(mTabsVPAdapter);
     }

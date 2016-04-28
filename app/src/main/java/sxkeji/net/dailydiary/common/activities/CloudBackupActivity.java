@@ -28,6 +28,7 @@ import sxkeji.net.dailydiary.common.BaseApplication;
 import sxkeji.net.dailydiary.http.HttpClient;
 import sxkeji.net.dailydiary.http.LoadingPage;
 import sxkeji.net.dailydiary.storage.Constant;
+import sxkeji.net.dailydiary.storage.SharedPreferencesUtils;
 import sxkeji.net.dailydiary.utils.LogUtils;
 import sxkeji.net.dailydiary.utils.UIUtils;
 
@@ -48,6 +49,7 @@ public class CloudBackupActivity extends BaseActivity {
     @Bind(R.id.tv_download)
     Button tvDownload;
 
+    private String userNumber;
     private int cloudNumber; //云端备份数量
     private int localNumber; //本地数量
     private ArticleDao articleDao;
@@ -76,7 +78,7 @@ public class CloudBackupActivity extends BaseActivity {
      * 获取同步信息
      */
     private void getDataFrom() {
-
+        userNumber = (String) SharedPreferencesUtils.get(this, Constant.ACCOUNT_USER_NUMBER, "");
         queryCloudNumber();
         queryLocalNumber();
     }
@@ -103,7 +105,7 @@ public class CloudBackupActivity extends BaseActivity {
      */
     private void queryCloudNumber() {
         AVQuery<AVObject> query = new AVQuery<>(Constant.LEANCLOUD_TABLE_DIARY);
-        query.whereEqualTo(Constant.LEANCLOUD_TABLE_USERNUMBER, "18789440700");
+        query.whereEqualTo(Constant.LEANCLOUD_TABLE_USERNUMBER, userNumber);
         query.findInBackground(new FindCallback<AVObject>() {
             @Override
             public void done(List<AVObject> list, AVException e) {
@@ -129,7 +131,7 @@ public class CloudBackupActivity extends BaseActivity {
         if (localArticles != null){
             if (localNumber > cloudNumber){
                 for (Article article : localArticles) {
-                    HttpClient.uploadArticle2LeanCloud(CloudBackupActivity.this,article);
+                    HttpClient.uploadArticle2LeanCloud(CloudBackupActivity.this, article);
                 }
                 queryLocalNumber();
             }else {

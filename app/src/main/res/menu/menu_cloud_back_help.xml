@@ -5,5 +5,5 @@
         android:id="@+id/item_menu_help"
         android:orderInCategory="100"
         app:showAsAction="always"
-        android:title="@string/menu_cloud_back_help" />
+        android:title="@string/menu_setting" />
 </menu>

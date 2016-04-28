@@ -56,8 +56,12 @@ public class Constant {
     //文档类型
     public static final int TYPE_MARKDOWN = 0 ; //markdown
     public static final int TYPE_NORMAL = 1 ;
-    public static final int TYPE_REMINDER = 2;  //todo
+    public static final int TYPE_REMINDER = 2;  //to do
     public static final int TYPE_DRAFT = 3 ; //草稿
+
+    //缓存相关
+    public static final String LAST_UPDATE_IMG = "last_update_img";
+    public static final String LAST_UPDATE_OPEN_EYE = "last_update_eye";
 
     //缓存地址
     public static final String BASE_CACHE_FILE_PATH = "sdcard/sxkeji/";
