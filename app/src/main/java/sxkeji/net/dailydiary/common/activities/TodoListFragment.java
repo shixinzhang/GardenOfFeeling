@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -148,8 +149,10 @@ public class TodoListFragment extends Fragment {
             public void onClick(View v) {
                 showToast("删除成功");
                 BaseApplication.getDaoSession().getTodoDao().delete(todo);
-                initTodoListData();
-                initViews();
+                todoList.remove(todo);
+                adapter.notifyDataSetChanged();
+//                initTodoListData();
+//                initViews();
                 ViewUtils.dismissPopup();
             }
         });
@@ -167,16 +170,6 @@ public class TodoListFragment extends Fragment {
         });
     }
 
-    Handler handler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what){
-                case 1:
-                    break;
-            }
-            super.handleMessage(msg);
-        }
-    };
     @Override
     public void onDestroyView() {
         super.onDestroyView();

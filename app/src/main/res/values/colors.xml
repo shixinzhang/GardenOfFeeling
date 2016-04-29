@@ -19,6 +19,10 @@
     <!-- 备份 -->
     <color name="bg_cloud_white">#DDE1E7</color>
 
+    <!-- todo list -->
+    <color name="bg_list_light_white">#F0F1F9</color>
+
+
     <color name="name_half_black">#88000000</color>
     <color name="line_light_grey">#dcdcdc</color>
     <color name="markdown_bg_transparent">#55000000</color>
