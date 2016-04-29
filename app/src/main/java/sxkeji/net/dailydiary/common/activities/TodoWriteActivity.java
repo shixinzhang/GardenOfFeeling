@@ -56,10 +56,6 @@ public class TodoWriteActivity extends BaseActivity implements TimePickerDialog.
     EditText etContent;
     @Bind(R.id.text_input_layout)
     TextInputLayout textInputLayout;
-    @Bind(R.id.ll_edit)
-    LinearLayout llEdit;
-    @Bind(R.id.userToDoRemindMeTextView)
-    TextView userToDoRemindMeTextView;
     @Bind(R.id.switch_set_reminder)
     SwitchCompat switchSetReminder;
     @Bind(R.id.et_date)
@@ -76,13 +72,13 @@ public class TodoWriteActivity extends BaseActivity implements TimePickerDialog.
     private final String TAG = "TodoWriteActivity";
     private final String UPLOAD_TODO = "upload_todo";   //上传过云端的toDo,有了ObjectId
     private Date currentDate, selectDate;
-    private int currentYear, currentMonth, currentDay, currentHour, currentMinute;
     private int selectYear, selectMonth, selectDay, selectHour, selectMinute;
     private boolean hasReminder;    //是否要提醒
     private boolean showOnLockScreen;   //是否显示到锁屏
+    private boolean isFinished;     //是否完成
     private boolean autoSync;
     private Todo newToDo;           //新建的todo
-    private Todo updateToDo ;       //要更新的todo
+    private Todo updateToDo;       //要更新的todo
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,29 +92,32 @@ public class TodoWriteActivity extends BaseActivity implements TimePickerDialog.
     }
 
     private void initData() {
-        updateToDo = (Todo) getIntent().getSerializableExtra(Constant.EXTRA_TODO);
-        if (updateToDo != null){
-            LogUtils.e(TAG,"get data : " + updateToDo.getContent());
-        }
         currentDate = new Date();
-//                if(mUserToDoItem.getToDoDate()!=null){
-////                    date = mUserToDoItem.getToDoDate();
-//                    date = mUserReminderDate;
-//                }
-//                else{
-//                    date = new Date();
-//                }
-        if (selectDate == null) {
-            selectDate = new Date();
-        }
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(currentDate);
-        selectYear = currentYear = calendar.get(Calendar.YEAR);
-        currentMonth = calendar.get(Calendar.MONTH);
-        selectMonth = currentMonth + 1;
-        selectDay = currentDay = calendar.get(Calendar.DAY_OF_MONTH);
-        selectHour = currentHour = calendar.get(Calendar.HOUR_OF_DAY);
-        selectMinute = currentMinute = calendar.get(Calendar.MINUTE);
+
+        updateToDo = (Todo) getIntent().getSerializableExtra(Constant.EXTRA_TODO);
+        if (updateToDo != null) {           //要更新todo，设置内容为之前的
+            LogUtils.e(TAG, "get data : " + updateToDo.getContent());
+            String content = updateToDo.getContent();
+            showOnLockScreen = updateToDo.getShowOnLockScreen();
+            hasReminder = updateToDo.getHasReminder();
+            switchSetReminder.setChecked(hasReminder);
+            isFinished = updateToDo.getIsFinished();
+            if (hasReminder) {
+                visibleOrInvisibleSelectDate(hasReminder);
+            }
+            etContent.setText(content);
+            selectDate = updateToDo.getDate();
+        } else {                    //新增todo
+            selectDate = currentDate;
+        }
+
+        calendar.setTime(selectDate);
+        selectYear = calendar.get(Calendar.YEAR);
+        selectMonth = calendar.get(Calendar.MONTH) + 1;
+        selectDay = calendar.get(Calendar.DAY_OF_MONTH);
+        selectHour = calendar.get(Calendar.HOUR_OF_DAY);
+        selectMinute = calendar.get(Calendar.MINUTE);
 
         autoSync = (boolean) SharedPreferencesUtils.get(this, Constant.SETTING_TODO_AUTO_SYNC, false);
     }
@@ -148,7 +147,7 @@ public class TodoWriteActivity extends BaseActivity implements TimePickerDialog.
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 hasReminder = isChecked;
-                visibleOrInvisible(isChecked);
+                visibleOrInvisibleSelectDate(isChecked);
             }
         });
 
@@ -185,10 +184,14 @@ public class TodoWriteActivity extends BaseActivity implements TimePickerDialog.
         int todoColor = ColorGeneratorUtils.MATERIAL.getRandomColor();
         String todoObjectId = null;
         if (TextUtils.isEmpty(todoContent)) {
-            UIUtils.showToastSafe(TodoWriteActivity.this, "你忘了输入哦");
+            // 新增时提示
+            if (updateToDo == null) {
+                UIUtils.showToastSafe(TodoWriteActivity.this, "没有新增可以保存");
+            }
             return;
         }
-        newToDo = new Todo(null, selectDate, todoContent, todoColor, hasReminder, showOnLockScreen, false, todoObjectId);
+        UIUtils.showToastSafe(this, "自动保存");
+        newToDo = new Todo(null, selectDate, todoContent, todoColor, hasReminder, showOnLockScreen, isFinished, todoObjectId);
         if (autoSync) {      //开启自动上传
             uploadTodo2Cloud(this, newToDo);
         } else {
@@ -199,8 +202,14 @@ public class TodoWriteActivity extends BaseActivity implements TimePickerDialog.
     }
 
     private void saveToDo2DB(Todo todo) {
-        BaseApplication.getDaoSession().getTodoDao().insert(todo);
-        UIUtils.showToastSafe(TodoWriteActivity.this, "ToDo保存成功");
+        if (updateToDo == null) {
+            BaseApplication.getDaoSession().getTodoDao().insert(todo);
+            UIUtils.showToastSafe(TodoWriteActivity.this, "保存成功");
+        } else {
+            BaseApplication.getDaoSession().getTodoDao().delete(updateToDo);
+            BaseApplication.getDaoSession().getTodoDao().insert(todo);
+            UIUtils.showToastSafe(TodoWriteActivity.this, "更新成功");
+        }
         LogUtils.e(TAG, "new ToDo :" + todo.getDate() + "/" + todo.getContent() + "/ "
                 + todo.getColor() + "/" + todo.getHasReminder() + "/ objectId " + todo.getObjectId());
     }
@@ -271,7 +280,7 @@ public class TodoWriteActivity extends BaseActivity implements TimePickerDialog.
      *
      * @param show
      */
-    private void visibleOrInvisible(final boolean show) {
+    private void visibleOrInvisibleSelectDate(final boolean show) {
         float start, end;
         if (show) {
             start = 0.5f;
@@ -389,7 +398,6 @@ public class TodoWriteActivity extends BaseActivity implements TimePickerDialog.
     private void setText2TimeEditText() {
         String selectTimeStr = getFormatStr(selectHour) + " : " + getFormatStr(selectMinute);
         etTime.setText(selectTimeStr);
-
     }
 
     /**
@@ -402,11 +410,11 @@ public class TodoWriteActivity extends BaseActivity implements TimePickerDialog.
         return number < 10 ? ("0" + number) : ("" + number);
     }
 
-
     @Override
     public void onBackPressed() {
-        UIUtils.showToastSafe(this, "自动保存");
-        saveToDo();
+        if (updateToDo == null) {
+            saveToDo();
+        }
         super.onBackPressed();
     }
 }

@@ -2,6 +2,8 @@ package sxkeji.net.dailydiary.common.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -86,9 +88,11 @@ public class TodoListFragment extends Fragment {
     private void initViews() {
         if (todoList == null || todoList.size() == 0) {
             rlEmptyView.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
             return;
         } else {
-            rlEmptyView.setVisibility(View.INVISIBLE);
+            recyclerView.setVisibility(View.VISIBLE);
+            rlEmptyView.setVisibility(View.GONE);
             adapter = new AllTodoRecyclerAdapter(todoList);
             adapter.setOnItemLongClickListener(new AllTodoRecyclerAdapter.OnItemLongClickListener() {
                 @Override
@@ -131,7 +135,7 @@ public class TodoListFragment extends Fragment {
      */
     private void showDeleteOrFinishedPopup(final Todo todo, View view, final CheckBox checkBox) {
         View popupView = ViewUtils.showPopupWindow(getContext(), R.layout.pop_todo_delete_or_finished, view, 2);
-        TextView tvDelete = (TextView) popupView.findViewById(R.id.tv_delete);
+        final TextView tvDelete = (TextView) popupView.findViewById(R.id.tv_delete);
         final TextView tvFinished = (TextView) popupView.findViewById(R.id.tv_finished);
 
         if (checkBox.isChecked()) {
@@ -142,7 +146,10 @@ public class TodoListFragment extends Fragment {
         tvDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                showToast("删除成功");
                 BaseApplication.getDaoSession().getTodoDao().delete(todo);
+                initTodoListData();
+                initViews();
                 ViewUtils.dismissPopup();
             }
         });
@@ -160,6 +167,16 @@ public class TodoListFragment extends Fragment {
         });
     }
 
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case 1:
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+    };
     @Override
     public void onDestroyView() {
         super.onDestroyView();

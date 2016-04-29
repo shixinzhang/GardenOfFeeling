@@ -46,6 +46,7 @@ public class AllTodoRecyclerAdapter extends RecyclerView.Adapter<AllTodoRecycler
         notifyDataSetChanged();
     }
 
+
     public AllTodoRecyclerAdapter setOnItemLongClickListener(OnItemLongClickListener listener) {
         longClickListener = listener;
         return this;

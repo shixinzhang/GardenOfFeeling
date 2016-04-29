@@ -27,7 +27,9 @@
                 android:layout_weight=".5"
                 android:background="?attr/colorPrimary"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:focusableInTouchMode="true"
+                android:focusable="true">
 
 
                 <android.support.design.widget.TextInputLayout
@@ -44,8 +46,6 @@
                         android:layout_marginLeft="32dp"
                         android:layout_marginRight="32dp"
                         android:gravity="start|bottom"
-                        android:focusableInTouchMode="true"
-                        android:focusable="true"
                         android:hint="标题"
                         android:inputType="textAutoCorrect|textCapSentences"
                         android:lines="2"
@@ -80,7 +80,6 @@
                         android:src="@mipmap/icon_add_alarm_grey" />
 
                     <TextView
-                        android:id="@+id/userToDoRemindMeTextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
