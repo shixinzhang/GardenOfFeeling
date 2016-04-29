@@ -1,10 +1,12 @@
 package sxkeji.net.dailydiary.common.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +15,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -25,6 +26,7 @@ import sxkeji.net.dailydiary.common.BaseApplication;
 import sxkeji.net.dailydiary.common.views.adapters.AllTodoRecyclerAdapter;
 import sxkeji.net.dailydiary.storage.Constant;
 import sxkeji.net.dailydiary.storage.SharedPreferencesUtils;
+import sxkeji.net.dailydiary.utils.UIUtils;
 import sxkeji.net.dailydiary.utils.ViewUtils;
 
 /**
@@ -42,6 +44,8 @@ public class TodoListFragment extends Fragment {
     private TodoDao todoDao;
     private ArrayList<Todo> todoList;
     private boolean orderByDec = true;     //按照剩余时间升序还是降序排列，默认降序
+    private boolean isUpdating = false;    //是否正在更新数据库
+    private int REQUEST_UPDATE_TODO = 1;
 
     @Nullable
     @Override
@@ -89,17 +93,33 @@ public class TodoListFragment extends Fragment {
             adapter.setOnItemLongClickListener(new AllTodoRecyclerAdapter.OnItemLongClickListener() {
                 @Override
                 public void OnItemLongClick(Todo todo, View view, CheckBox checkBox) {
+                    //长按显示
                     showDeleteOrFinishedPopup(todo, view, checkBox);
                 }
+            }).setOnItemLinearLayoutClickListener(new AllTodoRecyclerAdapter.OnItemLinearLayoutClickListener() {
+                @Override
+                public void OnItemLinearLayoutClick(Todo todo) {
+                    //跳转到详情
+                    Intent intent = new Intent(getActivity(), TodoWriteActivity.class);
+                    intent.putExtra(Constant.EXTRA_TODO, todo);
+                    startActivityForResult(intent, REQUEST_UPDATE_TODO);
+                }
+            }).setOnItemCheckBoxClickListener(new AllTodoRecyclerAdapter.OnItemCheckBoxClickListener() {
+                @Override
+                public void OnItemCheckBoxClick(Todo todo, boolean cb) {
+                    //更新todo的状态
+                    todo.setIsFinished(cb);
+                    BaseApplication.getDaoSession().getTodoDao().update(todo);
+                }
             });
-//            adapter.setmOnItemClickListener(new AllArticlesRecyclerAdapter.OnItemClickListener() {
-//                @Override
-//                public void onItemClick(Article article, int position) {
-//                    jumpToDetailActivity(article);
-//                }
-//            });
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             recyclerView.setAdapter(adapter);
+        }
+    }
+
+    private void showToast(String str) {
+        if (!TextUtils.isEmpty(str)) {
+            UIUtils.showToastSafe(getContext(), str);
         }
     }
 
@@ -109,7 +129,7 @@ public class TodoListFragment extends Fragment {
      * @param todo
      * @param view
      */
-    private void showDeleteOrFinishedPopup(Todo todo, View view, final CheckBox checkBox) {
+    private void showDeleteOrFinishedPopup(final Todo todo, View view, final CheckBox checkBox) {
         View popupView = ViewUtils.showPopupWindow(getContext(), R.layout.pop_todo_delete_or_finished, view, 2);
         TextView tvDelete = (TextView) popupView.findViewById(R.id.tv_delete);
         final TextView tvFinished = (TextView) popupView.findViewById(R.id.tv_finished);
@@ -119,6 +139,13 @@ public class TodoListFragment extends Fragment {
         } else {
             tvFinished.setText("完成");
         }
+        tvDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BaseApplication.getDaoSession().getTodoDao().delete(todo);
+                ViewUtils.dismissPopup();
+            }
+        });
         tvFinished.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,6 +155,7 @@ public class TodoListFragment extends Fragment {
                 } else {
                     tvFinished.setText("完成");
                 }
+                ViewUtils.dismissPopup();
             }
         });
     }

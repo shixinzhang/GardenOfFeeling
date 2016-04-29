@@ -81,7 +81,8 @@ public class TodoWriteActivity extends BaseActivity implements TimePickerDialog.
     private boolean hasReminder;    //是否要提醒
     private boolean showOnLockScreen;   //是否显示到锁屏
     private boolean autoSync;
-    private Todo newToDo;
+    private Todo newToDo;           //新建的todo
+    private Todo updateToDo ;       //要更新的todo
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +96,10 @@ public class TodoWriteActivity extends BaseActivity implements TimePickerDialog.
     }
 
     private void initData() {
+        updateToDo = (Todo) getIntent().getSerializableExtra(Constant.EXTRA_TODO);
+        if (updateToDo != null){
+            LogUtils.e(TAG,"get data : " + updateToDo.getContent());
+        }
         currentDate = new Date();
 //                if(mUserToDoItem.getToDoDate()!=null){
 ////                    date = mUserToDoItem.getToDoDate();

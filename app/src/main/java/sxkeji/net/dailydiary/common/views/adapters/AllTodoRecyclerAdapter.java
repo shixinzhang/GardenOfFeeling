@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,6 +27,8 @@ import sxkeji.net.dailydiary.widgets.TextDrawable;
 public class AllTodoRecyclerAdapter extends RecyclerView.Adapter<AllTodoRecyclerAdapter.ViewHolder> {
     private ArrayList<Todo> todoList;
     private OnItemLongClickListener longClickListener;
+    private OnItemLinearLayoutClickListener layoutClickListener;
+    private OnItemCheckBoxClickListener cbClickListener;
     private long oneYear, oneMonth, oneDay, oneHour, oneMinute, oneSecond;
 
     public AllTodoRecyclerAdapter(ArrayList<Todo> todoList) {
@@ -43,8 +46,19 @@ public class AllTodoRecyclerAdapter extends RecyclerView.Adapter<AllTodoRecycler
         notifyDataSetChanged();
     }
 
-    public void setOnItemLongClickListener(OnItemLongClickListener listener) {
+    public AllTodoRecyclerAdapter setOnItemLongClickListener(OnItemLongClickListener listener) {
         longClickListener = listener;
+        return this;
+    }
+
+    public AllTodoRecyclerAdapter setOnItemLinearLayoutClickListener(OnItemLinearLayoutClickListener listener) {
+        layoutClickListener = listener;
+        return this;
+    }
+
+    public AllTodoRecyclerAdapter setOnItemCheckBoxClickListener(OnItemCheckBoxClickListener listener) {
+        cbClickListener = listener;
+        return this;
     }
 
     @Override
@@ -61,7 +75,9 @@ public class AllTodoRecyclerAdapter extends RecyclerView.Adapter<AllTodoRecycler
         int todoColor = todo.getColor();
         boolean hasReminder = todo.getHasReminder();
         Date todoDate = todo.getDate();
+        boolean isFinished = todo.getIsFinished();
 
+        holder.cbFinished.setChecked(isFinished);
         holder.tvContent.setText(todoContent);
         if (hasReminder && todoDate != null) {
             holder.tvContent.setMaxLines(1);
@@ -88,6 +104,22 @@ public class AllTodoRecyclerAdapter extends RecyclerView.Adapter<AllTodoRecycler
                 public boolean onLongClick(View v) {
                     longClickListener.OnItemLongClick(todo, holder.llContainer, holder.cbFinished);
                     return false;
+                }
+            });
+        }
+        if (layoutClickListener != null){
+            holder.llContainer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    layoutClickListener.OnItemLinearLayoutClick(todo);
+                }
+            });
+        }
+        if (cbClickListener != null){
+            holder.cbFinished.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    cbClickListener.OnItemCheckBoxClick(todo, isChecked);
                 }
             });
         }
@@ -150,6 +182,23 @@ public class AllTodoRecyclerAdapter extends RecyclerView.Adapter<AllTodoRecycler
         }
     }
 
+    /**
+     * checkBox点击监听，修改状态
+     */
+    public interface OnItemCheckBoxClickListener {
+        void OnItemCheckBoxClick(Todo todo, boolean cb);
+    }
+
+    /**
+     * 整体点击监听，进入详情
+     */
+    public interface OnItemLinearLayoutClickListener {
+        void OnItemLinearLayoutClick(Todo todo);
+    }
+
+    /**
+     * 长按监听
+     */
     public interface OnItemLongClickListener {
         void OnItemLongClick(Todo todo, View view, CheckBox cb);
     }

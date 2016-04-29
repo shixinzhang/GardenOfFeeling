@@ -36,6 +36,7 @@ public class Constant {
     public static final String ACTIVITY_SETTING = "activity_setting";
     public static final String PLAY_TITLE = "play_title";
     public static final String PLAY_URL = "play_url";
+    public static final String EXTRA_TODO = "todo";
 
     //LeanCloud ID 和 Key
     public static String LEANCLOUD_APPID = "p5u1dmlmaznldib4hu0goexf4cg5kwwed7to6pdhsm9x8dpd";
