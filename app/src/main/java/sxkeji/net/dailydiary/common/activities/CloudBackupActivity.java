@@ -2,17 +2,19 @@ package sxkeji.net.dailydiary.common.activities;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
+import android.content.Intent;
+import android.os.*;
+import android.os.Process;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.FindCallback;
@@ -88,6 +90,7 @@ public class CloudBackupActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cloud_backup);
         ButterKnife.bind(this);
+//        AVOSCloud.initialize(this, Constant.LEANCLOUD_APPID, Constant.LEANCLOUD_KEY);         //如果把同步放到单独的进程，需要初始化AVOSCloud
         initData();
         initViews();
         setListeners();
@@ -199,6 +202,9 @@ public class CloudBackupActivity extends BaseActivity {
             todoDao.insertOrReplace(tempTodo);
         }
         dismissProgress();
+        localNumber = localArticleNumber;
+        queryLocalTodoNumber();
+        updateSyncTime();
         LogUtils.e(TAG, "saveTodo2DB size " + list.size());
     }
 
@@ -259,6 +265,10 @@ public class CloudBackupActivity extends BaseActivity {
             articleDao.insertOrReplace(tempArticle);
         }
         dismissProgress();
+
+        localNumber = localTodoNumber;
+        queryLocalArticleNumber();
+        updateSyncTime();
         LogUtils.e(TAG, "saveArticle2DB size " + list.size());
     }
 
@@ -267,6 +277,7 @@ public class CloudBackupActivity extends BaseActivity {
         localTodos = todoQuery.list();
         localTodoNumber = localTodos.size();
         localNumber += localTodoNumber;
+        tvLocalNumber.setText(localNumber + "篇");
         tvLocalTodoNumber.setText(localTodoNumber + "篇");
     }
 
@@ -275,6 +286,7 @@ public class CloudBackupActivity extends BaseActivity {
         localArticles = query.list();
         localArticleNumber = localArticles.size();
         localNumber += localArticleNumber;
+        tvLocalNumber.setText(localNumber + "篇");
         tvLocalArticleNumber.setText(localArticleNumber + "篇");
     }
 
@@ -312,13 +324,9 @@ public class CloudBackupActivity extends BaseActivity {
     private void download2Local() {
         if (localArticleNumber < cloudArticleNumber) {     //本地文章数量少于云端，下载文章
             queryCloudArticleNumber(true);
-            localNumber = localTodoNumber;
-            queryLocalArticleNumber();
         }
         if (localTodoNumber < cloudTodoNumber) {     //本地Todo数量少于云端，下载To do
             queryCloudTodoNumber(true);
-            localNumber = localArticleNumber;
-            queryLocalTodoNumber();
         }
         if (cloudArticleNumber == 0 && cloudTodoNumber == 0) {
             showToast("云端没有任何内容");
@@ -457,7 +465,6 @@ public class CloudBackupActivity extends BaseActivity {
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            Date date = new Date();
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:     //更新todo
@@ -465,7 +472,7 @@ public class CloudBackupActivity extends BaseActivity {
                     Todo todo = (Todo) msg.getData().getSerializable(UPDATE_TODO);
                     todo.setObjectId(upLoadObject.getObjectId());
                     BaseApplication.getDaoSession().getTodoDao().update(todo);
-                    tvLastSyncTime.setText(StringUtils.dateToString(date));
+                    updateSyncTime();
                     LogUtils.e(TAG, "Update todo " + upLoadObject.getObjectId());
                     break;
                 case 2:
@@ -473,16 +480,25 @@ public class CloudBackupActivity extends BaseActivity {
                     Article article = (Article) msg.getData().getSerializable(UPDATE_ARTICLE);
                     article.setObjectId(upLoadObject2.getObjectId());
                     BaseApplication.getDaoSession().getArticleDao().update(article);
-                    tvLastSyncTime.setText(StringUtils.dateToString(date));
+                    updateSyncTime();
                     LogUtils.e(TAG, "Update article " + upLoadObject2.getObjectId());
                     break;
             }
         }
     };
 
+    /**
+     * 更新上次同步时间
+     */
+    private void updateSyncTime() {
+        Date date = new Date();
+        tvLastSyncTime.setText(StringUtils.dateToString(date));
+        SharedPreferencesUtils.put(this, Constant.LAST_SYNC_TIME, date.getTime());
+    }
+
     private void startProgress() {
         if (progressDialog != null && !progressDialog.isShowing()) {
-            progressDialog.setTitle("正在努力进行中...");
+            progressDialog.setMessage("正在努力进行中...");
             progressDialog.show();
         }
     }
@@ -508,6 +524,8 @@ public class CloudBackupActivity extends BaseActivity {
         });
 
         progressDialog = new ProgressDialog(this);
+        Date lastDate = new Date(lastSyncTime);
+        tvLastSyncTime.setText(StringUtils.dateToString(lastDate));
     }
 
     @Override
@@ -516,4 +534,19 @@ public class CloudBackupActivity extends BaseActivity {
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.item_menu_setting:
+                startActivity(new Intent(CloudBackupActivity.this, SettingActivity.class));
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//        android.os.Process.killProcess(Process.myPid());      //单独在一个进程时推出时要关闭进程，暂时放弃在单独的进程
+    }
 }

@@ -48,7 +48,7 @@
             android:name=".common.activities.CloudBackupActivity"
             android:label="@string/activity_cloud_backup"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".common.activities.LoginActivity"
