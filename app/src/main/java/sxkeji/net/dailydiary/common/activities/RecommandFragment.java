@@ -20,10 +20,13 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import sxkeji.net.dailydiary.R;
 import sxkeji.net.dailydiary.beans.OpenEyeDailyBean;
+import sxkeji.net.dailydiary.common.models.NetWorkBiz;
 import sxkeji.net.dailydiary.common.views.adapters.AllRecommandAdapter;
 import sxkeji.net.dailydiary.storage.ACache;
 import sxkeji.net.dailydiary.storage.Constant;
 import sxkeji.net.dailydiary.utils.GsonUtils;
+import sxkeji.net.dailydiary.utils.NetWorkUtils;
+import sxkeji.net.dailydiary.utils.UIUtils;
 
 /**
  * 每日推荐
@@ -41,6 +44,7 @@ public class RecommandFragment extends Fragment {
     private ACache aCache;
     private String openEyeJson;
     private List<OpenEyeDailyBean.IssueListEntity.ItemListEntity> openEyeDataList;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,13 +58,13 @@ public class RecommandFragment extends Fragment {
     private void loadData() {
         aCache = ACache.get(getContext());
         openEyeJson = aCache.getAsString(Constant.OPEN_EYE_DATA);
-        if (!TextUtils.isEmpty(openEyeJson)){
-            Log.e(TAG,"openEyeJson " + openEyeJson);
+        if (!TextUtils.isEmpty(openEyeJson)) {
+            Log.e(TAG, "openEyeJson " + openEyeJson);
             OpenEyeDailyBean eyeDailyBean = GsonUtils.fromJson(openEyeJson, OpenEyeDailyBean.class);
             openEyeDataList = eyeDailyBean.getIssueList().get(0).getItemList();
-        }else {
+        } else {
 
-            Log.e(TAG,"openEyeJson is null" );
+            Log.e(TAG, "openEyeJson is null");
         }
     }
 
@@ -71,16 +75,33 @@ public class RecommandFragment extends Fragment {
         adapter.setmOnItemClickListener(new AllRecommandAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(OpenEyeDailyBean.IssueListEntity.ItemListEntity.DataEntity eyeDailyBean, int position) {
-//                Toast.makeText(getContext(), "播放" + eyeDailyBean.getTitle() +"/url " + eyeDailyBean.getPlayUrl(), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getActivity(), VideoPlayerActivity.class);
-                intent.putExtra(Constant.PLAY_TITLE, eyeDailyBean.getTitle());
-                intent.putExtra(Constant.PLAY_URL, eyeDailyBean.getPlayUrl());
-                startActivity(intent);
+                playTheMedia(eyeDailyBean);
+
             }
         });
 
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
+    }
+
+    private void playTheMedia(OpenEyeDailyBean.IssueListEntity.ItemListEntity.DataEntity eyeDailyBean) {
+        boolean networkAvailable = NetWorkUtils.isNetworkAvailable(getContext());
+        if (networkAvailable) {
+            String networkTypeName = NetWorkUtils.getNetworkTypeName(getContext());
+            showToast("当前网络环境为 " + networkTypeName);
+            Intent intent = new Intent(getActivity(), VideoPlayerActivity.class);
+            intent.putExtra(Constant.PLAY_TITLE, eyeDailyBean.getTitle());
+            intent.putExtra(Constant.PLAY_URL, eyeDailyBean.getPlayUrl());
+            startActivity(intent);
+        } else {
+            showToast("无法播放，请检查网络连接");
+        }
+    }
+
+    void showToast(String str) {
+        if (!TextUtils.isEmpty(str)){
+            UIUtils.showToastSafe(getContext(),str);
+        }
     }
 
     @Override

@@ -176,7 +176,8 @@ public class CloudBackupActivity extends BaseActivity {
                         dismissProgress();
                     }
                 } else {
-                    showToast("下载失败 " + e.getMessage());
+                    int errorCode = e.getCode();
+                    showToast("连接服务器失败 " + e.getMessage() + errorCode);
                     LogUtils.e(TAG, "query number from server failed " + e.getMessage());
                     dismissProgress();
                 }
@@ -234,7 +235,7 @@ public class CloudBackupActivity extends BaseActivity {
                         dismissProgress();
                     }
                 } else {
-                    showToast("下载失败 " + e.getMessage());
+                    showToast("连接服务器失败 " + e.getMessage());
                     LogUtils.e(TAG, "query number from server failed " + e.getMessage());
                     dismissProgress();
                 }

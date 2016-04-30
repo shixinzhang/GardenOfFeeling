@@ -194,8 +194,10 @@ public class LoginActivity extends AppCompatActivity {
                         showToast("登录失败: 手机号与密码不匹配");
                     } else if (errorCode == 211) {
                         showToast("登录失败: 手机号尚未注册");
+                    } else if (errorCode == 0) {
+                        showToast("登录失败，请检查网络连接");
                     } else {
-                        showToast("登录失败: " + e.getMessage());
+                        showToast("登录失败: " + e.getMessage() + errorCode);
                     }
                 }
             }
@@ -231,7 +233,11 @@ public class LoginActivity extends AppCompatActivity {
                                 writeState2Local(phoneNumber);
                                 jump2NextActivity();
                             } else {
-                                showToast("注册失败 " + e.getMessage());
+                                if (e.getCode() == 0) {
+                                    showToast("注册失败，请检查网络连接");
+                                } else {
+                                    showToast("注册失败 " + e.getMessage());
+                                }
                                 // 失败的原因可能有多种，常见的是用户名已经存在。
                             }
                         }
@@ -250,7 +256,7 @@ public class LoginActivity extends AppCompatActivity {
      * @param number
      */
     private void writeState2Local(String number) {
-        LogUtils.e(TAG,"writeState2Local " + number);
+        LogUtils.e(TAG, "writeState2Local " + number);
         SharedPreferencesUtils.put(LoginActivity.this, Constant.ACCOUNT_USER_NUMBER, number);
         SharedPreferencesUtils.put(LoginActivity.this, Constant.ACCOUNT_IS_LOGIN, true);
     }

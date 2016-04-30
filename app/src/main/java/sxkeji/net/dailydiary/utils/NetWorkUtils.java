@@ -16,7 +16,7 @@ import android.text.TextUtils;
 public class NetWorkUtils {
 
     public static final String NETWORK_TYPE_WIFI = "wifi";
-    public static final String NETWORK_TYPE_3G = "eg";
+    public static final String NETWORK_TYPE_3G = "3g";
     public static final String NETWORK_TYPE_2G = "2g";
     public static final String NETWORK_TYPE_WAP = "wap";
     public static final String NETWORK_TYPE_UNKNOWN = "unknown";

@@ -151,6 +151,10 @@ public class TodoListFragment extends Fragment {
                 BaseApplication.getDaoSession().getTodoDao().delete(todo);
                 todoList.remove(todo);
                 adapter.notifyDataSetChanged();
+                if (todoList.size() <= 0){                  //删完了
+                    recyclerView.setVisibility(View.GONE);
+                    rlEmptyView.setVisibility(View.VISIBLE);
+                }
 //                initTodoListData();
 //                initViews();
                 ViewUtils.dismissPopup();
