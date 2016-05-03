@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.avos.avoscloud.AVOSCloud;
+import com.squareup.leakcanary.LeakCanary;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -66,28 +67,33 @@ public class BaseApplication extends Application {
     private static Picasso picassoSingleton;
     @Override
     public void onCreate() {
-        mInstance = this;
 
-        mMainThreadId = android.os.Process.myTid();
-        mMainThread = Thread.currentThread();
-        mMainThreadHandler = new Handler();
-        mMainLooper = getMainLooper();
+        super.onCreate();
+        initObjects();
 
+        LeakCanary.install(this);
         setUpDataBase();
         createCacheDirectory();
 
-        super.onCreate();
         if (!BuildConfig.DEBUG) {
             LogUtils.mDebuggable = LogUtils.LEVEL_NONE;
         }
-
         if (checkIfIsAppRunning(getPackageName())) {
             initBuggly();
             initLeanCloud();
         }
 
-        picassoSingleton = Picasso.with(this);
 
+
+    }
+
+    private void initObjects() {
+        mInstance = this;
+        mMainThreadId = android.os.Process.myTid();
+        mMainThread = Thread.currentThread();
+        mMainThreadHandler = new Handler();
+        mMainLooper = getMainLooper();
+        picassoSingleton = Picasso.with(this);
     }
 
     /**

@@ -3,8 +3,6 @@ package sxkeji.net.dailydiary.common.activities;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.text.TextUtils;
 import android.view.SurfaceView;
 import android.view.View;
@@ -20,16 +18,18 @@ import android.widget.Toast;
 
 import sxkeji.net.dailydiary.R;
 import sxkeji.net.dailydiary.storage.Constant;
-import sxkeji.net.dailydiary.widgets.Player;
+import sxkeji.net.dailydiary.widgets.VideoPlayer;
 
-
+/**
+ * 视频播放
+ */
 public class VideoPlayerActivity extends Activity {
     private SurfaceView surfaceView;
     private RelativeLayout rlPlayWindow;
     private LinearLayout llProgress;
     private Button btnPlayVideo, btnBack;
     private SeekBar skbProgress;
-    private Player player;
+    private VideoPlayer videoPlayer;
     private TextView tvTitle, tv_position, tv_duration;
     //    private String url = "http://2449.vod.myqcloud.com/2449_43b6f696980311e59ed467f22794e792.f20.mp4";
     private String url = "http://baobab.wdjcdn.com/1461595640215_6874_854x480.mp4";
@@ -63,6 +63,7 @@ public class VideoPlayerActivity extends Activity {
         playTitle = bundle.getString(Constant.PLAY_TITLE);
         playUrl = bundle.getString(Constant.PLAY_URL);
     }
+
     private void initViews() {
         surfaceView = (SurfaceView) findViewById(R.id.surfaceView1);
         tvTitle = (TextView) findViewById(R.id.tv_title);
@@ -75,9 +76,9 @@ public class VideoPlayerActivity extends Activity {
 
         skbProgress = (SeekBar) findViewById(R.id.skbProgress);
         skbProgress.setOnSeekBarChangeListener(new SeekBarChangeEvent());
-        player = new Player(surfaceView, skbProgress, tv_position, tv_duration);
+        videoPlayer = new VideoPlayer(surfaceView, skbProgress, tv_position, tv_duration);
 
-        if (!TextUtils.isEmpty(playTitle)){
+        if (!TextUtils.isEmpty(playTitle)) {
             tvTitle.setText(playTitle);
         }
         Toast.makeText(VideoPlayerActivity.this, "精彩正在缓存，请点击播放", Toast.LENGTH_SHORT).show();
@@ -89,7 +90,7 @@ public class VideoPlayerActivity extends Activity {
         btnBack.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                player.stop();
+                videoPlayer.stop();
                 onBackPressed();
             }
         });
@@ -106,17 +107,17 @@ public class VideoPlayerActivity extends Activity {
             public void onClick(View v) {
                 if (isPlaying) {
                     if (isPause) {
-                        player.play();
+                        videoPlayer.play();
                         btnPlayVideo.setBackgroundResource(R.mipmap.icon_pause);
                         isPause = false;
                     } else {
-                        player.pause();
+                        videoPlayer.pause();
                         btnPlayVideo.setBackgroundResource(R.mipmap.icon_play);
                         isPause = true;
                     }
                 } else {
                     if (!TextUtils.isEmpty(playUrl)) {
-                        player.playUrl(playUrl);
+                        videoPlayer.playUrl(playUrl);
                         isPlaying = true;
                         btnPlayVideo.setBackgroundResource(R.mipmap.icon_pause);
                         dismissControlWindow(true);
@@ -155,8 +156,8 @@ public class VideoPlayerActivity extends Activity {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress,
                                       boolean fromUser) {
-            // 原本是(progress/seekBar.getMax())*player.mediaPlayer.getDuration()  
-            this.progress = progress * player.mediaPlayer.getDuration()
+            // 原本是(progress/seekBar.getMax())*videoPlayer.mediaPlayer.getDuration()
+            this.progress = progress * videoPlayer.mediaPlayer.getDuration()
                     / seekBar.getMax();
         }
 
@@ -168,30 +169,24 @@ public class VideoPlayerActivity extends Activity {
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
             // seekTo()的参数是相对与影片时间的数字，而不是与seekBar.getMax()相对的数字  
-            player.mediaPlayer.seekTo(progress);
+            videoPlayer.mediaPlayer.seekTo(progress);
         }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (player != null) {
-            player.pause();
+        if (videoPlayer != null) {
+            videoPlayer.pause();
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (player != null) {
-            player.stop();
+        if (videoPlayer != null) {
+            videoPlayer.stop();
         }
     }
 
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-        }
-    };
 }

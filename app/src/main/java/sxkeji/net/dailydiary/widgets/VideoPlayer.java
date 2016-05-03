@@ -16,7 +16,10 @@ import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Player implements OnBufferingUpdateListener, OnCompletionListener,
+/**
+ * 视频播放器
+ */
+public class VideoPlayer implements OnBufferingUpdateListener, OnCompletionListener,
         MediaPlayer.OnPreparedListener, SurfaceHolder.Callback {
     private int videoWidth;
     private int videoHeight;
@@ -26,7 +29,7 @@ public class Player implements OnBufferingUpdateListener, OnCompletionListener,
     private Timer mTimer = new Timer();
     private TextView tvPosition, tvDuration;
 
-    public Player(SurfaceView surfaceView, SeekBar skbProgress, TextView position, TextView duration) {
+    public VideoPlayer(SurfaceView surfaceView, SeekBar skbProgress, TextView position, TextView duration) {
         this.skbProgress = skbProgress;
         surfaceHolder = surfaceView.getHolder();
         surfaceHolder.addCallback(this);

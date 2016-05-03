@@ -49,6 +49,8 @@ dependencies {
     compile 'com.ramotion.foldingcell:folding-cell:1.0.0'
     compile 'com.wdullaer:materialdatetimepicker:1.5.1'
     compile 'com.itextpdf:itextg:5.5.9'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
 
     compile files('libs/bugly_1.2.6_release.jar')
     compile files('libs/avoscloud-sdk-v3.13.7.jar')
