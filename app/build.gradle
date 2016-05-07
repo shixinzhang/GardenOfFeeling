@@ -3,17 +3,31 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
-
+    productFlavors {
+        // Define separate dev and prod product flavors.
+        dev {
+            // dev utilizes minSDKVersion = 21 to allow the Android gradle plugin
+            // to pre-dex each module and produce an APK that can be tested on
+            // Android Lollipop without time consuming dex merging processes.
+            minSdkVersion 21
+        }
+        prod {
+            // The actual minSdkVersion for the application.
+            minSdkVersion 17
+        }
+    }
     defaultConfig {
-        applicationId "sxkeji.net.dailydiary"
-        minSdkVersion 17
+        applicationId "net.sxkeji.dailydiary"
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        // Enabling multidex support.
+        multiDexEnabled true
+        testInstrumentationRunner "com.android.test.runner.MultiDexTestRunner"
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -39,6 +53,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.3.0'
     compile 'com.android.support:design:23.3.0'
     compile 'com.android.support:support-annotations:23.3.0'
+    compile 'com.android.support:multidex:1.0.0'
     //第三方
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.cocosw:bottomsheet:1.+@aar'
@@ -48,10 +63,8 @@ dependencies {
     compile 'de.greenrobot:greendao:2.0.0'
     compile 'com.ramotion.foldingcell:folding-cell:1.0.0'
     compile 'com.wdullaer:materialdatetimepicker:1.5.1'
-    compile 'com.itextpdf:itextg:5.5.9'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
-
     compile files('libs/bugly_1.2.6_release.jar')
     compile files('libs/avoscloud-sdk-v3.13.7.jar')
     compile files('libs/fastjson.jar')
@@ -61,4 +74,5 @@ dependencies {
     compile project(':markdownlib')
     compile project(':locklib')
     compile project(':loadanimlib')
+    compile files('libs/jword-1.0.jar')
 }

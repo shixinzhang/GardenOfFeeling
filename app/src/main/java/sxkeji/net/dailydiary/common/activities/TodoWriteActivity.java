@@ -33,7 +33,7 @@ import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import sxkeji.net.dailydiary.R;
+import net.sxkeji.dailydiary.R;
 import sxkeji.net.dailydiary.Todo;
 import sxkeji.net.dailydiary.common.BaseActivity;
 import sxkeji.net.dailydiary.common.BaseApplication;

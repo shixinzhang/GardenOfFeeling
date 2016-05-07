@@ -28,7 +28,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import sxkeji.net.dailydiary.R;
+import net.sxkeji.dailydiary.R;
 import sxkeji.net.dailydiary.beans.LoginGuideBean;
 import sxkeji.net.dailydiary.common.views.adapters.LoginViewPaperAdapter;
 import sxkeji.net.dailydiary.storage.Constant;
@@ -378,12 +378,12 @@ public class LoginActivity extends AppCompatActivity {
         mLoginData = new ArrayList<>();
         LoginGuideBean loginGuideBean1 = new LoginGuideBean();
         loginGuideBean1.setImgId(R.mipmap.bg_user_guide_0);
-        loginGuideBean1.setTitle("云端数据保存");
+        loginGuideBean1.setTitle("备份云端，再也不用担心丢失");
         mLoginData.add(loginGuideBean1);
 
         LoginGuideBean loginGuideBean2 = new LoginGuideBean();
         loginGuideBean2.setImgId(R.mipmap.bg_user_guide_1);
-        loginGuideBean2.setTitle("登录一键还原");
+        loginGuideBean2.setTitle("导出文件，想去哪儿就去哪儿");
         mLoginData.add(loginGuideBean2);
 
         initLoginViewIndicator();

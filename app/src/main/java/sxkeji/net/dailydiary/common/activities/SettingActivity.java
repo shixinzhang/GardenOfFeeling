@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import sxkeji.net.dailydiary.R;
+import net.sxkeji.dailydiary.R;
 import sxkeji.net.dailydiary.storage.Constant;
 import sxkeji.net.dailydiary.storage.SharedPreferencesUtils;
 import sxkeji.net.dailydiary.utils.LogUtils;

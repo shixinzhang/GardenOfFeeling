@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="sxkeji.net.dailydiary">
+    package="net.sxkeji.dailydiary">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -9,13 +9,13 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".common.BaseApplication"
+        android:name="sxkeji.net.dailydiary.common.BaseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/icon_logo_sxkeji"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".common.SplashActivity"
+            android:name="sxkeji.net.dailydiary.common.SplashActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/NoSplashBackground">
@@ -27,79 +27,79 @@
         </activity>
 
         <activity
-            android:name=".common.activities.CreateGestureActivity"
+            android:name="sxkeji.net.dailydiary.common.activities.CreateGestureActivity"
             android:label="@string/activity_create_gesture"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".common.activities.MainActivity"
+            android:name="sxkeji.net.dailydiary.common.activities.MainActivity"
             android:label="@string/activity_main"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".common.activities.ArticleDetailActivity"
+            android:name="sxkeji.net.dailydiary.common.activities.ArticleDetailActivity"
             android:label="@string/activity_article_detail"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".common.activities.CloudBackupActivity"
+            android:name="sxkeji.net.dailydiary.common.activities.CloudBackupActivity"
             android:label="@string/activity_cloud_backup"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
 
         <activity
-            android:name=".common.activities.LoginActivity"
+            android:name="sxkeji.net.dailydiary.common.activities.LoginActivity"
             android:label="@string/activity_cloud_backup"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".common.activities.SettingActivity"
+            android:name="sxkeji.net.dailydiary.common.activities.SettingActivity"
             android:label="@string/activity_setting"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".common.activities.LocalExportActivity"
+            android:name="sxkeji.net.dailydiary.common.activities.LocalExportActivity"
             android:label="@string/activity_local_export"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".common.activities.AboutActivity"
+            android:name="sxkeji.net.dailydiary.common.activities.AboutActivity"
             android:label="@string/activity_about"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".common.activities.Test2Activity"
+            android:name="sxkeji.net.dailydiary.common.activities.Test2Activity"
             android:label="@string/activity_main"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".common.activities.RecyclerTestActivity"
+            android:name="sxkeji.net.dailydiary.common.activities.RecyclerTestActivity"
             android:label="@string/activity_test"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".common.activities.TestActivity"
+            android:name="sxkeji.net.dailydiary.common.activities.TestActivity"
             android:label="@string/activity_test"
             android:launchMode="singleTop" />
 
         <activity
-            android:name=".common.activities.ArticleWriteActivity"
+            android:name="sxkeji.net.dailydiary.common.activities.ArticleWriteActivity"
             android:label="@string/activity_write_article"
             android:launchMode="singleTop" />
         <activity
-            android:name=".common.activities.VideoPlayerActivity"
+            android:name="sxkeji.net.dailydiary.common.activities.VideoPlayerActivity"
             android:launchMode="singleTop" />
         <activity
-            android:name=".common.activities.TodoWriteActivity"
+            android:name="sxkeji.net.dailydiary.common.activities.TodoWriteActivity"
             android:label="@string/activity_todo"
             android:launchMode="singleTop" />
 

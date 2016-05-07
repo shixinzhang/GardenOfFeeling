@@ -9,10 +9,14 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 
 import com.avos.avoscloud.AVOSCloud;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.picasso.Picasso;
+
+import net.sxkeji.dailydiary.BuildConfig;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -22,10 +26,8 @@ import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.List;
 
-import sxkeji.net.dailydiary.BuildConfig;
 import sxkeji.net.dailydiary.DaoMaster;
 import sxkeji.net.dailydiary.DaoSession;
-import sxkeji.net.dailydiary.R;
 import sxkeji.net.dailydiary.storage.Constant;
 import sxkeji.net.dailydiary.storage.SharedPreferencesUtils;
 import sxkeji.net.dailydiary.utils.LogUtils;
@@ -34,7 +36,7 @@ import sxkeji.net.dailydiary.utils.LogUtils;
  * BaseApplication
  * Created by zhangshixin on 2015/7/11.
  */
-public class BaseApplication extends Application {
+public class BaseApplication extends MultiDexApplication {
     public static final String TAG = "BaseApplication";
     /**
      * 全局Context，原理是因为Application类是应用最先运行的，所以在我们的代码调用时，该值已经被赋值过了
@@ -65,6 +67,12 @@ public class BaseApplication extends Application {
     private static DaoMaster daoMaster;
     private static DaoSession daoSession;
     private static Picasso picassoSingleton;
+
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
+
     @Override
     public void onCreate() {
 

@@ -9,9 +9,10 @@ import android.content.pm.PackageManager;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
+import net.sxkeji.dailydiary.BuildConfig;
+
 import java.util.List;
 
-import sxkeji.net.dailydiary.BuildConfig;
 
 /**
  * The creator is Leone && E-mail: butleone@163.com

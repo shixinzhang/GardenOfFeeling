@@ -19,7 +19,9 @@ import butterknife.ButterKnife;
 import de.greenrobot.dao.query.Query;
 import sxkeji.net.dailydiary.Article;
 import sxkeji.net.dailydiary.ArticleDao;
-import sxkeji.net.dailydiary.R;
+
+import net.sxkeji.dailydiary.R;
+
 import sxkeji.net.dailydiary.common.BaseApplication;
 import sxkeji.net.dailydiary.common.views.adapters.AllArticlesRecyclerAdapter;
 import sxkeji.net.dailydiary.storage.Constant;
@@ -72,10 +74,10 @@ public class HomeFragment extends Fragment {
 
         Query<Article> query = articleDao.queryBuilder().where(ArticleDao.Properties.Type.notEq(Constant.TYPE_DRAFT)).orderDesc(ArticleDao.Properties.Date).build();
         tempData = query.list();
-        if (tempData == null || tempData.size() == 0){
+        if (tempData == null || tempData.size() == 0) {
             rlEmptyView.setVisibility(View.VISIBLE);
             return;
-        }else {
+        } else {
             rlEmptyView.setVisibility(View.INVISIBLE);
             adapter = new AllArticlesRecyclerAdapter(tempData);
             adapter.setmOnItemClickListener(new AllArticlesRecyclerAdapter.OnItemClickListener() {

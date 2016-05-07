@@ -16,7 +16,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import sxkeji.net.dailydiary.R;
+import net.sxkeji.dailydiary.R;
 import sxkeji.net.dailydiary.storage.ACache;
 import sxkeji.net.dailydiary.storage.Constant;
 

@@ -16,7 +16,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import sxkeji.net.dailydiary.R;
+import net.sxkeji.dailydiary.R;
 import sxkeji.net.dailydiary.storage.Constant;
 import sxkeji.net.dailydiary.widgets.VideoPlayer;
 

@@ -6,7 +6,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import sxkeji.net.dailydiary.R;
+import net.sxkeji.dailydiary.R;
+
 import sxkeji.net.dailydiary.storage.Constant;
 import sxkeji.net.dailydiary.storage.SharedPreferencesUtils;
 import sxkeji.net.dailydiary.utils.LogUtils;

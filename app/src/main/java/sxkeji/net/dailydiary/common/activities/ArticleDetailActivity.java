@@ -23,7 +23,9 @@ import java.io.File;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import sxkeji.net.dailydiary.Article;
-import sxkeji.net.dailydiary.R;
+
+import net.sxkeji.dailydiary.R;
+
 import sxkeji.net.dailydiary.common.BaseActivity;
 import sxkeji.net.dailydiary.common.BaseApplication;
 import sxkeji.net.dailydiary.storage.Constant;

@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import sxkeji.net.dailydiary.R;
+import net.sxkeji.dailydiary.R;
 
 /**
  * Created by zhangshixin on 2015/12/2.

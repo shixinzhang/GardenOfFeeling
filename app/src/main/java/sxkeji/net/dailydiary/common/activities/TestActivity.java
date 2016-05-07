@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import sxkeji.net.dailydiary.R;
+import net.sxkeji.dailydiary.R;
 
 /**
  * Created by zhangshixin on 3/9/2016.

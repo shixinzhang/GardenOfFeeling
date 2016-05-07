@@ -78,8 +78,10 @@ public class FileUtils {
 		File ImgPath = new File(getImgDir(context));
 		if (ImgPath.isDirectory()) {
 			File[] files = ImgPath.listFiles();
-			mLatestImge = files[files.length - 2];//加载倒数第二张
-			Log.e("FileUtils","getLatestSaveImgFilr" + mLatestImge.getName());
+			if (files.length > 1) {
+				mLatestImge = files[files.length - 1];//加载倒数第二张
+				Log.e("FileUtils","getLatestSaveImgFilr" + mLatestImge.getName());
+			}
 		} else {
 			Log.e("FileUtils","getLatestSaveImgFilr" +  ImgPath.getName());
 		}

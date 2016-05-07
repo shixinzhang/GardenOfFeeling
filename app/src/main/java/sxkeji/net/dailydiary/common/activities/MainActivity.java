@@ -37,7 +37,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import sxkeji.net.dailydiary.R;
+import net.sxkeji.dailydiary.R;
 import sxkeji.net.dailydiary.beans.OpenEyeDailyBean;
 import sxkeji.net.dailydiary.common.BaseActivity;
 import sxkeji.net.dailydiary.common.views.adapters.MainTabsVPAdapter;

@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.greenrobot.dao.query.Query;
-import sxkeji.net.dailydiary.R;
+import net.sxkeji.dailydiary.R;
 import sxkeji.net.dailydiary.Todo;
 import sxkeji.net.dailydiary.TodoDao;
 import sxkeji.net.dailydiary.common.BaseApplication;

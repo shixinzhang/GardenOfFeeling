@@ -22,7 +22,7 @@ import android.widget.PopupWindow;
 
 import java.io.File;
 
-import sxkeji.net.dailydiary.R;
+import net.sxkeji.dailydiary.R;
 import sxkeji.net.dailydiary.utils.LogUtils;
 import sxkeji.net.dailydiary.utils.MediaUtils;
 import sxkeji.net.dailydiary.utils.PerssionUtils;

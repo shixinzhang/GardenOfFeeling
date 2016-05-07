@@ -15,7 +15,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Date;
 
-import sxkeji.net.dailydiary.R;
+import net.sxkeji.dailydiary.R;
 import sxkeji.net.dailydiary.Todo;
 import sxkeji.net.dailydiary.utils.StringUtils;
 import sxkeji.net.dailydiary.widgets.TextDrawable;

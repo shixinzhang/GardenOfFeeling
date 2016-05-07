@@ -51,7 +51,7 @@ import java.io.IOException;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import sxkeji.net.dailydiary.Article;
-import sxkeji.net.dailydiary.R;
+import net.sxkeji.dailydiary.R;
 import sxkeji.net.dailydiary.common.BaseApplication;
 import sxkeji.net.dailydiary.http.HttpClient;
 import sxkeji.net.dailydiary.storage.Constant;

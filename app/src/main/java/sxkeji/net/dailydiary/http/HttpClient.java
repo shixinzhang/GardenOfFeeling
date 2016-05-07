@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import sxkeji.net.dailydiary.Article;
-import sxkeji.net.dailydiary.R;
+import net.sxkeji.dailydiary.R;
 import sxkeji.net.dailydiary.Todo;
 import sxkeji.net.dailydiary.http.coreprogress.helper.ProgressHelper;
 import sxkeji.net.dailydiary.http.coreprogress.listener.impl.UIProgressListener;

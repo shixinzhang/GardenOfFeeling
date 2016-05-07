@@ -35,7 +35,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import sxkeji.net.dailydiary.R;
+import net.sxkeji.dailydiary.R;
 import sxkeji.net.dailydiary.common.activities.MainActivity;
 import sxkeji.net.dailydiary.common.presenters.SplashPresenter;
 import sxkeji.net.dailydiary.common.views.ISplashView;
@@ -120,8 +120,10 @@ public class SplashActivity extends Activity implements ISplashView {
         if (updateTime == 0 || updateTime > oneDay) {                   //头一次启动或者上次更新是一天前，更新
             LogUtils.e(TAG, "It's time to update img from net.");
             mDownloadTarget = FileUtils.getDownloadTarget(this);
-            mPicasso.load(Constant.URL_IMG).skipMemoryCache().into(mDownloadTarget);
-            SharedPreferencesUtils.put(this, Constant.LAST_UPDATE_IMG, now.getTime());
+            if (mDownloadTarget != null && mPicasso != null) {
+                mPicasso.load(Constant.URL_IMG).skipMemoryCache().into(mDownloadTarget);
+                SharedPreferencesUtils.put(this, Constant.LAST_UPDATE_IMG, now.getTime());
+            }
         } else {        //上次更新到目前为止不足一天，不更新
             LogUtils.e(TAG, "update img left time : " + updateTime + " / " + oneDay);
         }

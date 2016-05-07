@@ -15,7 +15,8 @@ import app.dinus.com.loadingdrawable.render.circle.jump.SwapLoadingRenderer;
 import app.dinus.com.loadingdrawable.render.circle.rotate.MaterialLoadingRenderer;
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import sxkeji.net.dailydiary.R;
+
+import net.sxkeji.dailydiary.R;
 
 /**
  * 关于
@@ -28,6 +29,7 @@ public class AboutActivity extends AppCompatActivity {
     ImageView ivImg;
 
     private LoadingDrawable loadingDrawable;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +60,7 @@ public class AboutActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (loadingDrawable != null){
+        if (loadingDrawable != null) {
             loadingDrawable.stop();
         }
     }

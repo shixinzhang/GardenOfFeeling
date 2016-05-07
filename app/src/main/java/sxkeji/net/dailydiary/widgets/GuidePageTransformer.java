@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 import android.support.v4.view.ViewPager.PageTransformer;
 import android.view.View;
 
-import sxkeji.net.dailydiary.R;
+import net.sxkeji.dailydiary.R;
 
 
 /**

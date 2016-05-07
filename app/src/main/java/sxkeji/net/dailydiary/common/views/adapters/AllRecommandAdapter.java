@@ -23,7 +23,7 @@ import java.io.File;
 import java.util.List;
 
 import sxkeji.net.dailydiary.Article;
-import sxkeji.net.dailydiary.R;
+import net.sxkeji.dailydiary.R;
 import sxkeji.net.dailydiary.beans.OpenEyeDailyBean;
 import sxkeji.net.dailydiary.common.BaseApplication;
 
