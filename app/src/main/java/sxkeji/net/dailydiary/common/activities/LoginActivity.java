@@ -378,12 +378,12 @@ public class LoginActivity extends AppCompatActivity {
         mLoginData = new ArrayList<>();
         LoginGuideBean loginGuideBean1 = new LoginGuideBean();
         loginGuideBean1.setImgId(R.mipmap.bg_user_guide_0);
-        loginGuideBean1.setTitle("备份云端，再也不用担心丢失");
+        loginGuideBean1.setTitle("备份云端，珍贵记录一键找回");
         mLoginData.add(loginGuideBean1);
 
         LoginGuideBean loginGuideBean2 = new LoginGuideBean();
         loginGuideBean2.setImgId(R.mipmap.bg_user_guide_1);
-        loginGuideBean2.setTitle("导出文件，想去哪儿就去哪儿");
+        loginGuideBean2.setTitle("导出文件，如何操作任君选择");
         mLoginData.add(loginGuideBean2);
 
         initLoginViewIndicator();

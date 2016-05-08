@@ -56,7 +56,7 @@ public class LocalExportActivity extends AppCompatActivity {
      */
     private void loadViewPagers() {
         adapter = new LocalExportVPAdapter(getSupportFragmentManager());
-        adapter.addFragment(new TodoListFragment(), "导出");
+        adapter.addFragment(new LocalExportFragment(), "导出");
         adapter.addFragment(new TodoListFragment(), "导入");
         vpTabContent.setAdapter(adapter);
     }
