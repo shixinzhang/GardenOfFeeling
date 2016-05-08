@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.independentsoft.office.ExtendedBoolean;
 import com.independentsoft.office.Unit;
 import com.independentsoft.office.UnitType;
 import com.independentsoft.office.drawing.Extents;
@@ -41,7 +42,6 @@ public class JWordUtils {
     public JWordUtils(Context mContext) {
         this.mContext = mContext;
         mSavePath = FileUtils.getExportDir(mContext);
-        mSaveName = new StringBuilder(mSavePath);
         mSaveType = ".docx";
     }
 
@@ -65,6 +65,8 @@ public class JWordUtils {
      */
     public void createArticle2Word(Article article) {
         if (article != null) {
+            mSaveName = new StringBuilder(mSavePath);
+
             WordDocument doc = new WordDocument();
             String date = article.getDate();
             String address = article.getAddress();
@@ -73,7 +75,8 @@ public class JWordUtils {
             String content = article.getContent();
             String imgPath = article.getImg_path();
 
-            mSaveName.append(content);
+            date = date.replace("/", "-");
+            mSaveName.append(date.trim());
             mSaveName.append(mSaveType);
             addParagraph2Word(doc, date);
             addParagraph2Word(doc, address);
@@ -97,6 +100,7 @@ public class JWordUtils {
 
     /**
      * 添加照片
+     *
      * @param doc
      * @param imgPath
      */
@@ -147,7 +151,11 @@ public class JWordUtils {
             run.addText(str);
             Paragraph paragraph = new Paragraph();
             paragraph.add(run);
+            //加一个空行
+            Paragraph paragraphEmpty = new Paragraph();
+//            paragraphEmpty.setPageBreakBefore(ExtendedBoolean.TRUE);      //换页
             doc.getBody().add(paragraph);
+            doc.getBody().add(paragraphEmpty);
         }
     }
 

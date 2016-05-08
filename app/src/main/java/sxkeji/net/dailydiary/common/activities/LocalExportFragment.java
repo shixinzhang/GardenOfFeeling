@@ -1,5 +1,6 @@
 package sxkeji.net.dailydiary.common.activities;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -45,6 +46,7 @@ public class LocalExportFragment extends Fragment {
     private ArrayList<Todo> mTodoList;
     private ArrayList<Article> mSelectArticles;
     private ArrayList<Todo> mSelectTodos;
+    private ProgressDialog progressDialog;
 
     @Nullable
     @Override
@@ -67,12 +69,14 @@ public class LocalExportFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if ((mSelectArticles == null || mSelectArticles.size() < 1) &&
-                        (mSelectTodos == null || mSelectTodos.size() < 1) ) {
+                        (mSelectTodos == null || mSelectTodos.size() < 1)) {
                     showToast("您还没有选择要导出的内容");
                 } else {
-                    if (mSelectArticles.size() > 0){
+                    if (mSelectArticles.size() > 0) {
+                        showProgressDialog();
                         JWordUtils jWordUtils = new JWordUtils(getContext());
                         jWordUtils.createArticle2Word(mSelectArticles);
+                        dismissProgressDialog();
                     }
                 }
             }
@@ -136,6 +140,19 @@ public class LocalExportFragment extends Fragment {
         mArticleList = (ArrayList<Article>) query.list();
     }
 
+
+    private void dismissProgressDialog() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.cancel();
+            progressDialog = null;
+        }
+    }
+
+    private void showProgressDialog() {
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage("正在导出...");
+        progressDialog.show();
+    }
 
     @Override
     public void onDestroyView() {
