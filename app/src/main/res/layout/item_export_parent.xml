@@ -23,4 +23,16 @@
         android:textColor="@color/primary"
         android:textSize="16sp" />
 
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_weight="1" />
+
+    <CheckBox
+        android:id="@+id/cb_select_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="全选"
+        android:focusable="false"
+        android:textColor="@color/primary"/>
 </LinearLayout>

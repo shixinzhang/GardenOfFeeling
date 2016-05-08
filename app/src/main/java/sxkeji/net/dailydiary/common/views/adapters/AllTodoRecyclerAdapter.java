@@ -17,7 +17,6 @@ import java.util.Date;
 
 import net.sxkeji.dailydiary.R;
 import sxkeji.net.dailydiary.Todo;
-import sxkeji.net.dailydiary.utils.StringUtils;
 import sxkeji.net.dailydiary.widgets.TextDrawable;
 
 /**
@@ -64,7 +63,7 @@ public class AllTodoRecyclerAdapter extends RecyclerView.Adapter<AllTodoRecycler
 
     @Override
     public AllTodoRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_todo_list, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recyclerview_todo_list, parent, false);
         return new ViewHolder(view);
     }
 
@@ -96,7 +95,7 @@ public class AllTodoRecyclerAdapter extends RecyclerView.Adapter<AllTodoRecycler
                 .useFont(Typeface.DEFAULT)
                 .toUpperCase()
                 .endConfig()
-                .buildRound(todoContent.substring(0, 1), todoColor);
+                .buildRound(todoContent.trim().substring(0, 1), todoColor);
         holder.ivDrawableText.setImageDrawable(textDrawable);
 
         if (longClickListener != null) {

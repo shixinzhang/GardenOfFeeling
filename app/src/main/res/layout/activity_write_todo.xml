@@ -46,7 +46,7 @@
                         android:layout_marginLeft="32dp"
                         android:layout_marginRight="32dp"
                         android:gravity="start|bottom"
-                        android:hint="标题"
+                        android:hint="待做内容"
                         android:inputType="textAutoCorrect|textCapSentences"
                         android:lines="2"
                         android:maxLines="3"

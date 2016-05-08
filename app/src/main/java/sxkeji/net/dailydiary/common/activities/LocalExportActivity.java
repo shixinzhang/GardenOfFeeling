@@ -1,16 +1,17 @@
 package sxkeji.net.dailydiary.common.activities;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import net.sxkeji.dailydiary.R;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import net.sxkeji.dailydiary.R;
-import sxkeji.net.dailydiary.common.BaseActivity;
 import sxkeji.net.dailydiary.common.views.adapters.LocalExportVPAdapter;
 
 /**
@@ -26,6 +27,7 @@ public class LocalExportActivity extends AppCompatActivity {
     ViewPager vpTabContent;
 
     private LocalExportVPAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
