@@ -29,7 +29,9 @@ import butterknife.ButterKnife;
 import de.greenrobot.dao.query.Query;
 import sxkeji.net.dailydiary.Article;
 import sxkeji.net.dailydiary.ArticleDao;
+
 import net.sxkeji.dailydiary.R;
+
 import sxkeji.net.dailydiary.Todo;
 import sxkeji.net.dailydiary.TodoDao;
 import sxkeji.net.dailydiary.common.BaseActivity;
@@ -38,6 +40,7 @@ import sxkeji.net.dailydiary.http.HttpClient;
 import sxkeji.net.dailydiary.storage.Constant;
 import sxkeji.net.dailydiary.storage.SharedPreferencesUtils;
 import sxkeji.net.dailydiary.utils.LogUtils;
+import sxkeji.net.dailydiary.utils.NetWorkUtils;
 import sxkeji.net.dailydiary.utils.StringUtils;
 import sxkeji.net.dailydiary.utils.UIUtils;
 
@@ -118,7 +121,12 @@ public class CloudBackupActivity extends BaseActivity {
         nowDate = new Date();
         userNumber = (String) SharedPreferencesUtils.get(this, Constant.ACCOUNT_USER_NUMBER, "");
         lastSyncTime = (long) SharedPreferencesUtils.get(this, Constant.LAST_SYNC_TIME, nowDate.getTime());
-        queryCloudNumber();
+
+        if (NetWorkUtils.isNetworkAvailable(this)) {
+            queryCloudNumber();
+        } else {
+            showToast("请检查网络连接");
+        }
         queryLocalNumber();
     }
 
