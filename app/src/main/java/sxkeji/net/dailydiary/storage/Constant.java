@@ -97,5 +97,5 @@ public class Constant {
     //开眼每周API http://baobab.wandoujia.com/api/v3/ranklist?num=100&strategy=weekly&udid=57e17df8bc634de8b5d427bd27a126b9f1ba1a56&vc=74&vn=1.10.1&deviceModel=m1%20note&first_channel=eyepetizer_meizu_market&last_channel=eyepetizer_meizu_market%20ZONG
     public static final String URL_OPEN_EYE_WEEKLY = "http://baobab.wandoujia.com/api/v3/ranklist";
      //开眼每日API  http://baobab.wandoujia.com/api/v2/feed?num=2&udid=57e17df8bc634de8b5d427bd27a126b9f1ba1a56&vc=74&vn=1.10.1&deviceModel=m1%20note&first_channel=eyepetizer_meizu_market&last_channel=eyepetizer_meizu_market%20ZHOU
-    public static final String URL_OPEN_EYE_DIALY = " http://baobab.wandoujia.com/api/v2/feed";
+    public static final String URL_OPEN_EYE_DIALY = "http://baobab.wandoujia.com/api/v2/feed";
 }
