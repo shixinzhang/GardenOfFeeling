@@ -39,6 +39,7 @@ import sxkeji.net.dailydiary.common.BaseApplication;
 import sxkeji.net.dailydiary.http.HttpClient;
 import sxkeji.net.dailydiary.storage.Constant;
 import sxkeji.net.dailydiary.storage.SharedPreferencesUtils;
+import sxkeji.net.dailydiary.utils.DESUtils;
 import sxkeji.net.dailydiary.utils.LogUtils;
 import sxkeji.net.dailydiary.utils.NetWorkUtils;
 import sxkeji.net.dailydiary.utils.StringUtils;
@@ -367,6 +368,15 @@ public class CloudBackupActivity extends BaseActivity {
         uploadArticle.put(Constant.LEANCLOUD_ARTICLE_PROPERTY_ADDRESS, article.getAddress());
         uploadArticle.put(Constant.LEANCLOUD_ARTICLE_PROPERTY_WEATHER, article.getWeather());
         uploadArticle.put(Constant.LEANCLOUD_ARTICLE_PROPERTY_TITLE, article.getTitle());
+        String content = article.getContent();
+        LogUtils.e(TAG, "原内容 " + content);
+        try {
+            DESUtils desUtils = new DESUtils();
+            String decryptContent = desUtils.decrypt(content);
+            LogUtils.e(TAG, "加密内容 " + decryptContent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         uploadArticle.put(Constant.LEANCLOUD_ARTICLE_PROPERTY_CONTENT, article.getContent());
         uploadArticle.put(Constant.LEANCLOUD_ARTICLE_PROPERTY_TYPE, article.getType());
         uploadArticle.put(Constant.LEANCLOUD_ARTICLE_PROPERTY_IMGPATH, article.getImg_path());

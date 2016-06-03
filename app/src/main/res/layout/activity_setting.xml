@@ -147,7 +147,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="8dp"
-                    android:text="百度云"
+                    android:text="365云端"
                     android:textColor="@color/primary_text"
                     android:textSize="16sp" />
             </RelativeLayout>
@@ -278,7 +278,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:checked="true" />
+                    android:checked="false" />
             </RelativeLayout>
 
             <RelativeLayout

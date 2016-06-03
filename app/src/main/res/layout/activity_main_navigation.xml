@@ -91,42 +91,6 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/rl_draft"
-        android:layout_width="match_parent"
-        android:layout_height="48dp">
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="16dp"
-            android:src="@mipmap/icon_draft" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="72dp"
-            android:text="草稿箱"
-            android:textColor="@color/name_half_black"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/tv_draft_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="16dp"
-            android:ellipsize="end"
-            android:maxLength="12"
-            android:singleLine="true"
-            android:text="20篇"
-            android:textColor="@color/red"
-            android:textSize="12sp" />
-    </RelativeLayout>
-
-    <RelativeLayout
         android:id="@+id/rl_reminder"
         android:layout_width="match_parent"
         android:layout_height="48dp">
@@ -159,11 +123,48 @@
             android:singleLine="true"
             android:text="120件"
             android:textColor="@color/red"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:visibility="gone" />
     </RelativeLayout>
 
-    <View
-        style="@style/Line_horizon_grey" />
+    <RelativeLayout
+        android:id="@+id/rl_draft"
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:src="@mipmap/icon_draft" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="72dp"
+            android:text="全部推荐"
+            android:textColor="@color/name_half_black"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_draft_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="16dp"
+            android:ellipsize="end"
+            android:maxLength="12"
+            android:singleLine="true"
+            android:text="20篇"
+            android:textColor="@color/red"
+            android:textSize="12sp"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <View style="@style/Line_horizon_grey" />
 
     <RelativeLayout
         android:id="@+id/rl_backup"
@@ -213,18 +214,18 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="72dp"
-            android:text="本地导出"
+            android:text="导入导出"
             android:textColor="@color/name_half_black"
             android:textSize="14sp" />
     </RelativeLayout>
 
-    <View
-        style="@style/Line_horizon_light_grey" />
+    <View style="@style/Line_horizon_light_grey" />
 
     <RelativeLayout
         android:id="@+id/rl_change_theme"
         android:layout_width="match_parent"
-        android:layout_height="48dp">
+        android:layout_height="48dp"
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="24dp"

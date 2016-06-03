@@ -2,12 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/markdown_bg_transparent">
+    android:background="@color/white"
+    android:paddingTop="32dp">
 
     <net.sxkeji.markdownlib.MarkdownView
         android:id="@+id/view_markdown"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="8dp"/>
+        android:padding="16dp"/>
 
 </RelativeLayout>

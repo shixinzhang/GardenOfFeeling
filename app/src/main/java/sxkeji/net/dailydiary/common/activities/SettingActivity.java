@@ -13,7 +13,9 @@ import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
 import net.sxkeji.dailydiary.R;
+
 import sxkeji.net.dailydiary.storage.Constant;
 import sxkeji.net.dailydiary.storage.SharedPreferencesUtils;
 import sxkeji.net.dailydiary.utils.LogUtils;
@@ -131,6 +133,18 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     private void setListeners() {
+        //密码锁
+        switchSecurityAppLock.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    jump2Activity(CreateGestureActivity.class);
+                } else {
+
+                }
+            }
+        });
+        //自动同步
         switchSyncAuto.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -177,6 +191,13 @@ public class SettingActivity extends AppCompatActivity {
                     intent.putExtra(Constant.EXTRA_TO, Constant.ACTIVITY_SETTING);
                     startActivity(intent);
                 }
+            }
+        });
+
+        tvAboutApp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                jump2Activity(AboutActivity.class);
             }
         });
     }

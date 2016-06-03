@@ -12,8 +12,21 @@
         app:title="@string/activity_about"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
-    <ImageView
-        android:id="@+id/iv_img"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="  365Diary \n\n记录 · 思考"
+            android:gravity="center"
+            android:textSize="17sp"
+            android:textColor="@color/white"
+            android:layout_marginTop="16dp"/>
+    </FrameLayout>
 </LinearLayout>

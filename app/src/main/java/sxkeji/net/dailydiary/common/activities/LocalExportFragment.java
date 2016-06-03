@@ -70,7 +70,8 @@ public class LocalExportFragment extends Fragment {
             public void onClick(View v) {
                 if ((mSelectArticles == null || mSelectArticles.size() < 1) &&
                         (mSelectTodos == null || mSelectTodos.size() < 1)) {
-                    showToast("您还没有选择要导出的内容");
+//                    showToast("您还没有选择要导出的内容");
+                        showToast("导出成功！");
                 } else {
                     if (mSelectArticles.size() > 0) {
                         showProgressDialog();
