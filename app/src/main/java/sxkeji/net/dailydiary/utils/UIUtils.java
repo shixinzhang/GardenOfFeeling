@@ -18,6 +18,9 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import net.sxkeji.dailydiary.R;
+
+import java.lang.ref.WeakReference;
+
 import sxkeji.net.dailydiary.common.BaseApplication;
 
 /**
@@ -208,9 +211,15 @@ public class UIUtils {
         }
     }
 
+    /**
+     * 添加 弱引用，避免内存泄漏
+     * @param context
+     * @param str
+     */
     private static void showToast(Context context, String str) {
+        WeakReference<Context> contextWeakReference = new WeakReference<>(context);
         if (toast == null) {
-            toast = Toast.makeText(context, str, Toast.LENGTH_SHORT);
+            toast = Toast.makeText(contextWeakReference.get().getApplicationContext(), str, Toast.LENGTH_SHORT);
         } else {
             toast.setText(str);
             toast.setDuration(Toast.LENGTH_SHORT);

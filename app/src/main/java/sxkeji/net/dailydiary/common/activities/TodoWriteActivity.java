@@ -537,6 +537,7 @@ public class TodoWriteActivity extends AppCompatActivity implements TimePickerDi
 
             Intent i = new Intent(TodoWriteActivity.this, TodoWriteActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            i.putExtra(Constant.EXTRA_TODO, updateToDo);
             startActivity(i);
             overridePendingTransition(0, 0);
             finish();
