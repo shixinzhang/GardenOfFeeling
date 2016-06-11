@@ -101,7 +101,7 @@
         <activity
             android:name="sxkeji.net.dailydiary.common.activities.TodoWriteActivity"
             android:label="@string/activity_todo"
-            android:launchMode="singleTop" />
+            android:launchMode="standard" />
 
     </application>
 

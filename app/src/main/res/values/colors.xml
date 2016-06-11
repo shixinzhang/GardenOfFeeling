@@ -76,4 +76,16 @@
     <color name="color_red1">#ef3f2f</color>
     <color name="color_red">#d13a38</color>
 
+    <!-- Reveal transition colors -->
+    <color name="color_set_1_primary">#4fc3f7</color>
+    <color name="color_set_1_accent">#009688</color>
+
+    <color name="color_set_2_primary">#42bd41</color>
+    <color name="color_set_2_accent">#673AB7</color>
+
+    <color name="color_set_3_primary">#ffb74d</color>
+    <color name="color_set_3_accent">#E91E63</color>
+
+    <color name="color_set_4_primary">#ff8a65</color>
+    <color name="color_set_4_accent">#d500f9</color>
 </resources>

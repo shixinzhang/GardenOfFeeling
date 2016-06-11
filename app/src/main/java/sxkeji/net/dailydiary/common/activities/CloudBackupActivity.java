@@ -370,14 +370,19 @@ public class CloudBackupActivity extends BaseActivity {
         uploadArticle.put(Constant.LEANCLOUD_ARTICLE_PROPERTY_TITLE, article.getTitle());
         String content = article.getContent();
         LogUtils.e(TAG, "原内容 " + content);
+        String decryptContent = " ";
         try {
             DESUtils desUtils = new DESUtils();
-            String decryptContent = desUtils.decrypt(content);
-            LogUtils.e(TAG, "加密内容 " + decryptContent);
+            decryptContent = desUtils.encrypt(content);
+            LogUtils.e(TAG, "加密内容des " + decryptContent);
+//            LogUtils.e(TAG, "解内容des " + desUtils.decrypt(decryptContent));
+
         } catch (Exception e) {
             e.printStackTrace();
+            LogUtils.e(TAG, "加密内容失败 " + e.getMessage());
         }
-        uploadArticle.put(Constant.LEANCLOUD_ARTICLE_PROPERTY_CONTENT, article.getContent());
+//        uploadArticle.put(Constant.LEANCLOUD_ARTICLE_PROPERTY_CONTENT, article.getContent());
+        uploadArticle.put(Constant.LEANCLOUD_ARTICLE_PROPERTY_CONTENT, decryptContent);
         uploadArticle.put(Constant.LEANCLOUD_ARTICLE_PROPERTY_TYPE, article.getType());
         uploadArticle.put(Constant.LEANCLOUD_ARTICLE_PROPERTY_IMGPATH, article.getImg_path());
         uploadArticle.put(Constant.LEANCLOUD_TABLE_USERNUMBER, userNumber);

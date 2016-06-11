@@ -3,44 +3,45 @@ package sxkeji.net.dailydiary.common.activities;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.text.format.DateFormat;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.SaveCallback;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
+
+import net.sxkeji.dailydiary.R;
 
 import java.util.Calendar;
 import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import net.sxkeji.dailydiary.R;
 import sxkeji.net.dailydiary.Todo;
 import sxkeji.net.dailydiary.common.BaseActivity;
 import sxkeji.net.dailydiary.common.BaseApplication;
-import sxkeji.net.dailydiary.http.HttpClient;
 import sxkeji.net.dailydiary.storage.Constant;
 import sxkeji.net.dailydiary.storage.SharedPreferencesUtils;
 import sxkeji.net.dailydiary.utils.ColorGeneratorUtils;
+import sxkeji.net.dailydiary.utils.GUIUtils;
 import sxkeji.net.dailydiary.utils.LogUtils;
 import sxkeji.net.dailydiary.utils.UIUtils;
 
@@ -48,8 +49,8 @@ import sxkeji.net.dailydiary.utils.UIUtils;
  * 写备忘录/待做事项
  * Created by zhangshixin on 4/27/2016.
  */
-public class TodoWriteActivity extends BaseActivity implements TimePickerDialog.OnTimeSetListener,
-        com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener {
+public class TodoWriteActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener,
+        DatePickerDialog.OnDateSetListener {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.et_content)
@@ -68,6 +69,16 @@ public class TodoWriteActivity extends BaseActivity implements TimePickerDialog.
     LinearLayout llSelectDate;
     @Bind(R.id.fab_done)
     FloatingActionButton fabDone;
+    @Bind(R.id.reveal_view)
+    View revealView;
+    @Bind(R.id.circle1)
+    View circle1;
+    @Bind(R.id.circle2)
+    View circle2;
+    @Bind(R.id.circle3)
+    View circle3;
+    @Bind(R.id.circle4)
+    View circle4;
 
     private final String TAG = "TodoWriteActivity";
     private final String UPLOAD_TODO = "upload_todo";   //上传过云端的toDo,有了ObjectId
@@ -83,12 +94,42 @@ public class TodoWriteActivity extends BaseActivity implements TimePickerDialog.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        int todoTheme = (int) SharedPreferencesUtils.get(this, "todoTheme", R.style.AppTheme);
+        setTheme(todoTheme);
         setContentView(R.layout.activity_write_todo);
         ButterKnife.bind(this);
+
+        // Show the unReveal effect
+        final int cx = (int) SharedPreferencesUtils.get(this, "revealX", 0);
+        final int cy = (int) SharedPreferencesUtils.get(this, "revealY", 0);
+//        startHideRevealEffect(cx, cy);
 
         initData();
         initViews();
         setListeners();
+    }
+
+    private void startHideRevealEffect(final int cx, final int cy) {
+
+        if (cx != 0 && cy != 0) {
+            // Show the unReveal effect when the view is attached to the window
+            revealView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+                @Override
+                public void onViewAttachedToWindow(View v) {
+
+                    // Get the accent color
+                    TypedValue outValue = new TypedValue();
+                    getTheme().resolveAttribute(android.R.attr.colorPrimary, outValue, true);
+                    revealView.setBackgroundColor(outValue.data);
+
+                    GUIUtils.hideRevealEffect(revealView, cx, cy, 1920);
+                }
+
+                @Override
+                public void onViewDetachedFromWindow(View v) {
+                }
+            });
+        }
     }
 
     private void initData() {
@@ -171,6 +212,31 @@ public class TodoWriteActivity extends BaseActivity implements TimePickerDialog.
             @Override
             public void onClick(View v) {
                 saveToDo();
+            }
+        });
+
+        circle1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeTodoTheme(circle1);
+            }
+        });
+        circle2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeTodoTheme(circle2);
+            }
+        });
+        circle3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeTodoTheme(circle3);
+            }
+        });
+        circle4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeTodoTheme(circle4);
             }
         });
     }
@@ -319,8 +385,8 @@ public class TodoWriteActivity extends BaseActivity implements TimePickerDialog.
      * 弹出MD风格的日期选择器
      */
     private void showMaterialDatePicker() {
-        com.wdullaer.materialdatetimepicker.date.DatePickerDialog datePickerDialog =
-                com.wdullaer.materialdatetimepicker.date.DatePickerDialog.newInstance(TodoWriteActivity.this, selectYear, selectMonth - 1, selectDay);
+        DatePickerDialog datePickerDialog =
+                DatePickerDialog.newInstance(TodoWriteActivity.this, selectYear, selectMonth - 1, selectDay);
 //                if(theme.equals(MainActivity.DARKTHEME)){
 //                    datePickerDialog.setThemeDark(true);
 //                }
@@ -339,7 +405,7 @@ public class TodoWriteActivity extends BaseActivity implements TimePickerDialog.
     }
 
     @Override
-    public void onDateSet(com.wdullaer.materialdatetimepicker.date.DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         selectYear = year;
         selectMonth = monthOfYear + 1;
         selectDay = dayOfMonth;
@@ -409,6 +475,81 @@ public class TodoWriteActivity extends BaseActivity implements TimePickerDialog.
     private String getFormatStr(int number) {
         return number < 10 ? ("0" + number) : ("" + number);
     }
+
+
+    /**
+     * 选择背景色
+     *
+     * @param view
+     */
+    public void changeTodoTheme(View view) {
+        int selectedTheme = 0;
+        int primaryColor = 0;
+
+        switch (view.getId()) {
+            case R.id.circle1:
+                selectedTheme = R.style.theme1;
+                primaryColor = getResources().getColor(R.color.color_set_1_primary);
+                break;
+
+            case R.id.circle2:
+                selectedTheme = R.style.theme2;
+                primaryColor = getResources().getColor(R.color.color_set_2_primary);
+                break;
+
+            case R.id.circle3:
+                selectedTheme = R.style.theme3;
+                primaryColor = getResources().getColor(R.color.color_set_3_primary);
+                break;
+
+            case R.id.circle4:
+                selectedTheme = R.style.theme4;
+                primaryColor = getResources().getColor(R.color.color_set_4_primary);
+                break;
+        }
+
+        int[] location = new int[2];
+        revealView.setBackgroundColor(primaryColor);
+        view.getLocationOnScreen(location);
+
+        int cx = (location[0] + (view.getWidth() / 2));
+        int cy = location[1] + (GUIUtils.getStatusBarHeight(this) / 2);
+
+        SharedPreferencesUtils.put(this, "revealX", cx);
+        SharedPreferencesUtils.put(this, "revealY", cy);
+        SharedPreferencesUtils.put(this, "todoTheme", selectedTheme);
+
+        GUIUtils.hideNavigationStatus(this);
+        GUIUtils.showRevealEffect(revealView, cx, cy, revealAnimationListener);
+    }
+
+    /**
+     * 更换背景色，重新启动
+     */
+    Animator.AnimatorListener revealAnimationListener = new Animator.AnimatorListener() {
+
+        @Override
+        public void onAnimationStart(Animator animation) {
+        }
+
+        @Override
+        public void onAnimationEnd(Animator animation) {
+
+            Intent i = new Intent(TodoWriteActivity.this, TodoWriteActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(i);
+            overridePendingTransition(0, 0);
+            finish();
+        }
+
+        @Override
+        public void onAnimationCancel(Animator animation) {
+        }
+
+        @Override
+        public void onAnimationRepeat(Animator animation) {
+        }
+    };
 
     @Override
     public void onBackPressed() {

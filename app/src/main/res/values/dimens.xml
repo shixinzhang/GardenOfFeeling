@@ -23,6 +23,10 @@
     <!-- 设置 -->
     <dimen name="group_margin_top">4dp</dimen>
     <dimen name="group_title_text_size">16dp</dimen>
+    <!-- Fab button -->
+    <dimen name="fab_size">56dp</dimen>
+    <dimen name="button_elevation">2dp</dimen>
+    <dimen name="button_press_elevation">4dp</dimen>
 
     <dimen name="todo_margin_left_right">16dp</dimen>
 </resources>

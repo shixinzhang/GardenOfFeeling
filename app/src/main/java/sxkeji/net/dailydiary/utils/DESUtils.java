@@ -10,7 +10,7 @@ import javax.crypto.Cipher;
  * Created by zhangshixin on 6/1/2016.
  */
 public class DESUtils {
-    private static String strDefaultKey = "defaultkey";     //默认秘钥
+    private static String strDefaultKey = "defaukey";     //默认秘钥
 
     private Cipher encryptCipher = null;
 
@@ -87,13 +87,13 @@ public class DESUtils {
      */
     public DESUtils(String strKey) throws Exception {
 //        Security.addProvider(new com.sun.crypto.provider.SunJCE());
-//        Key key = getKey(strKey.getBytes());
-//
-//        encryptCipher = Cipher.getInstance("DES");
-//        encryptCipher.init(Cipher.ENCRYPT_MODE, key);
-//
-//        decryptCipher = Cipher.getInstance("DES");
-//        decryptCipher.init(Cipher.DECRYPT_MODE, key);
+        Key key = getKey(strKey.getBytes());
+
+        encryptCipher = Cipher.getInstance("DES");
+        encryptCipher.init(Cipher.ENCRYPT_MODE, key);
+
+        decryptCipher = Cipher.getInstance("DES");
+        decryptCipher.init(Cipher.DECRYPT_MODE, key);
     }
 
     /**

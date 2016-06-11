@@ -1,188 +1,249 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="sxkeji.net.dailydiary.common.activities.TodoWriteActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        style="@style/mToolBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <android.support.design.widget.CoordinatorLayout
+    <View
+        android:id="@+id/reveal_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="?android:colorAccent"
+        android:elevation="5dp"
+        android:visibility="invisible" />
 
-        <LinearLayout
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            style="@style/mToolBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+        <android.support.design.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:id="@+id/ll_edit"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".5"
-                android:background="?attr/colorPrimary"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:focusableInTouchMode="true"
-                android:focusable="true">
-
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/text_input_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    app:hintTextAppearance="@style/FloatingLabelTextAppearance">
-
-                    <EditText
-                        android:id="@+id/et_content"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="32dp"
-                        android:layout_marginRight="32dp"
-                        android:gravity="start|bottom"
-                        android:hint="待做内容"
-                        android:inputType="textAutoCorrect|textCapSentences"
-                        android:lines="2"
-                        android:maxLines="3"
-                        android:textColor="@color/icons" />
-                </android.support.design.widget.TextInputLayout>
-
-            </LinearLayout>
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1.5"
-                android:orientation="vertical"
-                android:background="@color/gray_white">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/ll_edit"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_marginLeft="@dimen/todo_margin_left_right"
-                    android:layout_marginRight="@dimen/todo_margin_left_right"
-                    android:layout_marginTop="32dp"
                     android:layout_weight=".5"
+                    android:background="?android:colorPrimary"
                     android:gravity="center"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
-                    <ImageButton
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight=".4"
-                        android:background="@android:color/transparent"
-                        android:padding="8dp"
-                        android:src="@mipmap/icon_add_alarm_grey" />
 
-                    <TextView
-                        android:layout_width="0dp"
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/text_input_layout"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:gravity="start"
-                        android:paddingBottom="8dp"
-                        android:paddingLeft="8dp"
-                        android:paddingRight="8dp"
-                        android:paddingTop="8dp"
-                        android:text="设置提醒"
-                        android:textColor="@color/secondary_text"
-                        android:textSize="16sp" />
-
-                    <android.support.v7.widget.SwitchCompat
-                        android:id="@+id/switch_set_reminder"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
                         android:gravity="center"
-                        android:padding="8dp" />
+                        app:hintTextAppearance="@style/FloatingLabelTextAppearance">
+
+                        <EditText
+                            android:id="@+id/et_content"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="32dp"
+                            android:layout_marginRight="32dp"
+                            android:gravity="start|bottom"
+                            android:hint="待做内容"
+                            android:textColorHint="?android:colorAccent"
+                            android:inputType="textAutoCorrect|textCapSentences"
+                            android:lines="2"
+                            android:maxLines="3"
+                            android:textColor="@color/icons" />
+                    </android.support.design.widget.TextInputLayout>
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/ll_select_date"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_marginLeft="@dimen/todo_margin_left_right"
-                    android:layout_marginRight="@dimen/todo_margin_left_right"
-                    android:layout_weight="1"
-                    android:animateLayoutChanges="true"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:visibility="invisible">
+                    android:layout_marginTop="16dp"
+                    android:layout_weight="1.5"
+                    android:background="@color/gray_white"
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:gravity="top">
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/todo_margin_left_right"
+                        android:layout_marginRight="@dimen/todo_margin_left_right"
+                        android:layout_marginTop="32dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
 
-                        <EditText
-                            android:id="@+id/et_date"
+                        <ImageButton
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.5"
-                            android:editable="false"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:gravity="center"
-                            android:textIsSelectable="false" />
+                            android:layout_weight=".4"
+                            android:background="@android:color/transparent"
+                            android:padding="8dp"
+                            android:src="@mipmap/icon_add_alarm_grey" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight=".2"
-                            android:gravity="center"
-                            android:padding="4dp"
-                            android:text="\@"
-                            android:textColor="?attr/colorPrimary" />
+                            android:layout_weight="3"
+                            android:gravity="start"
+                            android:paddingBottom="8dp"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="8dp"
+                            android:paddingTop="8dp"
+                            android:text="设置提醒"
+                            android:textColor="@color/secondary_text"
+                            android:textSize="16sp" />
 
-                        <EditText
-                            android:id="@+id/et_time"
+                        <android.support.v7.widget.SwitchCompat
+                            android:id="@+id/switch_set_reminder"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:layout_weight="1"
-                            android:editable="false"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
                             android:gravity="center"
-                            android:textIsSelectable="false" />
-
+                            android:padding="8dp" />
 
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/tv_select_date_result"
+                    <LinearLayout
+                        android:id="@+id/ll_select_date"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="2"
-                        android:paddingTop="8dp"
-                        android:paddingLeft="8dp"
-                        android:gravity="start"
-                        android:textColor="@color/secondary_text"
-                        android:textSize="14sp" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/todo_margin_left_right"
+                        android:layout_marginRight="@dimen/todo_margin_left_right"
+                        android:animateLayoutChanges="true"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:visibility="invisible">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:layout_marginTop="8dp"
+                            android:gravity="top">
+
+                            <EditText
+                                android:id="@+id/et_date"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.5"
+                                android:editable="false"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
+                                android:gravity="center"
+                                android:textIsSelectable="false" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".2"
+                                android:gravity="center"
+                                android:padding="4dp"
+                                android:text="\@"
+                                android:textColor="?attr/colorPrimary" />
+
+                            <EditText
+                                android:id="@+id/et_time"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:editable="false"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
+                                android:gravity="center"
+                                android:textIsSelectable="false" />
+
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tv_select_date_result"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="start"
+                            android:paddingLeft="8dp"
+                            android:paddingTop="8dp"
+                            android:textColor="@color/secondary_text"
+                            android:textSize="14sp" />
+
+                        <LinearLayout
+                            android:id="@+id/circle_holder"
+                            android:layout_width="wrap_content"
+                            android:layout_height="96dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal">
+
+                            <View
+                                android:id="@+id/circle1"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginRight="16dp"
+                                android:background="@drawable/color1"
+                                android:clickable="true"
+                                android:onClick="view" />
+
+                            <View
+                                android:id="@+id/circle2"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginRight="16dp"
+                                android:background="@drawable/color2"
+                                android:clickable="true"
+                                android:onClick="view" />
+
+                            <View
+                                android:id="@+id/circle3"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginRight="16dp"
+                                android:background="@drawable/color3"
+                                android:clickable="true"
+                                android:onClick="view" />
+
+                            <View
+                                android:id="@+id/circle4"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_gravity="center_vertical"
+                                android:background="@drawable/color4"
+                                android:clickable="true"
+                                android:onClick="view" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
 
                 </LinearLayout>
 
-
             </LinearLayout>
 
-        </LinearLayout>
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_done"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:src="@mipmap/icon_action_done"
+                app:fabSize="normal"
+                app:layout_anchor="@id/ll_edit"
+                app:layout_anchorGravity="bottom|right" />
+        </android.support.design.widget.CoordinatorLayout>
+    </LinearLayout>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_done"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:src="@mipmap/icon_action_done"
-            app:fabSize="normal"
-            app:layout_anchor="@id/ll_edit"
-            app:layout_anchorGravity="bottom|right" />
-    </android.support.design.widget.CoordinatorLayout>
-</LinearLayout>
+</RelativeLayout>
